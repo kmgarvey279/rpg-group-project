@@ -23,15 +23,113 @@ Floor.prototype.constructFloors = function constructFloors(){
     }
   }
 }
+Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
+  var playerRoom = new Room(playerObj.y, playerObj.x, false);
+  this.roomArr[playerObj.y][playerObj.x] = playerRoom;
+  var bossY = randNum(Math.floor(this.row/2), 0);
+  var bossX = randNum(this.col - 1, Math.floor(this.col/2));
+  var bossRoom = new Room(bossY, bossX, true);
+  this.roomArr[bossY][bossX] = bossRoom;
+  playerRoom.buildPath(bossRoom, this);
+  var bossKeyY = randNum(this.row - 1, 0);
+  var bossKeyX = randNum(this.col -1, 0);
+}
+Floor.prototype.checkArr = function checkArr(posY, posX){
+  var newRoom;
+  if(typeof this.roomArr[posY][posX] != 'object'){
+    newRoom = new Room(posY, posX);
+    return newRoom;
+  }else{
+      return closestEmpty(posY, posX);
+  }
+}
+Floor.prototype.closestEmpty = function closestEmpty(posY, posX){
+  var closestRoom;
+  var closePosY;
+  var closeposX;
+  var distanceFrom = this.row + this.col;
+  for(var i = 0; i < this.row - 1; i++){
+    for(var j = 0; j < this.col - 1; j++){
+      if(typeof this.roomArr[i][j] != 'object'){
+        if(i >= posY){
+          var tempY = i - posY;
+        }else{
+          var tempY = posY - i;
+        }
+        if(j >= posX){
+          var tempX = j - posX;
+        }else{
+          var tempX = posX - j;
+        }
+        var tempDistance = tempY + tempX;
+        if(tempDistance < distanceFrom){
+          distanceFrom = tempDistance;
+          closePosY = i;
+          closeposX = j;
+        }
+      }
+    }
+  }
+  if(closePosY === null){
+    console.log('Array is already FULL, cannot insert');
+    return;
+  }
+  closestRoom = new Room(closePosY, closeposX, false);
+  return closestRoom;
+}
+
 
 //Room class and its protoypes
 class Room{
-  constructor(posY, posX){
+  constructor(posY, posX, isKey){
     this.y = posY;
     this.x = posX;
+    this.keyRoom = isKey;
   }
   beenTraveled = false;
   playerHere = false;
+}
+Room.prototype.findClosest = function findClosest(){
+
+}
+Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){
+  var startY;
+  var startX;
+  var smallestY;
+  var shortestX;
+  if(this.y > roomObjNext.y){
+    startY = this.y;
+    smallestY = roomObjNext.y;
+  }else{
+    startY = roomObjNext.y;
+    smallestY = this.y;
+  }
+  if(this.x > roomObjNext.x){
+    startX = this.x;
+    smallestX = roomObjNext.x;
+  }else{
+    startX = roomObjNext.x;
+    smallestX = this.x;
+  }
+  var myChance = randNum(2, 1);
+  if(myChance === 1){
+    floorObj.roomArr[startY][startX] = new Room(startY, startX);
+    for(var i = smallestY; i < startY; i++){
+      floorObj.roomArr[i][startX] = new Room(i, startX);
+    }
+    for(var i = smallestX; i < startX; i++){
+      floorObj.roomArr[startY][i] = new Room(startY, i);
+    }
+  }else{
+    floorObj.roomArr[smallestY][smallestX] = new Room(smallestY, smallestX);
+    for(var i = startY - 1; i > smallestY; i--){
+      floorObj.roomArr[i][smallestX] = new Room(i, smallestX);
+    }
+    for(var i = startX - 1; i > smallestX; i--){
+      floorObj.roomArr[smallestY][i] = new Room(smallestY, i);
+    }
+  }
+
 }
 
 //Player class and its prototypes
@@ -117,13 +215,16 @@ function printFloor(floorObj){
       var colStr = '';
       if(floorObj.roomArr[i][j].playerHere === true){
         colStr = '[ P ]';
+        rowStr += colStr;
+        continue;
+      }
+      if(floorObj.roomArr[i][j] === 0){
+        colStr = '[ X ]';
       }else{
-        colStr = '['+i+','+j;
-        if(j === floorObj.col - 1){
-          colStr += ']\n';
-        }else{
-          colStr += ']';
-        }
+        colStr = '['+i+','+j+']';
+      }
+      if(j === floorObj.col - 1){
+        colStr += '\n';
       }
       rowStr += colStr;
     }
@@ -134,17 +235,20 @@ function keyPressReady(inputObj){
   inputObj.keyPressed = false;
   console.log('Ready to receive input');
 }
+function randNum(max, min){
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 //globals
 const myInputs = new Keys(); //Init which Keys are detected
-let dungeonOne = new Floor(4, 4);
-dungeonOne.constructFloors();
+let dungeonOne = new Floor(8, 8);// 64 tile grid
+//dungeonOne.constructFloors();
+let playerOne = new Player(dungeonOne.row - 1, 0);
+dungeonOne.generateKeyRooms(playerOne);
 console.log(dungeonOne.roomArr);
-let playerOne = new Player(3, 0);
 playerOne.initPlayerPos(dungeonOne);
 printFloor(dungeonOne);
 
 //Front End Logic
-
 $(document).ready(function(){
   $('.clickable').click(function(){
     var value = $(this).html();
