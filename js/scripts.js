@@ -9,7 +9,21 @@ class Floor{
 
 //Room class and its protoypes
 class Room{
-  isEnemy = true;
+  constructor(posX, posY){
+    this.y = posX;
+    this.x = posY;
+  }
+}
+
+//Player class and its prototypes
+class Player{
+  constructor(startPosX, startPosY){
+    this.x = startPosX;
+    this.y = startPosY;
+  }
+}
+Player.protoype.moveGrid(currRoom, nextRoom){
+
 }
 
 //Helper Functions
