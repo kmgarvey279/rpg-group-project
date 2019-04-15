@@ -17,14 +17,103 @@ class Room{
 
 //Player class and its prototypes
 class Player{
-  constructor(startPosX, startPosY){
+  constructor(name, job, startPosX, startPosY){
+    //Player Attributes
+    this.name = name;
+    this.job = job;
+    this.currentHP;
+    //Player Inventory
+    this.weapon;
+    this.items = [];
+    //Player Position
     this.x = startPosX;
     this.y = startPosY;
   }
 }
 
+//Player explore functions
 Player.prototype.moveGrid = function moveGrid(){
 
+}
+
+Player.prototype.checkGrid = function checkGrid(){
+
+}
+
+//Player combat functions
+Player.prototype.attack = function playerAtk(){
+}
+
+Player.prototype.useSpecial= function useSpecial(){
+  if (this.job === "warrior") {
+
+  } else if (this.job === "wizard") {
+
+  } else if this.job === "thief") {
+
+  }
+}
+//Player general functions
+Player.prototype.checkItems = function checkItems(){
+}
+
+Player.prototype.useItems = function useItems(){
+
+}
+
+
+
+
+Player.prototype.getStats = function getStats(){
+  if (this.job === "warrior") {
+    this.maxHP = 90;
+    this.attack = 5;
+    this.defense = 4;
+    this.magic = 1;
+    this.speed =2;
+  } else if (this.job === "wizard"){
+    this.maxHP = 70;
+    this.attack = 1;
+    this.defense = 2;
+    this.magic = 5;
+    this.speed = 3;
+  } else if (this.job === "thief"){
+    this.maxHP = 80;
+    this.attack = 3;
+    this.defense = 3;
+    this.magic = 2;
+    this.speed = 5;
+  }
+}
+
+Player.prototype.checkIfDead = function checkIfDead(){
+  if (this.currentHP <= 0) {
+
+  }
+}
+
+
+//Enemy functions
+class Enemy{
+  constructor(type, positionX, positionY){
+  this.type = type;
+  this.x = positionX;
+  this.y = positionY;
+  }
+}
+
+Enemy.prototype.getStats = function getStats(){
+  if...
+}
+
+Enemy.prototype.enemyAtk = function enemyAtk(){
+
+}
+
+Enemy.prototype.checkIfDead = function checkIfDead(){
+  if (this.currentHP <= 0) {
+
+  }
 }
 
 //Helper Functions
