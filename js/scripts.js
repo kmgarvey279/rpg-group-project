@@ -52,7 +52,7 @@ Player.prototype.fight = function fight(){
 }
 
 Player.prototype.takeDamage = function takeDamage(damageTaken){
-this.currentHP === this.currentHP - damageTaken;
+this.currentHP = this.currentHP - damageTaken;
 if (this.currentHP <= 0) {
   this.alive = false;
   }
@@ -60,11 +60,17 @@ if (this.currentHP <= 0) {
 
 //Player general functions
 Player.prototype.checkItems = function checkItems(){
-  items.forEach(function(item) {
-  })
+  $("#combat-log").append("Items:" + "<br>");
+  this.items.forEach(function(item) {
+    $("#combat-log").append(item + "<br>");
+  });
 }
 
-Player.prototype.useItems = function useItems(){
+Player.prototype.addItem = function addItem(itemToAdd) {
+  this.items.push(itemToAdd);
+}
+
+Player.prototype.useItem = function useItems(itemToUse){
 
 }
 
@@ -128,6 +134,10 @@ if (this.currentHP <= 0) {
   }
 }
 
+class Item{
+  constructor(){
+}
+
 //Helper Functions
 function printFloor(floorObj){
   console.log('Printing out our floor Layout');
@@ -156,7 +166,7 @@ function determineTurnOrder(playerSpeed, enemySpeed) {
 
 function checkForDeath(playerStatus, enemyStatus) {
   if (playerStatus === false) {
-    alert("game over")
+    $("#combat-log").append(newPlayer.name + " was defeated" + "<br>" + "GAME OVER");
   } else if (enemyStatus === false) {
     $("#combat-log").append(newPlayer.name + " defeats the enemy" + "<br>");
   }
@@ -166,7 +176,7 @@ function checkForDeath(playerStatus, enemyStatus) {
 function combat() {
   $(".dungeon-UI").hide();
   $(".combat-UI").show();
-  var newEnemy = new Enemy("Slime");
+  var newEnemy = new Enemy("Dragon");
   newEnemy.getStats()
   $("#combat-log").append(newEnemy.type + " attacked!" + "<br>");
   var firstMove = determineTurnOrder(newPlayer.speed, newEnemy.speed);
@@ -200,27 +210,29 @@ function combat() {
       newPlayer.run();
       if (success = true) {
         $("#combat-log").append(newPlayer.name + " successfully ran away" + "<br>");
+        //switch to dungeon phase
       }
         $("#combat-log").append(newPlayer.name + " failed to run away" + "<br>");
-        newEnemy.attack();
+        var damageTaken = newEnemy.fight();
+        newPlayer.takeDamage(damageTaken);
+        $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+        checkForDeath(newPlayer.alive, newEnemy.alive);
       });
-
-    alert("test");
   }
 
 //globals
 let dungeonOne = new Floor(4, 4);
 printFloor(dungeonOne);
 console.log(dungeonOne.roomArr);
-var newPlayer = new Player();
+let newPlayer = new Player();
 
 //User input logic
 $(document).ready(function() {
   $("#start-game").click(function(event) {
     event.preventDefault();
     $(".start-UI").hide();
-    newPlayer.name = "Kevin";
-    newPlayer.job = "wizard";
+    newPlayer.name = $("#character-name").val();
+    newPlayer.job = $("#character-job").val();
     newPlayer.getStats();
     combat();
   });
