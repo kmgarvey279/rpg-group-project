@@ -22,7 +22,8 @@ class Player{
     this.y = startPosY;
   }
 }
-Player.protoype.moveGrid(currRoom, nextRoom){
+
+Player.prototype.moveGrid = function moveGrid(){
 
 }
 
