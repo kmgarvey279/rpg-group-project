@@ -77,13 +77,13 @@ Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant){
     return;
   }
   console.log('['+posY+','+posX+'] was already taken. Closest empty node found at ['+closePosY+','+closePosX+']');
-  isImportant ? closestRoom = new Room(posY, posX, true) : closestRoom = new Room(posY, posX, false);
+  isImportant ? closestRoom = new Room(closePosY, closePosX, true) : closestRoom = new Room(closePosY, closePosY, false);
   this.roomArr[closePosY][closePosX] = closestRoom;
   return closestRoom;
 }
 Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   var tempRoom;
-  var playerRoom = new Room(playerObj.y, playerObj.x);
+  var playerRoom = new Room(playerObj.y, playerObj.x, true);
   this.roomArr[playerObj.y][playerObj.x] = playerRoom;
   //Boss Room
   var bossY = randNum(Math.floor(this.row/4), 0);
@@ -92,24 +92,27 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   console.log('bossX is '+bossX);
   var bossRoom = new Room(bossY, bossX, true);
   this.roomArr[bossY][bossX] = bossRoom;
-  console.log(this.roomArr[bossY][bossX].isImport);
+  this.roomArr[bossY][bossX].containsBoss = true;
   playerRoom.buildPath(bossRoom, this, true);
   //Boss Key Room
   var bossKeyY = randNum(this.row - 1, 0);
   var bossKeyX = randNum(this.col -1, 0);
-  var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, true);
+  var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, false);
+  this.roomArr[bossKeyRoom.y][bossKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(bossKeyRoom.y, bossKeyRoom.x);
   bossKeyRoom.buildPath(tempRoom, this);
   //Super weapon Room
   var weaponRoomY = randNum(this.row - 1, 0);
   var weaponRoomX = randNum(this.col -1, 0);
   var weaponRoom = this.closestEmpty(weaponRoomY, weaponRoomX, true);
+  this.roomArr[weaponRoom.y][weaponRoom.x].containsTreasure = true;
   tempRoom = this.closestNode(weaponRoom.y, weaponRoom.x);
   weaponRoom.buildPath(tempRoom, this);
   //Super weapon key
   var weaponKeyY = randNum(this.row - 1, 0);
   var weaponKeyX = randNum(this.col -1, 0);
-  var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, true);
+  var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, false);
+  this.roomArr[weaponKeyRoom.y][weaponKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(weaponKeyRoom.y, weaponKeyRoom.x);
   weaponKeyRoom.buildPath(tempRoom, this);
 }
@@ -173,6 +176,9 @@ class Room{
   }
   playerHere = false;
   beenTraveled = false;
+  containsKey = false;
+  containsBoss = false;
+  containsTreasure = false;
 }
 Room.prototype.setImportance = function setImportance(){
   this.isImport = true;
@@ -374,11 +380,27 @@ function printFloor(floorObj){
         rowStr += colStr;
         continue;
       }
+      if(floorObj.roomArr[i][j].containsKey === true){
+        colStr = '[ K ]';
+        rowStr += colStr;
+        continue;
+      }
+      if(floorObj.roomArr[i][j].containsBoss === true){
+        colStr = '[ B ]';
+        rowStr += colStr;
+        continue;
+      }
+      if(floorObj.roomArr[i][j].containsTreasure === true){
+        colStr = '[ T ]';
+        rowStr += colStr;
+        continue;
+      }
       if(floorObj.roomArr[i][j] === 0){
-        colStr = '[ X ]';
+        colStr = '[ | ]';
       }else{
         colStr = '['+i+','+j+']';
       }
+
       if(j === floorObj.col - 1){
         colStr += '\n';
       }
