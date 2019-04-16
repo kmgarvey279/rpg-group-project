@@ -111,7 +111,7 @@ if (this.currentHP <= 0) {
 
 //Player item functions
 Player.prototype.checkItems = function checkItems(){
-  $("#combat-log").append("<br>" + "Items:" + "<br>");
+  $("#combat-log").empty().append("<br>" + "Items:" + "<br>");
   this.items.forEach(function(item) {
     $("#item-list").append(item.name + "<br>");
   });
@@ -267,6 +267,8 @@ function combat() {
   newPlayer.addItem(sword);
   $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + sword.name + "<br>");
   newPlayer.useItem("longsword");
+  newPlayer.useItem("small potion");
+  newPlayer.useItem("firecracker");
   //item test end
   if (firstMove === false) {
     newEnemy.enemyTurn();
@@ -319,11 +321,11 @@ function combat() {
     $("#items-combat").click(function(event) {
       event.preventDefault();
       newPlayer.checkItems();
-      // $("#combat-log").empty().append("<br>" + newPlayer.name + " used " + item + "<br>");
-      // $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
-      // $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
-      // newEnemy.enemyTurn();
-      // checkForDeath(newPlayer.alive, newEnemy.alive);
+      // newPlayer.useItem(itemSelection);
+      $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
+      $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
+      newEnemy.enemyTurn();
+      checkForDeath(newPlayer.alive, newEnemy.alive);
     });
 
     $("#run-combat").click(function(event) {
