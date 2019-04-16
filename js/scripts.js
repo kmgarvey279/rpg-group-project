@@ -24,7 +24,6 @@ class Player{
     this.currentHP;
     this.alive = true;
     //Player Inventory
-    this.weapon = "fists";
     this.items = [];
     //Player Position
     this.x = startPosX;
@@ -38,6 +37,7 @@ Player.prototype.getStats = function getStats(){
     this.currentHP = 20;
     this.strength = 4;
     this.speed = 3;
+    this.weapon = "rusted sword";
     this.specialName = "Guard";
     this.special = function special() {
       $("#combat-log").append(this.name + " defended against the enemy " + "<br>");
@@ -48,21 +48,23 @@ Player.prototype.getStats = function getStats(){
     this.currentHP = 10;
     this.maxMP = 10;
     this.currentMP = 10;
-    this.strength = 5;
+    this.strength = 2;
     this.speed = 4;
+    this.weapon = "wooden staff";
     this.specialName = "Cast";
     this.special = function special() {
       $("#combat-log").append(newPlayer.name + " casts fireball" + "<br>");
       this.currentMP = this.currentMP - 3;
       $("#player-mp").empty().append(newPlayer.name + " MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
-      return "fireball"
+      return "fireball";
     };
-  } else if (this.job === "thief"){
+  } else if (this.job === "archer"){
     this.maxHP = 15;
     this.currentHP = 15;
-    this.strength = 2;
+    this.strength = 3;
     this.speed = 5;
-    this.specialName = "Steal";
+    this.weapon = "worn bow";
+    this.specialName = "Barrage";
     this.special = function special() {
       this.steal();
     };
@@ -91,12 +93,6 @@ Player.prototype.fight = function fight(){
 //   }
 // }
 
-Player.prototype.steal = function steal(){
-  $("#combat-log").empty().append("<br>" + this.name + " attempts to steal" + "<br>");
-  // roll for random item
-}
-
-
 Player.prototype.run = function run(){
   var escapeRoll = this.speed + Math.floor((Math.random() * 5 ) + 1);
   if (escapeRoll >= 8) {
@@ -115,9 +111,9 @@ if (this.currentHP <= 0) {
 
 //Player item functions
 Player.prototype.checkItems = function checkItems(){
-  $("#combat-log").append("Items:" + "<br>");
+  $("#combat-log").append("<br>" + "Items:" + "<br>");
   this.items.forEach(function(item) {
-    $("#combat-log").append(item + "<br>");
+    $("#item-list").append(item.name + "<br>");
   });
 }
 
@@ -125,8 +121,29 @@ Player.prototype.addItem = function addItem(itemToAdd) {
   this.items.push(itemToAdd);
 }
 
-Player.prototype.useItem = function useItems(itemToUse){
+Player.prototype.useItem = function useItems(selectedItem){
+  var itemToUse;
+  for (var i = 0; i < this.items.length; i++) {
+    if (this.items[i].name === selectedItem) {
+      itemToUse = this.items[i];
+    }
+  }
+  if (itemToUse.type === "heal") {
+    var healTotal = (this.currentHP + parseInt(itemToUse.potency));
+    if (healTotal > this.maxHP) {
+      this.currentHP = healTotal - (healTotal - this.maxHP);
+    } else {
+      this.currentHP = healTotal;
+    }
+  } else if (itemToUse.type === "damage") {
+    return itemToUse.potency;
+  } else if (itemToUse.type === "equip") {
+    this.weapon = itemToUse.name;
+    this.strength = this.strength + itemToUse.potency;
+  }
 }
+
+
 
 //Enemy functions
 class Enemy{
@@ -174,10 +191,19 @@ if (this.currentHP <= 0) {
 }
 
 class Item{
-  constructor(){
-    
+  constructor(name, type, potency){
+    this.name = name;
+    this.type = type;
+    this.potency = potency
   }
 }
+
+// Item.prototype.effect = function effect() {
+//   if (this.type === heal) {
+//     return heal
+//   } else if (this.type)
+// }
+
 
 //Helper Functions
 function printFloor(floorObj){
@@ -230,6 +256,18 @@ function combat() {
   $("#combat-log").append("<br>" + newEnemy.type + " attacked!" + "<br>");
   $("#enemy-hp").empty().append("<br>" + newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
   var firstMove = determineTurnOrder(newPlayer.speed, newEnemy.speed);
+  //item test start
+  var potion = new Item("small potion", "heal", 2);
+  var bomb = new Item ("firecracker", "damage", 2);
+  var sword = new Item("longsword", "equip", 3);
+  newPlayer.addItem(potion);
+  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + potion.name + "<br>");
+  newPlayer.addItem(bomb);
+  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + bomb.name + "<br>");
+  newPlayer.addItem(sword);
+  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + sword.name + "<br>");
+  newPlayer.useItem("longsword");
+  //item test end
   if (firstMove === false) {
     newEnemy.enemyTurn();
     checkForDeath(newPlayer.alive, newEnemy.alive);
@@ -257,19 +295,35 @@ function combat() {
         $("#combat-log").empty().append("<br>" + newEnemy.type + " took 8 damage from the spell" + "<br>");
         checkForDeath(newPlayer.alive, newEnemy.alive);
       } else {
-        newEnemy.enemyTurn();
-        checkForDeath(newPlayer.alive, newEnemy.alive);
+        $("#combat-log").empty().append("<br>" + newPlayer.name + " unleashed a barrage of arrows" + "<br>");
+        for (var i = 0; i < 5; i++) {
+          var shot = Math.floor((Math.random() * 5 ) + 1);
+          if (newEnemy.alive === true) {
+            if (shot > 4) {
+              $("#combat-log").append("<br>" + newPlayer.name + "'s attack missed" + "<br>");
+              break;
+            } else {
+              $("#combat-log").append("<br>" + newEnemy.type + " took " + shot + "damage" + "<br>");
+              newEnemy.takeDamage(shot);
+              checkForDeath(newPlayer.alive, newEnemy.alive);
+            }
+          }
+        }
+        if (newEnemy.alive === true) {
+          newEnemy.enemyTurn();
+          checkForDeath(newPlayer.alive, newEnemy.alive);
+        }
       }
     });
 
     $("#items-combat").click(function(event) {
       event.preventDefault();
       newPlayer.checkItems();
-      $("#combat-log").empty().append("<br>" + newplayer.name + " used " + item + "<br>");
-      $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
-      $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
-      newEnemy.enemyTurn();
-      checkForDeath(newPlayer.alive, newEnemy.alive);
+      // $("#combat-log").empty().append("<br>" + newPlayer.name + " used " + item + "<br>");
+      // $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
+      // $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
+      // newEnemy.enemyTurn();
+      // checkForDeath(newPlayer.alive, newEnemy.alive);
     });
 
     $("#run-combat").click(function(event) {
