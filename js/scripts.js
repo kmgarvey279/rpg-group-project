@@ -38,16 +38,31 @@ Player.prototype.getStats = function getStats(){
     this.currentHP = 20;
     this.strength = 4;
     this.speed = 3;
+    this.specialName = "Guard";
+    this.special = function special() {
+      $("#combat-log").append(this.name + " defended against the enemy " + "<br>");
+      this.defend = true;
+    };
   } else if (this.job === "wizard"){
     this.maxHP = 10;
     this.currentHP = 10;
+    this.maxMP = 10;
+    this.currentMP = 10;
     this.strength = 5;
     this.speed = 4;
+    this.specialName = "Cast";
+    this.special = function special() {
+      $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+    };
   } else if (this.job === "thief"){
     this.maxHP = 15;
     this.currentHP = 15;
     this.strength = 2;
     this.speed = 5;
+    this.specialName = "Steal";
+    this.special = function special() {
+      $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+    };
   }
 }
 
@@ -125,9 +140,10 @@ Enemy.prototype.getStats = function getStats(){
   }
 }
 
-Enemy.prototype.fight = function fight(){
-  return this.strength;
-
+Enemy.prototype.enemyTurn = function enemyTurn(enemyType, enemyStrength){
+  var damageTaken = enemyStrength;
+  newPlayer.takeDamage(damageTaken);
+  $("#combat-log").append(enemyType + " attacked and did " + damageTaken + " damage" + "<br>");
 }
 
 Enemy.prototype.takeDamage = function takeDamage(damageTaken){
@@ -141,6 +157,7 @@ class Item{
   constructor(){
   }
 }
+
 //Helper Functions
 function printFloor(floorObj){
   console.log('Printing out our floor Layout');
@@ -177,7 +194,6 @@ function checkForDeath(playerStatus, enemyStatus) {
 
 
 function combat() {
-  debugger
   $(".dungeon-UI").hide();
   $(".combat-UI").show();
   var newEnemy = new Enemy("Dragon");
@@ -185,9 +201,7 @@ function combat() {
   $("#combat-log").append(newEnemy.type + " attacked!" + "<br>");
   var firstMove = determineTurnOrder(newPlayer.speed, newEnemy.speed);
   if (firstMove === false) {
-    var damageTaken = newEnemy.fight();
-    newPlayer.takeDamage(damageTaken);
-    $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+    newEnemy.enemyTurn(newEnemy.type, newEnemy.strength);
     checkForDeath(newPlayer.alive, newEnemy.alive);
   }
     $("#attack-combat").click(function(event) {
@@ -196,16 +210,28 @@ function combat() {
       newEnemy.takeDamage(damageDone);
       $("#combat-log").append(newPlayer.name + " attacked with their " + newPlayer.weapon + "<br>" + newEnemy.type + " took " + damageDone + " damage " + "<br>");
       checkForDeath(newPlayer.alive, newEnemy.alive);
-      var damageTaken = newEnemy.fight();
-      newPlayer.takeDamage(damageTaken);
-      $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+      newEnemy.enemyTurn(newEnemy.type, newEnemy.strength);
       checkForDeath(newPlayer.alive, newEnemy.alive);
   });
+
+    $("#special-combat").click(function(event) {
+      event.preventDefault();
+      newPlayer.special();
+      if (newPlayer.defend === true) {
+        $("#combat-log").append(newEnemy.type + "'s attack had no effect on " + newPlayer.name + "<br>");
+        newPlayer.defend = false;
+      } else {
+      newEnemy.enemyTurn(newEnemy.type, newEnemy.strength);
+      checkForDeath(newPlayer.alive, newEnemy.alive);
+    }
+  });
+
 
     $("#items-combat").click(function(event) {
       event.preventDefault();
       newPlayer.checkItems();
-      newEnemy.strength();
+      newEnemy.enemyTurn(newEnemy.type, newEnemy.strength);
+      checkForDeath(newPlayer.alive, newEnemy.alive);
     });
 
     $("#run-combat").click(function(event) {
@@ -217,9 +243,7 @@ function combat() {
         //switch to dungeon phase
       } else {
         $("#combat-log").append(newPlayer.name + " failed to run away" + "<br>");
-        var damageTaken = newEnemy.fight();
-        newPlayer.takeDamage(damageTaken);
-        $("#combat-log").append(newEnemy.type + " attacked and did " + damageTaken + " damage" + "<br>");
+        newEnemy.enemyTurn(newEnemy.type, newEnemy.strength);
         checkForDeath(newPlayer.alive, newEnemy.alive);
       }
       });
@@ -239,6 +263,7 @@ $(document).ready(function() {
     newPlayer.name = $("#character-name").val();
     newPlayer.job = $("#character-job").val();
     newPlayer.getStats();
+    $("#special-name").append(newPlayer.specialName);
     combat();
   });
 });

@@ -8,37 +8,40 @@
     <script src="js/scripts.js"></script>
   </head>
   <body>
-    <div class="start-UI"
-      <form id="create-character">
-        <div class="form-group">
-          <label for="character-name">Name:</label>
-          <input type="text" class="form-control" id="character-name">
-        </div>
-        <div class="form-group">
-            <select id="character-job">
-              <option value="warrior">Warrior</option>
-              <option value="wizard">Wizard</option>
-              <option value="thief">Thief</option>
-            </select>
-          </div>
-      <button type="button" id="start-game">Start Game</button>
-      </form>
-    </div>
+    <div class="container">
 
-    <div class="dungeon-UI">
-      <button type="button" id="attack">Attack</button>
-      <!-- <button type="button" id="special"></button> -->
-      <button type="button" id="items">Open</button>
-      <button type="button" id="">Pick Up</button>
-      <button type="button" id="">Move</button>
-      <button type="button" id="">Items</button>
-    </div>
-    <div class="combat-UI">
-      <button type="button" id="attack-combat">Attack</button>
-      <!-- <button type="button" id="special"></button> -->
-      <button type="button" id="items-combat">Items</button>
-      <button type="button" id="run-combat">Run</button>
-      <span id="combat-log"></span>
+      <div class="start-UI">
+        <form id="create-character">
+          <div class="form-group">
+            <label for="character-name">Name:</label>
+            <input type="text" class="form-control" id="character-name">
+          </div>
+          <div class="form-group">
+              <select id="character-job">
+                <option value="warrior">Warrior</option>
+                <option value="wizard">Wizard</option>
+                <option value="thief">Thief</option>
+              </select>
+            </div>
+        <button type="button" id="start-game">Start Game</button>
+        </form>
+      </div>
+
+      <div class="dungeon-UI">
+        <button type="button" id="attack">Attack</button>
+        <button type="button" id="items">Open</button>
+        <button type="button" id="">Pick Up</button>
+        <button type="button" id="">Move</button>
+        <button type="button" id="">Items</button>
+      </div>
+
+      <div class="combat-UI">
+        <button type="button" id="attack-combat">Attack</button>
+        <button type="button" id="special-combat"><span id="special-name"></span></button>
+        <button type="button" id="items-combat">Items</button>
+        <button type="button" id="run-combat">Run</button>
+        <span id="combat-log"></span>
+      </div>
     </div>
   </body>
 </html>
