@@ -1,4 +1,32 @@
+body {
+  color: white;
+  background-color: #181816;
 
+}
+#landing-page{
+  color: #eeffc9;
+  font-family: fantasy;
+  position: absolute;
+  text-align: center;
+  font-size: 20px;
+
+}
+#landing-dungeon-entrance{
+  max-width: 100%;
+  height:auto;
+}
+
+#landing-title{
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+h1{
+  font-size: 200px;
+  color: inherit;
+}
 
 .dungeon-UI {
   display: none;
@@ -6,4 +34,15 @@
 
 .combat-UI {
   display: none;
+}
+
+#start-button{
+  margin-top: 40px;
+  background-color: #eeffc9;
+  color: #181816;
+  font-weight: bold;
+}
+
+#first{
+  margin-top: 50px;
 }

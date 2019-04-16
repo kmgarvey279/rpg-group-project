@@ -8,20 +8,66 @@
     <script src="js/scripts.js"></script>
   </head>
   <body>
-    <div class="start-UI"
+
+    <div id="landing-page">
+      <img id="landing-dungeon-entrance" src="img/dungeon.jpg" alt="image of dungeon mouth">
+        <div id="landing-title">
+          <h1>Drakania</h1>
+        </div>
+        <p id = "first">Eons ago, the vicious Dragon <em>Drakania</em> fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the fight she slithered back to her underground lair where her numberless brood awaited her return. </p>
+        <br>
+        <p>In the thousands years since that battle, no one who has entered her dungeon has ever returned...</p>
+        <button id = "start-button" type="button" name="button">Start Game</button>
+    </div>
+
+    <div class="start-UI">
       <form id="create-character">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+                <select id="character-job">
+                  <option value="thief">Thief</option>
+                </select>
+              </div>
+
+
+            </div>
+
+        <div class="col col-md-3">
+          <img src="img/archer.jpg" alt="Image of archer avitar">
+          <input type="radio" value="archer" id="archer-avitar"/>
+          <label for="archer-avitar"></label>
+          <div class="panel">
+            <p></p>
+            <ul>
+              <li><strong>Name: Arrowendl</strong></li>
+              <li>Skill: Archer</li>
+              <li>Hit Points: 20</li>
+              <li>Strength: 4</li>
+              <li>Speed: 3</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col col-md-3">
+          <img src="img/wizard.jpg" alt="Image of wizard avitar">
+          <input type="radio" value="wizard" id="wizard-avitar"/>
+          <label for="wizard-avitar"></label>
+        </div>
+
+        <div class="col col-md-3">
+          <img src="img/warrior.jpg" alt="Image of warrior avitar">
+          <input type="radio" value="warrior" id="warrior-avitar"/>
+          <label for="warrior-avitar">Warrior</label>
+        </div>
+
+      </div>
+
         <div class="form-group">
           <label for="character-name">Name:</label>
           <input type="text" class="form-control" id="character-name">
         </div>
-        <div class="form-group">
-            <select id="character-job">
-              <option value="warrior">Warrior</option>
-              <option value="wizard">Wizard</option>
-              <option value="thief">Thief</option>
-            </select>
-          </div>
-      <button type="button" id="start-game">Start Game</button>
+        <button type="button" id="start-game">Enter Drakania's Dungeon</button>
       </form>
     </div>
 
@@ -40,5 +86,6 @@
       <button type="button" id="run-combat">Run</button>
       <span id="combat-log"></span>
     </div>
+
   </body>
 </html>
