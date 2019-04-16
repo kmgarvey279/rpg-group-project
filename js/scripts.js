@@ -233,12 +233,55 @@ let newPlayer = new Player();
 
 //User input logic
 $(document).ready(function() {
+  $("#character-img").hide();
+  $("#archer-info").hide();
+  $("#wizard-info").hide();
+  $("#warrior-info").hide();
+
+
+  $("#start-button").click(function(){
+  $(".landing-UI").hide();
+  $("#character-img").show();
+
+
+  $('.character-image').click(function(){
+    var myImg = $(this).attr('value');
+    // console.log('You clicked on: '+myImg);
+    if (myImg == "Archer") {
+      $("#wizard-info").hide()
+      $("#warrior-info").hide()
+      $("#archer-info").fadeIn()
+      $(".start-UI").show();
+    } if (myImg == "Wizard") {
+      $("#archer-info").hide()
+      $("#warrior-info").hide()
+      $("#wizard-info").fadeIn()
+      $(".start-UI").show();
+    } if (myImg == "Warrior") {
+      $("#archer-info").hide()
+      $("#wizard-info").hide()
+      $("#warrior-info").fadeIn()
+      $(".start-UI").show();
+    }
+  });
+
   $("#start-game").click(function(event) {
     event.preventDefault();
     $(".start-UI").hide();
+    $("#archer-info").hide();
+    $("#wizard-info").hide();
+    $("#warrior-info").hide();
+    $("#character-name").hide();
+    $("#start-game").hide();
+    $("#select-character").hide();
+    $("#back").hide();
+
+
+    $(".dungeon-UI").show();
     newPlayer.name = $("#character-name").val();
     newPlayer.job = $("#character-job").val();
     newPlayer.getStats();
     combat();
   });
+});
 });

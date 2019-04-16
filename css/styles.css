@@ -1,9 +1,9 @@
 body {
-  color: white;
+  color: #eeffc9;
   background-color: #181816;
 
 }
-#landing-page{
+.landing-UI{
   color: #eeffc9;
   font-family: fantasy;
   position: absolute;
@@ -28,13 +28,6 @@ h1{
   color: inherit;
 }
 
-.dungeon-UI {
-  display: none;
-}
-
-.combat-UI {
-  display: none;
-}
 
 #start-button{
   margin-top: 40px;
@@ -45,4 +38,29 @@ h1{
 
 #first{
   margin-top: 50px;
+}
+
+
+
+.start-UI {
+  display: none;
+}
+
+
+/* resize images */
+.character-select img {
+  display: block;
+  max-width:1000px;
+  max-height:800px;
+  width: auto;
+  height: auto;
+}
+
+
+.dungeon-UI {
+  display: none;
+}
+
+.combat-UI {
+  display: none;
 }
