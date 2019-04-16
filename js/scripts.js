@@ -15,16 +15,16 @@ class Floor{
     this.roomArr = new Array(thisR).fill(0).map(() => new Array(thisC).fill(0));
   }
 }
-Floor.prototype.rowImportant = function rowImportant(myY){
-  for(var i = 0; i < this.row; i++){
+Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX){
+  for(var i = startingX; i < endX; i++){
     if(this.roomArr[myY][i].isImport){
       return true;
     }
   }
   return false;
 }
-Floor.prototype.colImportant = function colImportant(myX){
-  for(var i = 0; i < this.col; i++){
+Floor.prototype.colImportant = function colImportant(myX, startingY, endY){
+  for(var i = startingY; i < endY; i++){
     if(this.roomArr[i][myX].isImport){
       return true;
     }
@@ -93,7 +93,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   var bossRoom = new Room(bossY, bossX, true);
   this.roomArr[bossY][bossX] = bossRoom;
   console.log(this.roomArr[bossY][bossX].isImport);
-  playerRoom.buildPath(bossRoom, this);
+  playerRoom.buildPath(bossRoom, this, true);
   //Boss Key Room
   var bossKeyY = randNum(this.row - 1, 0);
   var bossKeyX = randNum(this.col -1, 0);
@@ -177,12 +177,19 @@ class Room{
 Room.prototype.setImportance = function setImportance(){
   this.isImport = true;
 }
-Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){//First unintentional recursive function I have ever written, holy moly
+Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath){//First unintentional recursive function I have ever written, holy moly
   var meetingPoint;
   var smallY;
   var largeY;
   var smallX;
   var largeX;
+  var isInit = initialPath;
+  if(isInit){//First Path Exception
+    floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint = new Room(this.y, roomObjNext.x);
+    meetingPoint.buildPath(roomObjNext, floorObj);
+    meetingPoint.buildPath(this, floorObj);
+    return;
+  }
   if(this.x < roomObjNext.x){
     smallX = this.x;
     largeX = roomObjNext.x;
@@ -198,7 +205,6 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){//First uni
     largeY = this.y;
   }
   if(this.x === roomObjNext.x){// x coord is same, but dif y
-    
     for(var i = smallY + 1; i < largeY; i++){
       floorObj.roomArr[i][this.x] = new Room(i, this.x);
     }
@@ -210,23 +216,50 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){//First uni
     }
     return;
   }
-  var randCheck = randNum(2,1);
+  var tempX;
+  var tempY;
+  var room_1;
+  var room_2;
+  var randCheck = 1; //randNum(2,1);
   console.log('RandCheck is: '+ randCheck);
   if(randCheck === 1){
-
-    if(floorObj.rowImportant(this.y) || floorObj.colImportant(roomObjNext.x)){
-      console.log('Special Case! Meeting Point will override a key Room!');
-      floorObj.roomArr[roomObjNext.y][this.x] = meetingPoint = new Room(roomObjNext.y, this.x);
+    if(floorObj.rowImportant(this.y, smallX, largeX)){
+      if(this.y + 1 < floorObj.row && !floorObj.roomArr[this.y + 1][this.x].isImport){
+        tempY = this.y + 1;
+        floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
+      }else if(this.y - 1 > 0 && !floorObj.roomArr[this.y - 1][this.x].isImport){
+        tempY = this.y - 1;
+        floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
+      }
     }else{
-      floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
+      tempY = this.y;
     }
+    if(floorObj.colImportant(roomObjNext.x, smallY, largeY)){
+      if(roomObjNext.x - 1 > 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport){
+        tempX = roomObjNext.x - 1;
+        floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
+      }else if(roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext + 1][roomObjNext.x+1].isImport){
+        tempX = roomObjNext.x + 1;
+        floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
+      }
+    }else{
+      tempX = roomObjNext.x;
+    }
+    floorObj.roomArr[tempY][tempX] = meetingPoint = new Room(tempY, tempX);
 
-    meetingPoint.buildPath(roomObjNext, floorObj);
-    meetingPoint.buildPath(this, floorObj);
-    console.log(meetingPoint);
+    if(room_2){
+      meetingPoint.buildPath(room_2, floorObj);
+    }else{
+      meetingPoint.buildPath(roomObjNext, floorObj);
+    }
+    if(room_1){
+      meetingPoint.buildPath(room_1, floorObj);
+    }else{
+      meetingPoint.buildPath(this, floorObj);
+    }
     return;
   }else{
-    if(floorObj.rowImportant(roomObjNext.y) || floorObj.colImportant(this.x)){
+    if(floorObj.rowImportant(roomObjNext.y, smallX, largeX) || floorObj.colImportant(this.x, smallY, largeY)){
       console.log('Special Case! Meeting Point will override a key Room!');
       floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
     }else{
