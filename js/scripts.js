@@ -24,7 +24,7 @@ class Player{
     this.currentHP;
     this.alive = true;
     //Player Inventory
-    this.items = [];
+    this.potions = 1;
     //Player Position
     this.x = startPosX;
     this.y = startPosY;
@@ -66,7 +66,6 @@ Player.prototype.getStats = function getStats(){
     this.weapon = "worn bow";
     this.specialName = "Barrage";
     this.special = function special() {
-      this.steal();
     };
   }
 }
@@ -85,14 +84,6 @@ Player.prototype.fight = function fight(){
   return this.strength;
 }
 
-// Player.prototype.cast = function cast(spellToCast){
-//   if (spellToCast === "Heal") {
-//     this.currentHP = this.maxHP;
-//   } else if (spellToCast === "Fireball") {
-//     return "fireball";
-//   }
-// }
-
 Player.prototype.run = function run(){
   var escapeRoll = this.speed + Math.floor((Math.random() * 5 ) + 1);
   if (escapeRoll >= 8) {
@@ -110,37 +101,13 @@ if (this.currentHP <= 0) {
 }
 
 //Player item functions
-Player.prototype.checkItems = function checkItems(){
-  $("#combat-log").empty().append("<br>" + "Items:" + "<br>");
-  this.items.forEach(function(item) {
-    $("#item-list").append(item.name + "<br>");
-  });
+Player.prototype.addPotion = function addPotion() {
+  this.potions = this.potions + 1;
 }
 
-Player.prototype.addItem = function addItem(itemToAdd) {
-  this.items.push(itemToAdd);
-}
-
-Player.prototype.useItem = function useItems(selectedItem){
-  var itemToUse;
-  for (var i = 0; i < this.items.length; i++) {
-    if (this.items[i].name === selectedItem) {
-      itemToUse = this.items[i];
-    }
-  }
-  if (itemToUse.type === "heal") {
-    var healTotal = (this.currentHP + parseInt(itemToUse.potency));
-    if (healTotal > this.maxHP) {
-      this.currentHP = healTotal - (healTotal - this.maxHP);
-    } else {
-      this.currentHP = healTotal;
-    }
-  } else if (itemToUse.type === "damage") {
-    return itemToUse.potency;
-  } else if (itemToUse.type === "equip") {
-    this.weapon = itemToUse.name;
-    this.strength = this.strength + itemToUse.potency;
-  }
+Player.prototype.usePotion = function usePotion(){
+  this.potions = this.Potions - 1;
+  this.currentHP = this.currentHP + 8;
 }
 
 
@@ -161,23 +128,26 @@ Enemy.prototype.getStats = function getStats(){
     this.currentHP = 5;
     this.strength = 1;
     this.speed = 1;
+    this.weapon = "fangs";
   } else if (this.type === "Troll") {
     this.maxHP = 15;
     this.currentHP = 15;
     this.strength = 5;
     this.speed = 2;
+    this.weapon = "club";
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
     this.strength = 10;
     this.speed = 4;
+    this.weapon = "firebreath";
   }
 }
 
 Enemy.prototype.enemyTurn = function enemyTurn(){
   var damageTaken = this.strength;
   newPlayer.takeDamage(damageTaken);
-  $("#combat-log").append("<br>" + this.type + " attacked and did " + damageTaken + " damage" + "<br>");
+  $("#combat-log").append("<br>" + this.type + " attacked with their " + this.weapon + "<br>" + newPlayer.name + " took " + damageTaken + " damage" + "<br>");
   $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
   $("#enemy-hp").empty().append(this.type + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
 }
@@ -189,21 +159,6 @@ if (this.currentHP <= 0) {
   this.alive = false;
   }
 }
-
-class Item{
-  constructor(name, type, potency){
-    this.name = name;
-    this.type = type;
-    this.potency = potency
-  }
-}
-
-// Item.prototype.effect = function effect() {
-//   if (this.type === heal) {
-//     return heal
-//   } else if (this.type)
-// }
-
 
 //Helper Functions
 function printFloor(floorObj){
@@ -249,27 +204,13 @@ function combat() {
   $(".combat-UI").show();
   $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP);
   if (newPlayer.job === "wizard") {
-  $("#player-mp").empty().append(" MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
+  $("#player-mp").empty().append("MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
   }
   var newEnemy = new Enemy("Slime");
   newEnemy.getStats()
   $("#combat-log").append("<br>" + newEnemy.type + " attacked!" + "<br>");
   $("#enemy-hp").empty().append("<br>" + newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
   var firstMove = determineTurnOrder(newPlayer.speed, newEnemy.speed);
-  //item test start
-  var potion = new Item("small potion", "heal", 2);
-  var bomb = new Item ("firecracker", "damage", 2);
-  var sword = new Item("longsword", "equip", 3);
-  newPlayer.addItem(potion);
-  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + potion.name + "<br>");
-  newPlayer.addItem(bomb);
-  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + bomb.name + "<br>");
-  newPlayer.addItem(sword);
-  $("#combat-log").append("<br>" + newPlayer.name + " picked up the " + sword.name + "<br>");
-  newPlayer.useItem("longsword");
-  newPlayer.useItem("small potion");
-  newPlayer.useItem("firecracker");
-  //item test end
   if (firstMove === false) {
     newEnemy.enemyTurn();
     checkForDeath(newPlayer.alive, newEnemy.alive);
@@ -294,7 +235,7 @@ function combat() {
         checkForDeath(newPlayer.alive, newEnemy.alive);
       } else if (specialEffect === "fireball") {
         newEnemy.takeDamage(8);
-        $("#combat-log").empty().append("<br>" + newEnemy.type + " took 8 damage from the spell" + "<br>");
+        $("#combat-log").append("<br>" + newEnemy.type + " took 8 damage from the spell" + "<br>");
         checkForDeath(newPlayer.alive, newEnemy.alive);
       } else {
         $("#combat-log").empty().append("<br>" + newPlayer.name + " unleashed a barrage of arrows" + "<br>");
@@ -318,10 +259,15 @@ function combat() {
       }
     });
 
-    $("#items-combat").click(function(event) {
+    $("#potion-combat").click(function(event) {
       event.preventDefault();
-      newPlayer.checkItems();
-      // newPlayer.useItem(itemSelection);
+      if (newPlayer.potions = 0) {
+        $("#combat-log").empty().append("<br>" + newPlayer.name + " has no potions to use" + "<br>");
+        return;
+      } else {
+        newPlayer.usePotion();
+        $("#combat-log").empty().append("<br>" + newPlayer.name + " used a potion and recovered 8 HP" + "<br>");
+      }
       $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
       $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
       newEnemy.enemyTurn();
