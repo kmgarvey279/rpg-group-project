@@ -15,6 +15,22 @@ class Floor{
     this.roomArr = new Array(thisR).fill(0).map(() => new Array(thisC).fill(0));
   }
 }
+Floor.prototype.rowImportant = function rowImportant(myY){
+  for(var i = 0; i < this.row; i++){
+    if(this.roomArr[myY][i].isImport){
+      return true;
+    }
+  }
+  return false;
+}
+Floor.prototype.colImportant = function colImportant(myX){
+  for(var i = 0; i < this.col; i++){
+    if(this.roomArr[i][myX].isImport){
+      return true;
+    }
+  }
+  return false;
+}
 Floor.prototype.constructFloors = function constructFloors(){
   console.log('Populating Floor with Rooms');
   for(var i = 0; i < this.row; i++){
@@ -23,33 +39,19 @@ Floor.prototype.constructFloors = function constructFloors(){
     }
   }
 }
-Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
-  var playerRoom = new Room(playerObj.y, playerObj.x, false);
-  this.roomArr[playerObj.y][playerObj.x] = playerRoom;
-  var bossY = randNum(Math.floor(this.row/2), 0);
-  var bossX = randNum(this.col - 1, Math.floor(this.col/2));
-  var bossRoom = new Room(bossY, bossX, true);
-  this.roomArr[bossY][bossX] = bossRoom;
-  playerRoom.buildPath(bossRoom, this);
-  var bossKeyY = randNum(this.row - 1, 0);
-  var bossKeyX = randNum(this.col -1, 0);
-}
-Floor.prototype.checkArr = function checkArr(posY, posX){
-  var newRoom;
-  if(typeof this.roomArr[posY][posX] != 'object'){
-    newRoom = new Room(posY, posX);
-    return newRoom;
-  }else{
-      return closestEmpty(posY, posX);
-  }
-}
-Floor.prototype.closestEmpty = function closestEmpty(posY, posX){
+Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant){
   var closestRoom;
   var closePosY;
-  var closeposX;
+  var closePosX;
   var distanceFrom = this.row + this.col;
-  for(var i = 0; i < this.row - 1; i++){
-    for(var j = 0; j < this.col - 1; j++){
+  if(typeof this.roomArr[posY][posX] != 'object'){
+    console.log('Room at ' +posY+ ',' +posX+' was already empty');
+    isImportant ? closestRoom = new Room(posY, posX, true) : closestRoom = new Room(posY, posX, false);
+    this.roomArr[posY][posX] = closestRoom;
+    return closestRoom;
+  }
+  for(var i = 0; i < this.row; i++){
+    for(var j = 0; j < this.col; j++){
       if(typeof this.roomArr[i][j] != 'object'){
         if(i >= posY){
           var tempY = i - posY;
@@ -65,7 +67,7 @@ Floor.prototype.closestEmpty = function closestEmpty(posY, posX){
         if(tempDistance < distanceFrom){
           distanceFrom = tempDistance;
           closePosY = i;
-          closeposX = j;
+          closePosX = j;
         }
       }
     }
@@ -74,62 +76,167 @@ Floor.prototype.closestEmpty = function closestEmpty(posY, posX){
     console.log('Array is already FULL, cannot insert');
     return;
   }
-  closestRoom = new Room(closePosY, closeposX, false);
+  console.log('['+posY+','+posX+'] was already taken. Closest empty node found at ['+closePosY+','+closePosX+']');
+  isImportant ? closestRoom = new Room(posY, posX, true) : closestRoom = new Room(posY, posX, false);
+  this.roomArr[closePosY][closePosX] = closestRoom;
+  return closestRoom;
+}
+Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
+  var tempRoom;
+  var playerRoom = new Room(playerObj.y, playerObj.x);
+  this.roomArr[playerObj.y][playerObj.x] = playerRoom;
+  //Boss Room
+  var bossY = randNum(Math.floor(this.row/4), 0);
+  var bossX = randNum(this.col - 1, Math.floor(this.col/2));
+  console.log('bossY is '+bossY);
+  console.log('bossX is '+bossX);
+  var bossRoom = new Room(bossY, bossX, true);
+  this.roomArr[bossY][bossX] = bossRoom;
+  console.log(this.roomArr[bossY][bossX].isImport);
+  playerRoom.buildPath(bossRoom, this);
+  //Boss Key Room
+  var bossKeyY = randNum(this.row - 1, 0);
+  var bossKeyX = randNum(this.col -1, 0);
+  var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, true);
+  tempRoom = this.closestNode(bossKeyRoom.y, bossKeyRoom.x);
+  bossKeyRoom.buildPath(tempRoom, this);
+  //Super weapon Room
+  var weaponRoomY = randNum(this.row - 1, 0);
+  var weaponRoomX = randNum(this.col -1, 0);
+  var weaponRoom = this.closestEmpty(weaponRoomY, weaponRoomX, true);
+  tempRoom = this.closestNode(weaponRoom.y, weaponRoom.x);
+  weaponRoom.buildPath(tempRoom, this);
+  //Super weapon key
+  var weaponKeyY = randNum(this.row - 1, 0);
+  var weaponKeyX = randNum(this.col -1, 0);
+  var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, true);
+  tempRoom = this.closestNode(weaponKeyRoom.y, weaponKeyRoom.x);
+  weaponKeyRoom.buildPath(tempRoom, this);
+}
+
+Floor.prototype.closestNode =  function closestNode(posY, posX){
+  var closestRoom;
+  var closePosY;
+  var closePosX;
+  var distanceFrom = this.row + this.col;
+  for(var i = 0; i < this.row; i++){
+    for(var j = 0; j < this.col; j++){
+      if(i === posY && j === posX){
+        console.log('Skipping entered node');
+        continue;
+      }
+      if(this.roomArr[i][j].isImport){
+        console.log('Key room found, skipping..');
+        continue;
+      }
+      if(typeof this.roomArr[i][j] === 'object'){
+        if(i >= posY){
+          var tempY = i - posY;
+        }else{
+          var tempY = posY - i;
+        }
+        if(j >= posX){
+          var tempX = j - posX;
+        }else{
+          var tempX = posX - j;
+        }
+        console.log('Y distance: '+tempY+' at '+i);
+        console.log('X distance: '+tempX+' at '+j);
+
+
+        var tempDistance = tempY + tempX;
+        console.log('tempDistance is '+tempDistance+' compared to distanceFrom: '+distanceFrom);
+        if(tempDistance < distanceFrom){
+          distanceFrom = tempDistance;
+          closePosY = i;
+          closePosX = j;
+        }
+      }
+    }
+  }
+  if(closePosY === null){
+    console.log('Array is empty, cant find closest');
+    return;
+  }
+  console.log('Closest Node found at '+closePosY+','+closePosX);
+  closestRoom = this.roomArr[closePosY][closePosX];
   return closestRoom;
 }
 
 
 //Room class and its protoypes
 class Room{
-  constructor(posY, posX, isKey){
+  constructor(posY, posX, isImportant){
     this.y = posY;
     this.x = posX;
-    this.keyRoom = isKey;
+    this.isImport = isImportant;
   }
-  beenTraveled = false;
   playerHere = false;
+  beenTraveled = false;
 }
-Room.prototype.findClosest = function findClosest(){
-
+Room.prototype.setImportance = function setImportance(){
+  this.isImport = true;
 }
-Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){
-  var startY;
-  var startX;
-  var smallestY;
-  var shortestX;
-  if(this.y > roomObjNext.y){
-    startY = this.y;
-    smallestY = roomObjNext.y;
+Room.prototype.buildPath = function buildPath(roomObjNext, floorObj){//First unintentional recursive function I have ever written, holy moly
+  var meetingPoint;
+  var smallY;
+  var largeY;
+  var smallX;
+  var largeX;
+  if(this.x < roomObjNext.x){
+    smallX = this.x;
+    largeX = roomObjNext.x;
   }else{
-    startY = roomObjNext.y;
-    smallestY = this.y;
+    smallX = roomObjNext.x;
+    largeX = this.x;
   }
-  if(this.x > roomObjNext.x){
-    startX = this.x;
-    smallestX = roomObjNext.x;
+  if(this.y < roomObjNext.y){
+    smallY = this.y;
+    largeY = roomObjNext.y;
   }else{
-    startX = roomObjNext.x;
-    smallestX = this.x;
+    smallY = roomObjNext.y;
+    largeY = this.y;
   }
-  var myChance = randNum(2, 1);
-  if(myChance === 1){
-    floorObj.roomArr[startY][startX] = new Room(startY, startX);
-    for(var i = smallestY; i < startY; i++){
-      floorObj.roomArr[i][startX] = new Room(i, startX);
+  if(this.x === roomObjNext.x){// x coord is same, but dif y
+    
+    for(var i = smallY + 1; i < largeY; i++){
+      floorObj.roomArr[i][this.x] = new Room(i, this.x);
     }
-    for(var i = smallestX; i < startX; i++){
-      floorObj.roomArr[startY][i] = new Room(startY, i);
-    }
-  }else{
-    floorObj.roomArr[smallestY][smallestX] = new Room(smallestY, smallestX);
-    for(var i = startY - 1; i > smallestY; i--){
-      floorObj.roomArr[i][smallestX] = new Room(i, smallestX);
-    }
-    for(var i = startX - 1; i > smallestX; i--){
-      floorObj.roomArr[smallestY][i] = new Room(smallestY, i);
-    }
+    return;
   }
+  if(this.y === roomObjNext.y){// y coord is same, but dif x
+    for(var i = smallX + 1; i < largeX; i++){
+      floorObj.roomArr[this.y][i] = new Room(this.y, i);
+    }
+    return;
+  }
+  var randCheck = randNum(2,1);
+  console.log('RandCheck is: '+ randCheck);
+  if(randCheck === 1){
 
+    if(floorObj.rowImportant(this.y) || floorObj.colImportant(roomObjNext.x)){
+      console.log('Special Case! Meeting Point will override a key Room!');
+      floorObj.roomArr[roomObjNext.y][this.x] = meetingPoint = new Room(roomObjNext.y, this.x);
+    }else{
+      floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
+    }
+
+    meetingPoint.buildPath(roomObjNext, floorObj);
+    meetingPoint.buildPath(this, floorObj);
+    console.log(meetingPoint);
+    return;
+  }else{
+    if(floorObj.rowImportant(roomObjNext.y) || floorObj.colImportant(this.x)){
+      console.log('Special Case! Meeting Point will override a key Room!');
+      floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
+    }else{
+      floorObj.roomArr[roomObjNext.y][this.x] = meetingPoint = new Room(roomObjNext.y, this.x);
+    }
+    meetingPoint.buildPath(roomObjNext, floorObj);
+    meetingPoint.buildPath(this, floorObj);
+    console.log(meetingPoint);
+    return;
+  }
 }
 
 //Player class and its prototypes
@@ -159,8 +266,12 @@ Player.prototype.moveGrid = function moveGrid(direction, floorObj){
   }
 }
 Player.prototype.moveNorth = function moveNorth(floorObj){
-  if(this.y - 1 < 0){
+  if(this.y - 1 < 0|| typeof floorObj.roomArr[this.y - 1][this.x] != 'object'){
     console.log('The player runs into a wall and does not move');
+    return;
+  }
+  if(floorObj.roomArr[this.y - 1][this.x].isImport){
+    console.log('You need a key to enter this room');
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -171,8 +282,12 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
   printFloor(dungeonOne);
 }
 Player.prototype.moveWest = function moveWest(floorObj){
-  if(this.x - 1 < 0){
+  if(this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object'){
     console.log('The player runs into a wall and does not move');
+    return;
+  }
+  if(floorObj.roomArr[this.y][this.x - 1].isImport){
+    console.log('You need a key to enter this room');
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -183,8 +298,12 @@ Player.prototype.moveWest = function moveWest(floorObj){
   printFloor(dungeonOne);
 }
 Player.prototype.moveSouth = function moveSouth(floorObj){
-  if(this.y + 1 > floorObj.row - 1){
+  if(this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object'){
     console.log('The player runs into a wall and does not move');
+    return;
+  }
+  if(floorObj.roomArr[this.y + 1][this.x].isImport){
+    console.log('You need a key to enter this room');
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -195,8 +314,12 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   printFloor(dungeonOne);
 }
 Player.prototype.moveEast = function moveEast(floorObj){
-  if(this.x + 1 > floorObj.col - 1){
+  if(this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object'){
     console.log('The player runs into a wall and does not move');
+    return;
+  }
+  if(floorObj.roomArr[this.y][this.x + 1].isImport){
+    console.log('You need a key to enter this room');
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
