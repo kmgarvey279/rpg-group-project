@@ -16,7 +16,7 @@ class Floor{
   }
 }
 Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX){
-  for(var i = startingX; i < endX; i++){
+  for(var i = startingX + 1; i <= endX; i++){
     if(this.roomArr[myY][i].isImport){
       return true;
     }
@@ -24,7 +24,7 @@ Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX){
   return false;
 }
 Floor.prototype.colImportant = function colImportant(myX, startingY, endY){
-  for(var i = startingY; i < endY; i++){
+  for(var i = startingY + 1; i <= endY; i++){
     if(this.roomArr[i][myX].isImport){
       return true;
     }
@@ -77,7 +77,7 @@ Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant){
     return;
   }
   console.log('['+posY+','+posX+'] was already taken. Closest empty node found at ['+closePosY+','+closePosX+']');
-  isImportant ? closestRoom = new Room(closePosY, closePosX, true) : closestRoom = new Room(closePosY, closePosY, false);
+  isImportant ? closestRoom = new Room(closePosY, closePosX, true) : closestRoom = new Room(closePosY, closePosX, false);
   this.roomArr[closePosY][closePosX] = closestRoom;
   return closestRoom;
 }
@@ -97,7 +97,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   //Boss Key Room
   var bossKeyY = randNum(this.row - 1, 0);
   var bossKeyX = randNum(this.col -1, 0);
-  var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, false);
+  var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, true);
   this.roomArr[bossKeyRoom.y][bossKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(bossKeyRoom.y, bossKeyRoom.x);
   bossKeyRoom.buildPath(tempRoom, this);
@@ -111,7 +111,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   //Super weapon key
   var weaponKeyY = randNum(this.row - 1, 0);
   var weaponKeyX = randNum(this.col -1, 0);
-  var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, false);
+  var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, true);
   this.roomArr[weaponKeyRoom.y][weaponKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(weaponKeyRoom.y, weaponKeyRoom.x);
   weaponKeyRoom.buildPath(tempRoom, this);
@@ -210,13 +210,13 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
     smallY = roomObjNext.y;
     largeY = this.y;
   }
-  if(this.x === roomObjNext.x){// x coord is same, but dif y
+  if(this.x === roomObjNext.x && !floorObj.colImportant(this.x, smallY, largeY)){// x coord is same, but dif y
     for(var i = smallY + 1; i < largeY; i++){
       floorObj.roomArr[i][this.x] = new Room(i, this.x);
     }
     return;
   }
-  if(this.y === roomObjNext.y){// y coord is same, but dif x
+  if(this.y === roomObjNext.y && !floorObj.rowImportant(this.y, smallX, largeX)){// y coord is same, but dif x
     for(var i = smallX + 1; i < largeX; i++){
       floorObj.roomArr[this.y][i] = new Room(this.y, i);
     }
@@ -233,7 +233,7 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
       if(this.y + 1 < floorObj.row && !floorObj.roomArr[this.y + 1][this.x].isImport){
         tempY = this.y + 1;
         floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
-      }else if(this.y - 1 > 0 && !floorObj.roomArr[this.y - 1][this.x].isImport){
+      }else if(this.y - 1 >= 0 && !floorObj.roomArr[this.y - 1][this.x].isImport){
         tempY = this.y - 1;
         floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
       }
@@ -241,10 +241,10 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
       tempY = this.y;
     }
     if(floorObj.colImportant(roomObjNext.x, smallY, largeY)){
-      if(roomObjNext.x - 1 > 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport){
+      if(roomObjNext.x - 1 >= 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport){
         tempX = roomObjNext.x - 1;
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
-      }else if(roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext + 1][roomObjNext.x+1].isImport){
+      }else if(roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext.y][roomObjNext.x + 1].isImport){
         tempX = roomObjNext.x + 1;
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
       }
