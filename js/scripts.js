@@ -70,6 +70,12 @@ Player.prototype.getStats = function getStats(){
   }
 }
 
+Player.prototype.createLifeBar = function createLifeBar(){
+  let health = document.getElementById("player-health");
+  health.value = this.currentHP
+  health.max = this.maxHP
+}
+
 //Player explore functions
 Player.prototype.moveGrid = function moveGrid(){
 
@@ -95,22 +101,27 @@ Player.prototype.run = function run(){
 
 Player.prototype.takeDamage = function takeDamage(damageTaken){
 this.currentHP = this.currentHP - damageTaken;
+let health = document.getElementById("player-health");
+health.value -= damageTaken;
 if (this.currentHP <= 0) {
   this.alive = false;
   }
 }
 
 //Player item functions
-Player.prototype.addPotion = function addPotion() {
+Player.prototype.addPotion = function addPotion(){
   this.potions = this.potions + 1;
 }
 
 Player.prototype.usePotion = function usePotion(){
-  this.potions = this.Potions - 1;
+  this.potions = this.potions - 1;
   this.currentHP = this.currentHP + 8;
 }
 
-
+Player.prototype.equip = function equip(weaponName, weaponAtk){
+this.weapon = weaponName;
+this.strength = this.strength + weaponAtk;
+}
 
 //Enemy functions
 class Enemy{
@@ -124,8 +135,8 @@ class Enemy{
 
 Enemy.prototype.getStats = function getStats(){
   if (this.type === "Slime") {
-    this.maxHP = 5;
-    this.currentHP = 5;
+    this.maxHP = 99;
+    this.currentHP = 99;
     this.strength = 1;
     this.speed = 1;
     this.weapon = "fangs";
@@ -144,6 +155,12 @@ Enemy.prototype.getStats = function getStats(){
   }
 }
 
+Enemy.prototype.createLifeBar = function createLifeBar(){
+  let health = document.getElementById("enemy-health");
+  health.value = this.currentHP;
+  health.max = this.maxHP;
+}
+
 Enemy.prototype.enemyTurn = function enemyTurn(){
   var damageTaken = this.strength;
   newPlayer.takeDamage(damageTaken);
@@ -154,6 +171,8 @@ Enemy.prototype.enemyTurn = function enemyTurn(){
 
 Enemy.prototype.takeDamage = function takeDamage(damageTaken){
 this.currentHP = this.currentHP - damageTaken;
+let health = document.getElementById("enemy-health");
+health.value -= damageTaken;
 $("#enemy-hp").empty().append(this.type + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
 if (this.currentHP <= 0) {
   this.alive = false;
@@ -203,6 +222,7 @@ function combat() {
   $(".dungeon-UI").hide();
   $(".combat-UI").show();
   $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP);
+  newPlayer.createLifeBar();
   if (newPlayer.job === "wizard") {
   $("#player-mp").empty().append("MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
   }
@@ -210,6 +230,7 @@ function combat() {
   newEnemy.getStats()
   $("#combat-log").append("<br>" + newEnemy.type + " attacked!" + "<br>");
   $("#enemy-hp").empty().append("<br>" + newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
+  newEnemy.createLifeBar();
   var firstMove = determineTurnOrder(newPlayer.speed, newEnemy.speed);
   if (firstMove === false) {
     newEnemy.enemyTurn();
@@ -261,7 +282,8 @@ function combat() {
 
     $("#potion-combat").click(function(event) {
       event.preventDefault();
-      if (newPlayer.potions = 0) {
+      debugger
+      if (newPlayer.potions === 0) {
         $("#combat-log").empty().append("<br>" + newPlayer.name + " has no potions to use" + "<br>");
         return;
       } else {
