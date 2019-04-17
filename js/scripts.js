@@ -473,19 +473,23 @@ Player.prototype.moveEast = function moveEast(floorObj){
 
 Player.prototype.getStats = function getStats(){
   if (this.job === "warrior") {
+    $("#character-avatar").append('<img src="img/heros/warrior.png" weight="400px" height="400px" />');
     this.maxHP = 20;
     this.currentHP = 20;
     this.maxMP = 10;
     this.currentMP = 10;
-    this.strength = 4;
+    this.strength = 5;
     this.speed = 3;
     this.weapon = "rusted sword";
     this.specialName = "Guard";
     this.special = function special() {
+      this.currentMP = this.currentMP - 3;
+      $("#player-mp").empty().append("<br>" + "MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
       $("#combat-log").append(this.name + " defended against the enemy " + "<br>");
       return "defend";
     };
   } else if (this.job === "wizard"){
+    $("#character-avatar").append('<img src="img/heros/wizard.png" weight="400px" height="400px" />');
     this.maxHP = 10;
     this.currentHP = 10;
     this.maxMP = 10;
@@ -562,7 +566,14 @@ Player.prototype.addPotion = function addPotion(){
 
 Player.prototype.usePotion = function usePotion(){
   this.potions = this.potions - 1;
+  if ((this.maxHP - this.currentHP) < 8){
+    this.currentHP = this.maxHP
+  } else {
   this.currentHP = this.currentHP + 8;
+  }
+  let health = document.getElementById("player-health");
+  health.value += 8;
+  alert(health.value);
 }
 
 Player.prototype.equip = function equip(weaponName, weaponAtk){

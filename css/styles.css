@@ -68,10 +68,6 @@ h1{
   color: darkred;
 }
 
-button {
-  background-color: darkorange;
-}
-
 .panel-body {
   background-color: orange;
   border: 2px solid darkorange;
