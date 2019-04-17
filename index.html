@@ -1,11 +1,113 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
   <head>
-    <meta charset="utf-8">
     <title>dungeonMap</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
   </head>
   <body>
+
+    <div class="landing-UI">
+      <img id="landing-dungeon-entrance" src="img/dungeon.jpg" alt="image of dungeon mouth">
+        <div id="landing-title">
+          <h1>Drakania</h1>
+        </div>
+        <p id = "first">Eons ago, the vicious Dragon <em>Drakania</em> fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the fight she slithered back to her underground lair where her numberless brood awaited her return. </p>
+        <br>
+        <p>In the thousands years since that battle, no one who has entered her dungeon has ever returned...</p>
+        <button id = "start-button" type="button" name="button">Start Game</button>
+    </div>
+
+        <div class = "character-select">
+          <div id = "character-img" class="row">
+            <div class="col col-md-4">
+              <img class="character-image"src="img/heros/archer.png" alt="Image of archer avatar" value="Archer" >
+              <!-- <input type="radio" value="rogue" id="rogue-avatar"/>
+              <label for="rogue-avatar"></label> -->
+            </div>
+
+            <div class="col col-md-4">
+              <img class="character-image" src="img/heros/wizard.PNg" alt="Image of wizard avatar" value="Wizard" >
+              <!-- <input type="radio" value="wizard" id="wizard-avatar"/>
+              <label for="wizard-avatar"></label> -->
+            </div>
+
+            <div class="col col-md-4">
+              <img class="character-image"src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior" >
+              <!-- <input type="radio" value="warrior" id="warrior-avatar"/>
+              <label for="warrior-avatar"></label> -->
+            </div>
+          </div>
+        </div>
+
+          <div id = "character-info">
+            <div id = "archer-info" class="panel">
+              <p>From the drunken backwaters of Lake Mirgolu, Arrowendl the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
+              <ul>
+                <li><strong>Name: Arrowendl</strong></li>
+                <li>Class: Archer</li>
+                <li>Hit Points: </li>
+                <li>Strength: </li>
+                <li>Speed: </li>
+              </ul>
+            </div>
+
+            <div id = "wizard-info" class="panel">
+              <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, </p>
+              <ul>
+                <li><strong>Name: Bryony</strong></li>
+                <li>Class: Wizard</li>
+                <li>Hit Points: </li>
+                <li>Strength: </li>
+                <li>Speed: </li>
+              </ul>
+            </div>
+
+            <div id = "warrior-info" class="panel">
+              <p>From the proud Isle of Stonegol, Tyroh the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
+              <ul>
+                <li><strong>Name: Tyroh</strong></li>
+                <li>Class: Warrior</li>
+                <li>Hit Points: </li>
+                <li>Strength: </li>
+                <li>Speed: </li>
+              </ul>
+            </div>
+        </div>
+
+
+        <div class="start-UI">
+          <form id="create-character">
+            <div class="form-group">
+        <div class="form-group">
+          <label for="character-name">Name:</label>
+          <input type="text" class="form-control" id="character-name">
+        </div>
+        <button type="button" id="start-game">Enter Drakania's Dungeon</button>
+      </form>
+    </div>
+  </div>
+
+    <div class="dungeon-UI">
+        <button type="button" id="attack">Attack</button>
+        <button type="button" id="items">Open</button>
+        <button type="button" id="">Pick Up</button>
+        <button type="button" id="">Move</button>
+        <button type="button" id="">Items</button>
+      </div>
+
+      <div class="combat-UI">
+          <span id="player-hp"></span>
+          <span id="player-mp"></span>
+          <span id="enemy-hp"></span>
+          <button type="button" id="attack-combat">Attack</button>
+          <button type="button" id="special-combat"><span id="special-name"></span></button>
+          <button type="button" id="items-combat">Items</button>
+          <button type="button" id="run-combat">Run</button>
+          <span id="combat-log"></span>
+        </div>
 
   </body>
 </html>
