@@ -84,8 +84,15 @@ button {
 }
 
 #combat-panel {
+  color: black;
   background-color: white;
   width: 285px;
   height: 200px;
   overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.jumbotron {
+  background-image: url("../img/dungeon2.jpg");
 }

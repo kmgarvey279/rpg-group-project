@@ -35,6 +35,8 @@ Player.prototype.getStats = function getStats(){
   if (this.job === "warrior") {
     this.maxHP = 20;
     this.currentHP = 20;
+    this.maxMP = 10;
+    this.currentMP = 10;
     this.strength = 4;
     this.speed = 3;
     this.weapon = "rusted sword";
@@ -61,6 +63,8 @@ Player.prototype.getStats = function getStats(){
   } else if (this.job === "archer"){
     this.maxHP = 15;
     this.currentHP = 15;
+    this.maxMP = 10;
+    this.currentMP = 10;
     this.strength = 3;
     this.speed = 5;
     this.weapon = "worn bow";
@@ -74,6 +78,9 @@ Player.prototype.createLifeBar = function createLifeBar(){
   let health = document.getElementById("player-health");
   health.value = this.currentHP
   health.max = this.maxHP
+  let magic = document.getElementById("player-magic");
+  magic.value = this.currentMP
+  magic.max = this.maxMP
 }
 
 //Player explore functions
@@ -134,24 +141,34 @@ class Enemy{
 }
 
 Enemy.prototype.getStats = function getStats(){
-  if (this.type === "Slime") {
-    this.maxHP = 99;
-    this.currentHP = 99;
+  if (this.type === "Imp") {
+    this.maxHP = 6;
+    this.currentHP = 6;
     this.strength = 1;
     this.speed = 1;
     this.weapon = "fangs";
-  } else if (this.type === "Troll") {
+    $("#enemy-image").append('<img src="img/enemies/imp.png" weight="400px" height="400px" />');
+  } else if (this.type === "Golem") {
     this.maxHP = 15;
     this.currentHP = 15;
-    this.strength = 5;
+    this.strength = 4;
     this.speed = 2;
     this.weapon = "club";
+    $("#enemy-image").append('<img src="img/enemies/undead.png" weight="400px" height="400px" />');
+  } else if (this.type === "Undead") {
+    this.maxHP = 10;
+    this.currentHP = 10;
+    this.strength = 4;
+    this.speed = 10;
+    this.weapon = "dark aura";
+    $("#enemy-image").append('<img src="img/enemies/golem.png" weight="400px" height="400px" />');
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
     this.strength = 10;
     this.speed = 4;
     this.weapon = "firebreath";
+    $("#enemy-image").append('<img src="img/enemies/dragon3png.png" weight="400px" height="400px" />');
   }
 }
 
@@ -165,7 +182,7 @@ Enemy.prototype.enemyTurn = function enemyTurn(){
   var damageTaken = this.strength;
   newPlayer.takeDamage(damageTaken);
   $("#combat-log").append("<br>" + this.type + " attacked with their " + this.weapon + "<br>" + newPlayer.name + " took " + damageTaken + " damage" + "<br>");
-  $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
+  $("#player-hp").empty().append("<br>" + newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
   $("#enemy-hp").empty().append(this.type + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
 }
 
@@ -221,12 +238,10 @@ function checkForDeath(playerStatus, enemyStatus) {
 function combat() {
   $(".dungeon-UI").hide();
   $(".combat-UI").show();
-  $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP);
+  $("#player-hp").empty().append("<br>" + newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP);
   newPlayer.createLifeBar();
-  if (newPlayer.job === "wizard") {
   $("#player-mp").empty().append("MP:" + newPlayer.currentMP + "/" + newPlayer.maxMP + "<br>");
-  }
-  var newEnemy = new Enemy("Slime");
+  var newEnemy = new Enemy("Imp");
   newEnemy.getStats()
   $("#combat-log").append("<br>" + newEnemy.type + " attacked!" + "<br>");
   $("#enemy-hp").empty().append("<br>" + newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
@@ -240,7 +255,7 @@ function combat() {
       event.preventDefault();
       var damageDone = newPlayer.fight();
       newEnemy.takeDamage(damageDone);
-      $("#combat-log").empty().append("<br>" + newPlayer.name + " attacked with their " + newPlayer.weapon + "<br>" + newEnemy.type + " took " + damageDone + " damage " + "<br>");
+      $("#combat-log").append("<br>" + newPlayer.name + " attacked with their " + newPlayer.weapon + "<br>" + newEnemy.type + " took " + damageDone + " damage " + "<br>");
       checkForDeath(newPlayer.alive, newEnemy.alive);
       if (newEnemy.alive === true) {
         newEnemy.enemyTurn();
@@ -252,14 +267,14 @@ function combat() {
       event.preventDefault();
       var specialEffect = newPlayer.special();
       if (specialEffect === "defend") {
-        $("#combat-log").empty().append("<br>" + newEnemy.type + "'s attack had no effect on " + newPlayer.name + "<br>");
+        $("#combat-log").append("<br>" + newEnemy.type + "'s attack had no effect on " + newPlayer.name + "<br>");
         checkForDeath(newPlayer.alive, newEnemy.alive);
       } else if (specialEffect === "fireball") {
         newEnemy.takeDamage(8);
         $("#combat-log").append("<br>" + newEnemy.type + " took 8 damage from the spell" + "<br>");
         checkForDeath(newPlayer.alive, newEnemy.alive);
       } else {
-        $("#combat-log").empty().append("<br>" + newPlayer.name + " unleashed a barrage of arrows" + "<br>");
+        $("#combat-log").append("<br>" + newPlayer.name + " unleashed a barrage of arrows" + "<br>");
         for (var i = 0; i < 5; i++) {
           var shot = Math.floor((Math.random() * 5 ) + 1);
           if (newEnemy.alive === true) {
@@ -284,14 +299,14 @@ function combat() {
       event.preventDefault();
       debugger
       if (newPlayer.potions === 0) {
-        $("#combat-log").empty().append("<br>" + newPlayer.name + " has no potions to use" + "<br>");
+        $("#combat-log").append("<br>" + newPlayer.name + " has no potions to use" + "<br>");
         return;
       } else {
         newPlayer.usePotion();
-        $("#combat-log").empty().append("<br>" + newPlayer.name + " used a potion and recovered 8 HP" + "<br>");
+        $("#combat-log").append("<br>" + newPlayer.name + " used a potion and recovered 8 HP" + "<br>");
       }
-      $("#player-hp").empty().append(newPlayer.name + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
-      $("#enemy-hp").empty().append(newEnemy.type + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
+      $("#player-hp").empty().append("<br>" + newPlayer.name + "<br>" + " HP:" + newPlayer.currentHP + "/" + newPlayer.maxHP + "<br>");
+      $("#enemy-hp").empty().append(newEnemy.type + "<br>" + " HP:" + newEnemy.currentHP + "/" + newEnemy.maxHP + "<br>");
       newEnemy.enemyTurn();
       checkForDeath(newPlayer.alive, newEnemy.alive);
     });
@@ -300,10 +315,10 @@ function combat() {
       event.preventDefault();
       var success = newPlayer.run();
       if (success === true) {
-        $("#combat-log").empty().append("<br>" + newPlayer.name + " successfully ran away" + "<br>");
+        $("#combat-log").append("<br>" + newPlayer.name + " successfully ran away" + "<br>");
         //switch to dungeon phase
       } else {
-        $("#combat-log").empty().append("<br>" + newPlayer.name + " failed to run away" + "<br>");
+        $("#combat-log").append("<br>" + newPlayer.name + " failed to run away" + "<br>");
         newEnemy.enemyTurn();
         checkForDeath(newPlayer.alive, newEnemy.alive);
       }
@@ -333,16 +348,19 @@ $(document).ready(function() {
     var myImg = $(this).attr('value');
     // console.log('You clicked on: '+myImg);
     if (myImg == "Archer") {
+      newPlayer.job = "archer";
       $("#wizard-info").hide()
       $("#warrior-info").hide()
       $("#archer-info").fadeIn()
       $(".start-UI").show();
     } if (myImg == "Wizard") {
+      newPlayer.job = "wizard";
       $("#archer-info").hide()
       $("#warrior-info").hide()
       $("#wizard-info").fadeIn()
       $(".start-UI").show();
     } if (myImg == "Warrior") {
+      newPlayer.job = "warrior";
       $("#archer-info").hide()
       $("#wizard-info").hide()
       $("#warrior-info").fadeIn()
@@ -360,11 +378,11 @@ $(document).ready(function() {
     $("#start-game").hide();
     $("#select-character").hide();
     $("#back").hide();
+    $("#character-img").hide();
 
 
-    $(".dungeon-UI").show();
+    $("#character-avatar").append('<img src="img/heros/archer2.png" weight="400px" height="400px" />');
     newPlayer.name = $("#character-name").val();
-    newPlayer.job = $("#character-job").val();
     newPlayer.getStats();
     $("#special-name").append(newPlayer.specialName);
     combat();

@@ -27,7 +27,7 @@
             </div>
 
             <div class="col col-md-4">
-              <img class="character-image" src="img/heros/wizard.PNg" alt="Image of wizard avatar" value = "Wizard" >
+              <img class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value = "Wizard" >
             </div>
 
             <div class="col col-md-4">
@@ -93,13 +93,20 @@
       </div>
 
       <div class="combat-UI">
+        <div class="jumbotron">
+        <span id="character-avatar"></span>
+        <span id="enemy-image"></span>
+        </div>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
               <div class="col-md-4">
+                <h6><span id="player-name-display"></span></h6>
                 <h6><span id="player-hp"></span></h6>
                 <progress id="player-health" value="100" max="100"></progress>
-                <span id="player-mp"></span>
+                <h6><span id="player-mp"></span></h6>
+                <progress id="player-magic" value="100" max="100"></progress>
+                <h6><span id="enemy-name-display"></span></h6>
                 <h6><span id="enemy-hp"></span></h6>
                 <progress id="enemy-health" value="100" max="100"></progress>
               </div>
