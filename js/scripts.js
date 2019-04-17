@@ -1,4 +1,4 @@
-//Key class, which holds our desired User-Inputs
+//which holds our desired User-Inputs
 class Keys{
   up = 'ArrowUp';
   down = 'ArrowDown';
@@ -372,11 +372,21 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
 
 //Player class and its prototypes
 class Player{
-  constructor(startPosY, startPosX){
+
+  constructor(startPosY, startPosX, name, job){
+    //Player Attributes
+    this.name = name;
+    this.job = job;
+    this.currentHP;
+    this.alive = true;
+    //Player Inventory
+    this.potions = 1;
+    //Player Position
     this.y = startPosY;
     this.x = startPosX;
   }
 }
+
 Player.prototype.initPlayerPos = function initPlayerPos(floorObj){
   floorObj.roomArr[this.y][this.x].playerHere = true;
 }
@@ -460,6 +470,172 @@ Player.prototype.moveEast = function moveEast(floorObj){
   console.log('The player walked into the east room');
   printFloor(dungeonOne);
 }
+
+Player.prototype.getStats = function getStats(){
+  if (this.job === "warrior") {
+    this.maxHP = 20;
+    this.currentHP = 20;
+    this.maxMP = 10;
+    this.currentMP = 10;
+    this.strength = 4;
+    this.speed = 3;
+    this.weapon = "rusted sword";
+    this.specialName = "Guard";
+    this.special = function special() {
+      $("#combat-log").append(this.name + " defended against the enemy " + "<br>");
+      return "defend";
+    };
+  } else if (this.job === "wizard"){
+    this.maxHP = 10;
+    this.currentHP = 10;
+    this.maxMP = 10;
+    this.currentMP = 10;
+    this.strength = 2;
+    this.speed = 4;
+    this.weapon = "wooden staff";
+    this.specialName = "Cast";
+    this.special = function special() {
+      $("#combat-log").append(this.name + " casts fireball" + "<br>");
+      this.currentMP = this.currentMP - 3;
+      $("#player-mp").empty().append(this.name + " MP:" + this.currentMP + "/" + this.maxMP + "<br>");
+      return "fireball";
+    };
+  } else if (this.job === "archer"){
+    this.maxHP = 15;
+    this.currentHP = 15;
+    this.maxMP = 10;
+    this.currentMP = 10;
+    this.strength = 3;
+    this.speed = 5;
+    this.weapon = "worn bow";
+    this.specialName = "Barrage";
+    this.special = function special() {
+    };
+  }
+}
+
+Player.prototype.createLifeBar = function createLifeBar(){
+  let health = document.getElementById("player-health");
+  health.value = this.currentHP
+  health.max = this.maxHP
+  let magic = document.getElementById("player-magic");
+  magic.value = this.currentMP
+  magic.max = this.maxMP
+}
+
+//Player explore functions
+Player.prototype.moveGrid = function moveGrid(){
+
+}
+
+Player.prototype.checkGrid = function checkGrid(){
+
+}
+
+//Player combat functions
+Player.prototype.fight = function fight(){
+  return this.strength;
+}
+
+Player.prototype.run = function run(){
+  var escapeRoll = this.speed + Math.floor((Math.random() * 5 ) + 1);
+  if (escapeRoll >= 8) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Player.prototype.takeDamage = function takeDamage(damageTaken){
+this.currentHP = this.currentHP - damageTaken;
+let health = document.getElementById("player-health");
+health.value -= damageTaken;
+if (this.currentHP <= 0) {
+  this.alive = false;
+  }
+}
+
+//Player item functions
+Player.prototype.addPotion = function addPotion(){
+  this.potions = this.potions + 1;
+}
+
+Player.prototype.usePotion = function usePotion(){
+  this.potions = this.potions - 1;
+  this.currentHP = this.currentHP + 8;
+}
+
+Player.prototype.equip = function equip(weaponName, weaponAtk){
+this.weapon = weaponName;
+this.strength = this.strength + weaponAtk;
+}
+
+//Enemy functions
+class Enemy{
+  constructor(type, positionX, positionY){
+  this.type = type;
+  this.alive = true;
+  this.x = positionX;
+  this.y = positionY;
+  }
+}
+
+Enemy.prototype.getStats = function getStats(){
+  if (this.type === "Imp") {
+    this.maxHP = 6;
+    this.currentHP = 6;
+    this.strength = 1;
+    this.speed = 1;
+    this.weapon = "fangs";
+    $("#enemy-image").append('<img src="img/enemies/imp.png" weight="400px" height="400px" />');
+  } else if (this.type === "Golem") {
+    this.maxHP = 15;
+    this.currentHP = 15;
+    this.strength = 4;
+    this.speed = 2;
+    this.weapon = "club";
+    $("#enemy-image").append('<img src="img/enemies/undead.png" weight="400px" height="400px" />');
+  } else if (this.type === "Undead") {
+    this.maxHP = 10;
+    this.currentHP = 10;
+    this.strength = 4;
+    this.speed = 10;
+    this.weapon = "dark aura";
+    $("#enemy-image").append('<img src="img/enemies/golem.png" weight="400px" height="400px" />');
+  } else if (this.type === "Dragon") {
+    this.maxHP = 20;
+    this.currentHP = 20;
+    this.strength = 10;
+    this.speed = 4;
+    this.weapon = "firebreath";
+    $("#enemy-image").append('<img src="img/enemies/dragon3png.png" weight="400px" height="400px" />');
+  }
+}
+
+Enemy.prototype.createLifeBar = function createLifeBar(){
+  let health = document.getElementById("enemy-health");
+  health.value = this.currentHP;
+  health.max = this.maxHP;
+}
+
+Enemy.prototype.enemyTurn = function enemyTurn(){
+  var damageTaken = this.strength;
+  this.takeDamage(damageTaken);
+  $("#combat-log").append("<br>" + this.type + " attacked with their " + this.weapon + "<br>" + this.name + " took " + damageTaken + " damage" + "<br>");
+  $("#player-hp").empty().append("<br>" + this.name + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
+  $("#enemy-hp").empty().append(this.type + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
+}
+
+Enemy.prototype.takeDamage = function takeDamage(damageTaken){
+this.currentHP = this.currentHP - damageTaken;
+let health = document.getElementById("enemy-health");
+health.value -= damageTaken;
+$("#enemy-hp").empty().append(this.type + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
+if (this.currentHP <= 0) {
+  this.alive = false;
+  }
+}
+
 //Helper Functions
 function printFloor(floorObj){
   console.log('Printing out our floor Layout');
@@ -508,25 +684,205 @@ function keyPressReady(inputObj){
 function randNum(max, min){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+function determineTurnOrder(playerSpeed, enemySpeed) {
+  if (playerSpeed >= enemySpeed) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function checkForDeath(playerStatus, enemyStatus, playerObj) {
+  if (playerStatus === false) {
+    $("#combat-log").append("<br>" + playerObj.name + " was defeated" + "<br>" + "<strong><span id='death'>YOU DIED</span></strong>");
+  } else if (enemyStatus === false) {
+    $("#combat-log").append("<br>" + playerObj.name + " defeats the enemy" + "<br>" + "<strong>You won!</strong>");
+    function exitCombat() {
+      $(".combat-UI").hide();
+    }
+    setTimeout(exitCombat, 4000);
+  }
+}
+
+
+function combatBegin(playerObj, enemyObj){
+  $(".dungeon-UI").hide();
+  $(".combat-UI").show();
+  $("#player-hp").empty().append("<br>" + playerObj.name + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP);
+  playerObj.createLifeBar();
+  $("#player-mp").empty().append("MP:" + playerObj.currentMP + "/" + playerObj.maxMP + "<br>");
+  enemyObj.getStats()
+  $("#combat-log").append("<br>" + enemyObj.type + " attacked!" + "<br>");
+  currEnemy = enemyObj;
+  $("#enemy-hp").empty().append("<br>" + enemyObj.type + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
+  enemyObj.createLifeBar();
+  var firstMove = determineTurnOrder(playerObj.speed, enemyObj.speed);
+  if (firstMove === false) {
+    enemyObj.enemyTurn();
+    checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+  }
+}
+function combatAttack(playerObj, enemyObj, isSpecial){
+  if(!isSpecial){
+    var damageDone = playerObj.fight();
+    enemyObj.takeDamage(damageDone);
+    $("#combat-log").append("<br>" + playerObj.name + " attacked with their " + playerObj.weapon + "<br>" + enemyObj.type + " took " + damageDone + " damage " + "<br>");
+    checkForDeath(playerObj.alive, enemyObj.alive);
+    if (enemyObj.alive === true) {
+      enemyObj.enemyTurn();
+      checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+    }
+  }else{
+    var specialEffect = playerObj.special();
+    if (specialEffect === "defend") {
+      $("#combat-log").append("<br>" + enemyObj.type + "'s attack had no effect on " + playerObj.name + "<br>");
+      checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+    } else if (specialEffect === "fireball") {
+      enemyObj.takeDamage(8);
+      $("#combat-log").append("<br>" + enemyObj.type + " took 8 damage from the spell" + "<br>");
+      checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+    } else {
+      $("#combat-log").append("<br>" + playerObj.name + " unleashed a barrage of arrows" + "<br>");
+      for (var i = 0; i < 5; i++) {
+        var shot = Math.floor((Math.random() * 5 ) + 1);
+        if (enemyObj.alive === true) {
+          if (shot > 4) {
+            $("#combat-log").append("<br>" + playerObj.name + "'s attack missed" + "<br>");
+            break;
+          } else {
+            $("#combat-log").append("<br>" + enemyObj.type + " took " + shot + "damage" + "<br>");
+            enemyObj.takeDamage(shot);
+              checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+          }
+        }
+      }
+      if (enemyObj.alive === true) {
+        enemyObj.enemyTurn();
+        checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+      }
+    }
+  }
+}
+function combatHeal(playerObj, enemyObj){
+  if (playerObj.potions === 0) {
+    $("#combat-log").append("<br>" + playerObj.name + " has no potions to use" + "<br>");
+    return;
+  } else {
+    playerObj.usePotion();
+    $("#combat-log").append("<br>" + playerObj.name + " used a potion and recovered 8 HP" + "<br>");
+  }
+  $("#player-hp").empty().append("<br>" + playerObj.name + "<br>" + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP + "<br>");
+  $("#enemy-hp").empty().append(enemyObj.type + "<br>" + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
+  enemyObj.enemyTurn();
+  checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+}
+function escapeCombat(playerObj, enemyObj){
+  var success = playerObj.run();
+  if (success === true) {
+    $("#combat-log").append("<br>" + playerObj.name + " successfully ran away" + "<br>");
+      //switch to dungeon phase
+  } else {
+    $("#combat-log").append("<br>" + playerObj.name + " failed to run away" + "<br>");
+    enemyObj.enemyTurn();
+    checkForDeath(playerObj.alive, enemyObj.alive, playerOne);
+  }
+}
 //globals
-const myInputs = new Keys(); //Init which Keys are detected
+let myInputs = new Keys(); //Init which Keys are detected
 let dungeonOne = new Floor(8, 8);// 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
+let enemyImp = new Enemy("Imp");
+let enemyGolem = new Enemy("Golem");
+let enemyUndead = new Enemy("Undead");
+let enemyDragon = new Enemy("Dragon");
+let currEnemy;
 dungeonOne.generateKeyRooms(playerOne);
 console.log(dungeonOne.roomArr);
 playerOne.initPlayerPos(dungeonOne);
 printFloor(dungeonOne);
 
-//Front End Logic
-$(document).ready(function(){
+//User input logic
+$(document).ready(function() {
+  $("#character-img").hide();
+  $("#archer-info").hide();
+  $("#wizard-info").hide();
+  $("#warrior-info").hide();
+
   $('.clickable').click(function(){
     var value = $(this).html();
     console.log(value);
     playerOne.moveGrid(value, dungeonOne);
   });
-});
 
+  $("#start-button").click(function(){
+    $(".landing-UI").hide();
+    $("#character-img").show();
+  });
+
+  $('.character-image').click(function(){
+    var myImg = $(this).attr('value');
+    // console.log('You clicked on: '+myImg);
+    if (myImg == "Archer") {
+      playerOne.job = "archer";
+      $("#wizard-info").hide()
+      $("#warrior-info").hide()
+      $("#archer-info").fadeIn()
+      $(".start-UI").show();
+    } if (myImg == "Wizard") {
+      playerOne.job = "wizard";
+      $("#archer-info").hide()
+      $("#warrior-info").hide()
+      $("#wizard-info").fadeIn()
+      $(".start-UI").show();
+    } if (myImg == "Warrior") {
+      playerOne.job = "warrior";
+      $("#archer-info").hide()
+      $("#wizard-info").hide()
+      $("#warrior-info").fadeIn()
+      $(".start-UI").show();
+    }
+  });
+
+  $("#start-game").click(function(event) {
+    event.preventDefault();
+    $(".start-UI").hide();
+    $("#archer-info").hide();
+    $("#wizard-info").hide();
+    $("#warrior-info").hide();
+    $("#character-name").hide();
+    $("#start-game").hide();
+    $("#select-character").hide();
+    $("#back").hide();
+    $("#character-img").hide();
+    $("#character-avatar").append('<img src="img/heros/archer2.png" weight="400px" height="400px" />');
+    playerOne.name = $("#character-name").val();
+    playerOne.getStats();
+    $("#special-name").append(playerOne.specialName);
+    combatBegin(playerOne, enemyImp);
+  });
+  $("#attack-combat").click(function(event) {
+    event.preventDefault();
+    combatAttack(playerOne, currEnemy, false);
+  });
+
+  $("#special-combat").click(function(event) {
+    event.preventDefault();
+    combatAttack(playerOne, currEnemy, true);
+  });
+
+  $("#potion-combat").click(function(event) {
+    event.preventDefault();
+    combatHeal(playerOne, currEnemy);
+
+  });
+
+  $("#run-combat").click(function(event) {
+    event.preventDefault();
+    escapeCombat(playerOne, currEnemy);
+  });
+});
 //Game Loop
 function draw(){
   requestAnimationFrame(draw);
@@ -556,6 +912,5 @@ function draw(){
       }
     }
   });
-
 }
 draw();
