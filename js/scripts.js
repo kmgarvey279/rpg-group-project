@@ -535,15 +535,6 @@ Player.prototype.createLifeBar = function createLifeBar(){
   magic.max = this.maxMP
 }
 
-//Player explore functions
-Player.prototype.moveGrid = function moveGrid(){
-
-}
-
-Player.prototype.checkGrid = function checkGrid(){
-
-}
-
 //Player combat functions
 Player.prototype.fight = function fight(){
   return this.strength;
