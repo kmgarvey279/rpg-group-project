@@ -66,7 +66,7 @@
                 <li>Hit Points: 20</li>
                 <li>Strength: 5</li>
                 <li>Speed: 3</li>
-                <li>Special: Guard - prevent damage for one turn</li>
+                <li>Special: Guard - increase defense</li>
               </ul>
             </div>
         </div>
@@ -85,11 +85,10 @@
   </div>
 
     <div class="dungeon-UI">
-        <button type="button" id="attack">Attack</button>
-        <button type="button" id="items">Open</button>
-        <button type="button" id="pick-up">Pick Up</button>
-        <button type="button" id="move">Move</button>
-        <button type="button" id="inventory">Inventory</button>
+        <button type="button" class="clickable" id="northButton">North</button>
+        <button type="button" class="clickable" id="westButton">West</button>
+        <button type="button" class="clickable" id="southButton">South</button>
+        <button type="button" class="clickable" id="eastButton">East</button>
       </div>
 
       <div class="combat-UI">
@@ -100,21 +99,23 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <h6><span id="player-name-display"></span></h6>
                 <h6><span id="player-hp"></span></h6>
                 <progress id="player-health" value="100" max="100"></progress>
                 <h6><span id="player-mp"></span></h6>
                 <progress id="player-magic" value="100" max="100"></progress>
+              </div>
+              <div class="col-md-2">
                 <h6><span id="enemy-name-display"></span></h6>
                 <h6><span id="enemy-hp"></span></h6>
                 <progress id="enemy-health" value="100" max="100"></progress>
               </div>
               <div class="col-md-4">
-                <button type="button" class="btn btn-primary btn-lg" id="attack-combat">Attack</button>
-                <button type="button" class="btn btn-primary btn-lg" id="special-combat"><span id="special-name"></span></button>
-                <button type="button" class="btn btn-primary btn-lg" id="potion-combat">Use Potion</button>
-                <button type="button" class="btn btn-primary btn-lg" id="run-combat">Run</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="attack-combat">Attack</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="special-combat"><span id="special-name"></span></button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="potion-combat">Use Potion</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="run-combat">Run</button>
               </div>
               <div class="col-md-4">
                 <div class="panel-body" id="combat-panel">
@@ -128,11 +129,6 @@
           </div>
         </div>
       </div>
-
-      <button type="button" class="clickable" id="northButton">North</button>
-      <button type="button" class="clickable" id="westButton">West</button>
-      <button type="button" class="clickable" id="southButton">South</button>
-      <button type="button" class="clickable" id="eastButton">East</button>
   </body>
 
 </html>

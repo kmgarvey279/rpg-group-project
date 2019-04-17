@@ -69,8 +69,8 @@ h1{
 }
 
 .panel-body {
-  background-color: orange;
-  border: 2px solid darkorange;
+  background-color: grey;
+  border: 4px solid darkgray;
   padding: 10px;
 }
 
@@ -81,14 +81,30 @@ h1{
 
 #combat-panel {
   color: black;
-  background-color: white;
-  width: 285px;
-  height: 200px;
+  background-color: lightgray;
+  width: 400px;
+  height: 217px;
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
 }
 
 .jumbotron {
-  background-image: url("../img/dungeon2.jpg");
+  background-image: url("../img/DRDungeon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 4px solid darkgray;
+}
+
+#player-name-display {
+  font-weight: bold;
+}
+
+#enemy-name-display {
+  font-weight: bold;
+}
+
+#enemy-image {
+  float:right;
 }
