@@ -15,18 +15,66 @@ class Floor{
     this.roomArr = new Array(thisR).fill(0).map(() => new Array(thisC).fill(0));
   }
 }
-Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX){
-  for(var i = startingX + 1; i <= endX; i++){
-    if(this.roomArr[myY][i].isImport){
-      return true;
+Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX, isRecursive){
+  if(startingX > endX){
+    if(startingX - endX === 1 && !isRecursive){
+      console.log('rowImportant Special case where dist is 1');
+      if(this.roomArr[myY][startingX - 1].isImport){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    for(var i = startingX - 1; i > endX; i--){
+      if(this.roomArr[myY][i].isImport){
+        return true;
+      }
+    }
+  }else{
+    if(endX - startingX === 1 && !isRecursive){
+      console.log('rowImportant Special case where dist is 1');
+      if(this.roomArr[myY][startingX + 1].isImport){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    for(var i = startingX + 1; i < endX; i++){
+      if(this.roomArr[myY][i].isImport){
+        return true;
+      }
     }
   }
   return false;
 }
-Floor.prototype.colImportant = function colImportant(myX, startingY, endY){
-  for(var i = startingY + 1; i <= endY; i++){
-    if(this.roomArr[i][myX].isImport){
-      return true;
+Floor.prototype.colImportant = function colImportant(myX, startingY, endY, isRecursive){
+  if(startingY > endY){
+    if(startingY - endY === 1 && !isRecursive){
+      console.log('colImportant Special case where dist is 1');
+      if(this.roomArr[startingY - 1][myX].isImport){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    for(var i = startingY - 1; i > endY; i--){
+      if(this.roomArr[i][myX].isImport){
+        return true;
+      }
+    }
+  }else{
+    if(endY - startingY === 1 && !isRecursive){
+      console.log('colImportant Special case where dist is 1');
+      if(this.roomArr[startingY + 1][myX].isImport){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    for(var i = startingY + 1; i < endY; i++){
+      if(this.roomArr[i][myX].isImport){
+        return true;
+      }
     }
   }
   return false;
@@ -94,6 +142,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   this.roomArr[bossY][bossX] = bossRoom;
   this.roomArr[bossY][bossX].containsBoss = true;
   playerRoom.buildPath(bossRoom, this, true);
+  printFloor(dungeonOne);
   //Boss Key Room
   var bossKeyY = randNum(this.row - 1, 0);
   var bossKeyX = randNum(this.col -1, 0);
@@ -101,6 +150,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   this.roomArr[bossKeyRoom.y][bossKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(bossKeyRoom.y, bossKeyRoom.x);
   bossKeyRoom.buildPath(tempRoom, this);
+  printFloor(dungeonOne);
   //Super weapon Room
   var weaponRoomY = randNum(this.row - 1, 0);
   var weaponRoomX = randNum(this.col -1, 0);
@@ -108,6 +158,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   this.roomArr[weaponRoom.y][weaponRoom.x].containsTreasure = true;
   tempRoom = this.closestNode(weaponRoom.y, weaponRoom.x);
   weaponRoom.buildPath(tempRoom, this);
+  printFloor(dungeonOne);
   //Super weapon key
   var weaponKeyY = randNum(this.row - 1, 0);
   var weaponKeyX = randNum(this.col -1, 0);
@@ -133,6 +184,39 @@ Floor.prototype.closestNode =  function closestNode(posY, posX){
         continue;
       }
       if(typeof this.roomArr[i][j] === 'object'){
+        var surroundingObj = [];
+        if(i != this.row - 1){
+          if(typeof this.roomArr[i+1][j] === 'object' && !(i + 1 === posY && j === posX)){
+            if(this.roomArr[i+1][j].isImport){
+              surroundingObj.push(this.roomArr[i+1][j]);
+            }
+          }
+        }
+        if(i != 0){
+          if(typeof this.roomArr[i-1][j] === 'object' && !(i - 1 === posY && j === posX)){
+            if(this.roomArr[i-1][j].isImport){
+              surroundingObj.push(this.roomArr[i-1][j]);
+            }
+          }
+        }
+        if(j != this.col - 1){
+          if(typeof this.roomArr[i][j+1] === 'object' && !(i === posY && j+1 === posX)){
+            if(this.roomArr[i][j+1].isImport){
+              surroundingObj.push(this.roomArr[i][j+1]);
+            }
+          }
+        }
+        if(j != 0){
+          if(typeof this.roomArr[i][j-1] === 'object' && !(i === posY && j-1 === posX)){
+            if(this.roomArr[i][j-1].isImport){
+              surroundingObj.push(this.roomArr[i][j-1]);
+            }
+          }
+        }
+        if(surroundingObj.length >= 2){
+          console.log('Found a very crowded node, skipping it...');
+          continue;
+        }
         if(i >= posY){
           var tempY = i - posY;
         }else{
@@ -210,13 +294,13 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
     smallY = roomObjNext.y;
     largeY = this.y;
   }
-  if(this.x === roomObjNext.x && !floorObj.colImportant(this.x, smallY, largeY)){// x coord is same, but dif y
+  if(this.x === roomObjNext.x && !floorObj.colImportant(this.x, this.y, roomObjNext.y, true)){// x coord is same, but dif y
     for(var i = smallY + 1; i < largeY; i++){
       floorObj.roomArr[i][this.x] = new Room(i, this.x);
     }
     return;
   }
-  if(this.y === roomObjNext.y && !floorObj.rowImportant(this.y, smallX, largeX)){// y coord is same, but dif x
+  if(this.y === roomObjNext.y && !floorObj.rowImportant(this.y, this.x, roomObjNext.x, true)){// y coord is same, but dif x
     for(var i = smallX + 1; i < largeX; i++){
       floorObj.roomArr[this.y][i] = new Room(this.y, i);
     }
@@ -229,7 +313,7 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
   var randCheck = 1; //randNum(2,1);
   console.log('RandCheck is: '+ randCheck);
   if(randCheck === 1){
-    if(floorObj.rowImportant(this.y, smallX, largeX)){
+    if(floorObj.rowImportant(this.y, this.x, roomObjNext.x)){
       if(this.y + 1 < floorObj.row && !floorObj.roomArr[this.y + 1][this.x].isImport){
         tempY = this.y + 1;
         floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
@@ -240,19 +324,27 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
     }else{
       tempY = this.y;
     }
-    if(floorObj.colImportant(roomObjNext.x, smallY, largeY)){
+    if(floorObj.colImportant(roomObjNext.x, roomObjNext.y, this.y)){
       if(roomObjNext.x - 1 >= 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport){
         tempX = roomObjNext.x - 1;
+        if(tempY === this.y && roomObjNext.x - 1 === this.x){
+          console.log('Making sure the meetingPoint does NOT overide our starting node');
+          tempY = roomObjNext.y;
+        }
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
       }else if(roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext.y][roomObjNext.x + 1].isImport){
         tempX = roomObjNext.x + 1;
+        if(tempY === this.y && roomObjNext.x + 1 === this.x){
+          console.log('Making sure the meetingPoint does NOT overide our starting node');
+          tempY = roomObjNext.y;
+        }
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
       }
     }else{
       tempX = roomObjNext.x;
     }
     floorObj.roomArr[tempY][tempX] = meetingPoint = new Room(tempY, tempX);
-
+    console.log(meetingPoint);
     if(room_2){
       meetingPoint.buildPath(room_2, floorObj);
     }else{
@@ -265,7 +357,7 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
     }
     return;
   }else{
-    if(floorObj.rowImportant(roomObjNext.y, smallX, largeX) || floorObj.colImportant(this.x, smallY, largeY)){
+    if(floorObj.rowImportant(roomObjNext.y, roomObjNext.x, this.x) || floorObj.colImportant(this.x, this.y, roomObjNext.y)){
       console.log('Special Case! Meeting Point will override a key Room!');
       floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
     }else{
@@ -396,7 +488,7 @@ function printFloor(floorObj){
         continue;
       }
       if(floorObj.roomArr[i][j] === 0){
-        colStr = '[ | ]';
+        colStr = '[   ]';
       }else{
         colStr = '['+i+','+j+']';
       }
