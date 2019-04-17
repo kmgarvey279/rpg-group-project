@@ -757,7 +757,7 @@ function combatBegin(playerObj, enemyObj){
   currEnemy = enemyObj;
   $("#enemy-hp").empty().append("<br>" + enemyObj.type + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
   enemyObj.createLifeBar();
-  var firstMove = determineTurnOrder(playerObj.speed, enemyObj.speed);
+  var firstMove = determineTurnOrder(playerObj.speed, enemyObj.speed, playerObj);
   if (firstMove === false) {
     enemyObj.enemyTurn();
     checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
@@ -768,7 +768,7 @@ function combatAttack(playerObj, enemyObj, isSpecial){
     var damageDone = playerObj.fight();
     enemyObj.takeDamage(damageDone);
     $("#combat-log").append("<br>" + playerObj.name + " attacked with their " + playerObj.weapon + "<br>" + enemyObj.type + " took " + damageDone + " damage " + "<br>");
-    checkForDeath(playerObj.alive, enemyObj.alive);
+    checkForDeath(playerObj.alive, enemyObj.alive, );
     if (enemyObj.alive === true) {
       enemyObj.enemyTurn();
       checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
@@ -825,7 +825,7 @@ function escapeCombat(playerObj, enemyObj){
   } else {
     $("#combat-log").append("<br>" + playerObj.name + " failed to run away" + "<br>");
     enemyObj.enemyTurn();
-    checkForDeath(playerObj.alive, enemyObj.alive, playerOne);
+    checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
   }
 }
 //globals
