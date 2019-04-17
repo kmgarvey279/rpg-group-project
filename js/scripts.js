@@ -421,6 +421,8 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
   console.clear();
   console.log('The player walked into the north room');
   printFloor(dungeonOne);
+  var myNum = combatRoll();
+  combatEncounter(myNum);
 }
 Player.prototype.moveWest = function moveWest(floorObj){
   if(this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object'){
@@ -437,6 +439,8 @@ Player.prototype.moveWest = function moveWest(floorObj){
   console.clear();
   console.log('The player walked into the west room');
   printFloor(dungeonOne);
+  var myNum = combatRoll();
+  combatEncounter(myNum);
 }
 Player.prototype.moveSouth = function moveSouth(floorObj){
   if(this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object'){
@@ -453,6 +457,8 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   console.clear();
   console.log('The player walked into the south room');
   printFloor(dungeonOne);
+  var myNum = combatRoll();
+  combatEncounter(myNum);
 }
 Player.prototype.moveEast = function moveEast(floorObj){
   if(this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object'){
@@ -469,6 +475,8 @@ Player.prototype.moveEast = function moveEast(floorObj){
   console.clear();
   console.log('The player walked into the east room');
   printFloor(dungeonOne);
+  var myNum = combatRoll();
+  combatEncounter(myNum);
 }
 
 Player.prototype.getStats = function getStats(){
@@ -648,6 +656,22 @@ if (this.currentHP <= 0) {
 }
 
 //Helper Functions
+function combatEncounter(myRoll){
+  if(myRoll <= 55){
+    console.log('The room seems to be utterly devoid of hostile forces...');
+    return;
+  }else if(myRoll > 55 && myRoll <= 65){
+    console.log('You have been attacked by an '+enemyTable[2].type+'!');
+    combatBegin(playerOne, enemyTable[2]);
+  }else if(myRoll > 65 && myRoll <= 80){
+    console.log('You have been attacked by an '+enemyTable[1].type+'!');
+    combatBegin(playerOne, enemyTable[1]);
+  }else if(myRoll > 80 && myRoll <= 100){
+    console.log('You have been attacked by an '+enemyTable[0].type+'!');
+    combatBegin(playerOne, enemyTable[0]);
+  }
+  return;
+}
 function printFloor(floorObj){
   console.log('Printing out our floor Layout');
   for(var i = 0; i < floorObj.row; i++){
@@ -720,6 +744,11 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
     setTimeout(exitCombat, 4000);
   }
 }
+function combatRoll(){
+  var myRoll = randNum(100, 0);
+  console.log(myRoll);
+  return myRoll;
+}
 
 
 function combatBegin(playerObj, enemyObj){
@@ -735,7 +764,7 @@ function combatBegin(playerObj, enemyObj){
   $("#enemy-name-display").empty().append(enemyObj.type);
   $("#enemy-hp").empty().append("<br>" + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
   enemyObj.createLifeBar();
-  var firstMove = determineTurnOrder(playerObj.speed, enemyObj.speed);
+  var firstMove = determineTurnOrder(playerObj.speed, enemyObj.speed, playerObj);
   if (firstMove === false) {
     enemyObj.enemyTurn();
     checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
@@ -825,11 +854,16 @@ let myInputs = new Keys(); //Init which Keys are detected
 let dungeonOne = new Floor(8, 8);// 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
+let enemyTable = [];
 let enemyImp = new Enemy("Imp");
+enemyTable.push(enemyImp);
 let enemyGolem = new Enemy("Golem");
+enemyTable.push(enemyGolem);
 let enemyUndead = new Enemy("Undead");
+enemyTable.push(enemyUndead);
 let enemyDragon = new Enemy("Dragon");
 let currEnemy;
+console.log(enemyTable);
 dungeonOne.generateKeyRooms(playerOne);
 console.log(dungeonOne.roomArr);
 playerOne.initPlayerPos(dungeonOne);
