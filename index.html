@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>dungeonMap</title>
+    <title>Drakania</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="css/styles.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin = "anonymous"></script>
     <script src="js/scripts.js"></script>
   </head>
   <body>
@@ -23,21 +23,15 @@
         <div class = "character-select">
           <div id = "character-img" class="row">
             <div class="col col-md-4">
-              <img class="character-image"src="img/heros/archer.png" alt="Image of archer avatar" value="Archer" >
-              <!-- <input type="radio" value="rogue" id="rogue-avatar"/>
-              <label for="rogue-avatar"></label> -->
+              <img class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value= "Archer" >
             </div>
 
             <div class="col col-md-4">
-              <img class="character-image" src="img/heros/wizard.PNg" alt="Image of wizard avatar" value="Wizard" >
-              <!-- <input type="radio" value="wizard" id="wizard-avatar"/>
-              <label for="wizard-avatar"></label> -->
+              <img class="character-image" src="img/heros/wizard.PNg" alt="Image of wizard avatar" value = "Wizard" >
             </div>
 
             <div class="col col-md-4">
-              <img class="character-image"src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior" >
-              <!-- <input type="radio" value="warrior" id="warrior-avatar"/>
-              <label for="warrior-avatar"></label> -->
+              <img class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value = "Warrior" >
             </div>
           </div>
         </div>
@@ -86,16 +80,16 @@
           <input type="text" class="form-control" id="character-name">
         </div>
         <button type="button" id="start-game">Enter Drakania's Dungeon</button>
-      </form>
     </div>
+    </form>
   </div>
 
     <div class="dungeon-UI">
         <button type="button" id="attack">Attack</button>
         <button type="button" id="items">Open</button>
-        <button type="button" id="">Pick Up</button>
-        <button type="button" id="">Move</button>
-        <button type="button" id="">Items</button>
+        <button type="button" id="pick-up">Pick Up</button>
+        <button type="button" id="move">Move</button>
+        <button type="button" id="inventory">Inventory</button>
       </div>
 
       <div class="combat-UI">
@@ -127,6 +121,7 @@
           </div>
         </div>
       </div>
-    </div>
+
   </body>
+
 </html>
