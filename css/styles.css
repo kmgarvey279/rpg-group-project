@@ -108,3 +108,23 @@ h1{
 #enemy-image {
   float:right;
 }
+
+.box.explored {
+  background-color: white;
+}
+
+.box {
+  background-color: #444;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+}
+
+.wrapper {
+  width: 600px;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(5, 70px);
+  grid-template-rows: repeat(5, 70px);
+  grid-auto-flow: column;
+}
