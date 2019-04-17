@@ -56,11 +56,36 @@ h1{
   height: auto;
 }
 
-
 .dungeon-UI {
   display: none;
 }
 
 .combat-UI {
   display: none;
+}
+
+#death {
+  color: darkred;
+}
+
+button {
+  background-color: darkorange;
+}
+
+.panel-body {
+  background-color: orange;
+  border: 2px solid darkorange;
+  padding: 10px;
+}
+
+.panel-heading {
+  background-color: red;
+  border: 2px solid black;
+}
+
+#combat-panel {
+  background-color: white;
+  width: 285px;
+  height: 200px;
+  overflow: auto;
 }

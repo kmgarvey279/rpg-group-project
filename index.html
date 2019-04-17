@@ -99,15 +99,34 @@
       </div>
 
       <div class="combat-UI">
-          <span id="player-hp"></span>
-          <span id="player-mp"></span>
-          <span id="enemy-hp"></span>
-          <button type="button" id="attack-combat">Attack</button>
-          <button type="button" id="special-combat"><span id="special-name"></span></button>
-          <button type="button" id="items-combat">Items</button>
-          <button type="button" id="run-combat">Run</button>
-          <span id="combat-log"></span>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-4">
+                <h6><span id="player-hp"></span></h6>
+                <progress id="player-health" value="100" max="100"></progress>
+                <span id="player-mp"></span>
+                <h6><span id="enemy-hp"></span></h6>
+                <progress id="enemy-health" value="100" max="100"></progress>
+              </div>
+              <div class="col-md-4">
+                <button type="button" id="attack-combat">Attack</button>
+                <button type="button" id="special-combat"><span id="special-name"></span></button>
+                <button type="button" id="potion-combat">Use Potion</button>
+                <button type="button" id="run-combat">Run</button>
+              </div>
+              <div class="col-md-4">
+                <div class="panel-body" id="combat-panel">
+                <span id="combat-log"></span>
+                <br>
+                <br>
+                <br>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
+      </div>
+    </div>
   </body>
 </html>
