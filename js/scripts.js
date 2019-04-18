@@ -1073,7 +1073,7 @@ function lootCheck(myBool){
     console.log('You spot a shiny key on the floor and decide to hold onto it...');
     $("#map-info").append("<br>" + playerOne.name + "spoted a shiny key on the floor and decided to hold onto it...");
     playerOne.keyAmount++;
-    $("#key-total").empty().append(playerOne.keyAmount);
+    dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey = false;
   }
 }
 
