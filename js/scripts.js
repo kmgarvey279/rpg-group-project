@@ -114,11 +114,13 @@ class BattleState extends IState{
   };
   Exit(){
     lootCheck(this.fullLoot);
+    if(this.fullLoot){
+      dungeonOne.roomArr[playerOne.y][playerOne.x].hasMonsters = false;
+    }
     $(".combat-UI").hide();
     $(".dungeon-UI").show()
     $("#combat-log").empty();
     this.fullLoot = true;
-    dungeonOne.roomArr[playerOne.y][playerOne.x].hasMonsters = false;
   };
 }
 class MenuState extends IState{
@@ -965,17 +967,17 @@ function combatEncounter(myRoll, isBoss) {
     return false;
   }else if(myRoll > 55 && myRoll <= 65){
     console.log('You have been attacked by an '+enemyTable[2].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[2].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[2].type+'!');
     combatBegin(playerOne, enemyTable[2]);
     return true;
   }else if(myRoll > 65 && myRoll <= 80){
     console.log('You have been attacked by an '+enemyTable[1].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[1].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[1].type+'!');
     combatBegin(playerOne, enemyTable[1]);
     return true;
   }else if(myRoll > 80 && myRoll <= 100){
     console.log('You have been attacked by an '+enemyTable[0].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[0].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[0].type+'!');
     combatBegin(playerOne, enemyTable[0]);
     return true;
   }
