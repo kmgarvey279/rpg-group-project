@@ -48,9 +48,6 @@ h1#select-page {
 .btn.focus,
 .btn:active.focus,
 .btn.active.focus {
- /* changed */
- /* outline: 3px solid #eeffc9;
- outline-offset: -2px; */
  border-radius: 8px;
  box-shadow: 1px 1px 28px 2px #eeffc9;
  -webkit-box-shadow: 1px 1px 28px 2px #eeffc9;
@@ -70,15 +67,24 @@ h1#select-page {
      -moz-border-radius: 8px;
      text-shadow: rgba(0,0,0,.4) 0 1px 0;
      color: #292129;
-     font-size: 19px;
-     font-family: Georgia, serif;
+     font-size: 20px;
+     font-family: Garamond, serif;
      text-decoration: none;
      vertical-align: middle;
+     margin-bottom: 50px;
      }
 
+#start-game {
+  margin-top: 70px;
+}
+
+.panel {
+  margin: 50px;
+
+}
+
 #first-text{
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 50px;
 }
 
 .start-UI {
@@ -86,11 +92,11 @@ h1#select-page {
 }
 
 
-/* resize images */
+/* resize characters images */
 .character-select img {
   display: block;
-  max-width:800px;
-  max-height:650px;
+  max-width: 800px;
+  max-height: 650px;
   width: auto;
   height: auto;
 }
@@ -128,15 +134,15 @@ h1#select-page {
   flex-direction: column-reverse;
 }
 
-.jumbotron {
-  /* background-image: url("../img/DRDungeon.png"); */
+/* .jumbotron {
+  background-image: url("../img/DRDungeon.png");
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   border: transparent;
   padding: 4rem 2rem;
-}
+} */
 
 #player-name-display {
   font-weight: bold;
@@ -151,18 +157,22 @@ h1#select-page {
 }
 
 #player-stats {
-  margin-top: 30px;
+
   padding-left: 55px;
 }
 
 #enemy-stats {
-  margin-top: 30px;
+
   padding-left: 440px;
 }
 
 #character-avatar {
   padding-left: 80px;
   margin-bottom: 50px;
+}
+
+#combat-images {
+  margin-top: 70px;
 }
 
 #enemy-image {
@@ -204,4 +214,34 @@ progress#player-magic::-webkit-progress-value {
 
 progress#player-magic::-moz-progress-bar {
 	background-color: #3b96f7;
+}
+
+input[type=text] {
+  border: none;
+  border-bottom: 2px solid #eeffc9;
+  background-color : transparent;
+  color: white;
+}
+
+input[type=text]:active, input[type=text]:focus {
+  background-color: transparent;
+  box-shadow: 1px 1px 28px 2px #eeffc9;
+  -webkit-box-shadow: 1px 1px 28px 2px #eeffc9;
+}
+
+.p {
+  font-family: Garamond, serif;
+  font-size: 20px;
+}
+
+.form-control {
+  width: 526px;
+}
+
+#character-img {
+  margin-top: 15px;
+}
+
+#create-character {
+  margin-left: 50px;
 }

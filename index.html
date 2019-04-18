@@ -28,15 +28,15 @@
   <div class="character-select">
     <div id="character-img" class="row">
       <div class="col col-md-4">
-        <img class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value="Archer">
+        <img id = "archer-img" class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value="Archer">
       </div>
 
       <div class="col col-md-4">
-        <img class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value="Wizard">
+        <img id = "wizard-img" class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value="Wizard">
       </div>
 
       <div class="col col-md-4">
-        <img class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior">
+        <img id = "warrior-img" class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior">
       </div>
     </div>
     <br>
@@ -48,7 +48,7 @@
   <div id="character-info">
     <div id="archer-info" class="panel">
       <p>From the drunken backwaters of Lake Mirgolu, the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
-      <ul>
+      <ul style="list-style: none;">
         <li>Class: Archer</li>
         <li>Weapon: Crossbow</li>
         <li>Health Points: 15</li>
@@ -62,7 +62,7 @@
     <div id="wizard-info" class="panel">
       <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, the Wizard who follows the Star of Magic. She is a scholar at heart, evident by the books and orbs they normally carry with her. However, these items can be
         dangerous weapons in their hands as they help increase a Wizard's power.</p>
-      <ul>
+      <ul style="list-style: none;">
         <li>Class: Wizard</li>
         <li>Weapon: Orb</li>
         <li>Health Points: 10</li>
@@ -75,7 +75,7 @@
 
     <div id="warrior-info" class="panel">
       <p>From the proud Isle of Stonegol, the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
-      <ul>
+      <ul style="list-style: none;">
         <li>Class: Warrior</li>
         <li>Weapon: Sward</li>
         <li>Health Points: 20</li>
@@ -109,7 +109,7 @@
   </div>
 
   <div class="combat-UI">
-    <div class="row">
+    <div id = "combat-images" class="row">
           <div id="player-stats" class="col-md-6">
             <h6 class = "name"><span id="player-name-display"></span></h6>
             <h6><span id="player-hp"></span></h6>

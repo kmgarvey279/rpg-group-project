@@ -615,21 +615,21 @@ Enemy.prototype.getStats = function getStats(){
     this.strength = 4;
     this.speed = 2;
     this.weapon = "club";
-    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="600px" height="600px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="500px" height="500px" />');
   } else if (this.type === "Undead") {
     this.maxHP = 10;
     this.currentHP = 10;
     this.strength = 4;
     this.speed = 10;
     this.weapon = "dark aura";
-    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="600px" height="600px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="500px" height="500px" />');
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
     this.strength = 10;
     this.speed = 4;
     this.weapon = "firebreath";
-    $("#enemy-image").empty().append('<img src="img/enemies/dragon3png.png" weight="800px" height="800px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/dragon3png.png" weight="600px" height="600px" />');
   }
 }
 
@@ -871,6 +871,7 @@ console.log(dungeonOne.roomArr);
 playerOne.initPlayerPos(dungeonOne);
 printFloor(dungeonOne);
 
+
 //User input logic
 $(document).ready(function() {
   $("#character-img").hide();
@@ -932,7 +933,7 @@ $(document).ready(function() {
     playerOne.name = $("#character-name").val();
     playerOne.getStats();
     $("#special-name").append(playerOne.specialName);
-    combatBegin(playerOne, enemyGolem);
+    combatBegin(playerOne, enemyDragon);
   });
   $("#attack-combat").click(function(event) {
     event.preventDefault();
