@@ -116,6 +116,7 @@ class BattleState extends IState{
     $(".dungeon-UI").show()
     $("#combat-log").empty();
     this.fullLoot = true;
+    dungeonOne.roomArr[playerOne.y][playerOne.x].hasMonsters = false;
   };
 }
 class MenuState extends IState{
@@ -413,7 +414,7 @@ class Room {
     this.x = posX;
     this.isImport = isImportant;
   }
-  hasMonsters = false;
+  hasMonsters = true;
   playerHere = false;
   beenTraveled = false;
   containsKey = false;
@@ -1042,7 +1043,7 @@ function combatBegin(playerObj, enemyObj){
   $("#player-hp").empty().append("<br>" + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP);
   playerObj.createLifeBar();
   $("#player-mp").empty().append("MP:" + playerObj.currentMP + "/" + playerObj.maxMP + "<br>");
-  enemyObj.getStats()
+  enemyObj.getStats();
   $("#combat-log").append("<br>" + enemyObj.type + " attacked!" + "<br>");
   currEnemy = enemyObj;
   currEnemy.alive = true;
