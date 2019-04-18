@@ -17,8 +17,8 @@
       <h1>Drakania</h1>
     </div>
     <div id="first-text">
-      <p>Eons ago, the vicious Dragon Drakania fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the
-        fight she slithered back to her underground lair where her numberless brood awaited her return. </p>
+      <p>Eons ago, the vicious Dragon Drakania fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the fight she
+        slithered back to her underground lair where her numberless brood awaited her return. </p>
       <br>
       <p>In the thousands years since that battle, no one who has entered her dungeon has ever returned...</p>
     </div>
@@ -28,15 +28,15 @@
   <div class="character-select">
     <div id="character-img" class="row">
       <div class="col col-md-4">
-        <img id = "archer-img" class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value="Archer">
+        <img id="archer-img" class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value="Archer">
       </div>
 
       <div class="col col-md-4">
-        <img id = "wizard-img" class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value="Wizard">
+        <img id="wizard-img" class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value="Wizard">
       </div>
 
       <div class="col col-md-4">
-        <img id = "warrior-img" class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior">
+        <img id="warrior-img" class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value="Warrior">
       </div>
     </div>
     <br>
@@ -49,13 +49,13 @@
     <div id="archer-info" class="panel">
       <p>From the drunken backwaters of Lake Mirgolu, the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
       <ul style="list-style: none;">
-        <li>Class: Archer</li>
-        <li>Weapon: Crossbow</li>
-        <li>Health Points: 15</li>
-        <li>Mana Points: 10</li>
-        <li>Damage Points: 3</li>
-        <li>Skill: Barrage</li>
-        <li>Speed: 5</li>
+        <li class="section"><span class="title">Class:</span> Archer</li>
+        <li class="section"><span class="title">Weapon:</span> Crossbow</li>
+        <li class="section"><span class="title">Health Points:</span> 15</li>
+        <li class="section"><span class="title">Mana Points:</span> 10</li>
+        <li class="section"><span class="title">Damage Points:</span> 3</li>
+        <li class="section"><span class="title">Skill:</span> Barrage</li>
+        <li class="section"><span class="title">Speed:</span> 5</li>
       </ul>
     </div>
 
@@ -63,26 +63,26 @@
       <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, the Wizard who follows the Star of Magic. She is a scholar at heart, evident by the books and orbs they normally carry with her. However, these items can be
         dangerous weapons in their hands as they help increase a Wizard's power.</p>
       <ul style="list-style: none;">
-        <li>Class: Wizard</li>
-        <li>Weapon: Orb</li>
-        <li>Health Points: 10</li>
-        <li>Mana Points: 10</li>
-        <li>Damage Points: 2</li>
-        <li>Skill: Magic</li>
-        <li>Speed: 4</li>
+        <li class="section"><span class="title">Class:</span> Wizard</li>
+        <li class="section"><span class="title">Weapon:</span> Orb</li>
+        <li class="section"><span class="title">Health Points:</span> 10</li>
+        <li class="section"><span class="title">Mana Points:</span> 10</li>
+        <li class="section"><span class="title">Damage Points:</span> 2</li>
+        <li class="section"><span class="title">Skill:</span> Magic</li>
+        <li class="section"><span class="title">Speed:</span> 4</li>
       </ul>
     </div>
 
     <div id="warrior-info" class="panel">
       <p>From the proud Isle of Stonegol, the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
       <ul style="list-style: none;">
-        <li>Class: Warrior</li>
-        <li>Weapon: Sward</li>
-        <li>Health Points: 20</li>
-        <li>Mana Points: 10</li>
-        <li>Damage Points: 4</li>
-        <li>Skill: Magic</li>
-        <li>Speed: 3</li>
+        <li class="section"><span class="title">Class:</span> Warrior</li>
+        <li class="section"><span class="title">Weapon:</span> Sward</li>
+        <li class="section"><span class="title">Health Points:</span> 20</li>
+        <li class="section"><span class="title">Mana Points:</span> 10</li>
+        <li class="section"><span class="title">Damage Points:</span> 4</li>
+        <li class="section"><span class="title">Skill:</span> Magic</li>
+        <li class="section"><span class="title">Speed:</span> 3</li>
       </ul>
     </div>
   </div>
@@ -109,19 +109,19 @@
   </div>
 
   <div class="combat-UI">
-    <div id = "combat-images" class="row">
-          <div id="player-stats" class="col-md-6">
-            <h6 class = "name"><span id="player-name-display"></span></h6>
-            <h6><span id="player-hp"></span></h6>
-            <progress id="player-health" value="100" max="100"></progress>
-            <h6><span id="player-mp"></span></h6>
-            <progress id="player-magic" value="100" max="100"></progress>
-          </div>
+    <div id="combat-images" class="row">
+      <div id="player-stats" class="col-md-6">
+        <h6 class="name"><span id="player-name-display"></span></h6>
+        <h6><span id="player-hp"></span></h6>
+        <progress id="player-health" value="100" max="100"></progress>
+        <h6><span id="player-mp"></span></h6>
+        <progress id="player-magic" value="100" max="100"></progress>
+      </div>
 
-          <div id="enemy-stats" class="col-md-6">
-            <h6 class = "name"><span id="enemy-name-display"></span></h6>
-            <h6><span id="enemy-hp"></span></h6>
-            <progress id="enemy-health" value="100" max="100"></progress>
+      <div id="enemy-stats" class="col-md-6">
+        <h6 class="name"><span id="enemy-name-display"></span></h6>
+        <h6><span id="enemy-hp"></span></h6>
+        <progress id="enemy-health" value="100" max="100"></progress>
       </div>
     </div>
 
@@ -135,18 +135,15 @@
     </div>
 
     <div class="panel panel-default">
-      <div class="panel-body">
+      <div id="action-panel" class="panel-body">
         <div class="row">
-          <div class="col-md-4">
-
-          </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <button class="btn" type="button" id="attack-combat">Attack</button>
             <button class="btn" type="button" id="special-combat"><span id="special-name"></span></button>
             <button class="btn" type="button" id="potion-combat">Use Potion</button>
             <button class="btn" type="button" id="run-combat">Run</button>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-10">
             <div class="panel-body" id="combat-panel">
 
               <span id="combat-log"></span>

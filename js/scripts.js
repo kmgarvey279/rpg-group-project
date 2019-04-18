@@ -1,5 +1,5 @@
 //which holds our desired User-Inputs
-class Keys{
+class Keys {
   up = 'ArrowUp';
   down = 'ArrowDown';
   right = 'ArrowRight';
@@ -8,111 +8,111 @@ class Keys{
 }
 
 //Floor class and its protoypes
-class Floor{
-  constructor(thisR, thisC){
+class Floor {
+  constructor(thisR, thisC) {
     this.row = thisR;
     this.col = thisC;
     this.roomArr = new Array(thisR).fill(0).map(() => new Array(thisC).fill(0));
   }
 }
-Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX, isRecursive){
-  if(startingX > endX){
-    if(startingX - endX === 1 && !isRecursive){
+Floor.prototype.rowImportant = function rowImportant(myY, startingX, endX, isRecursive) {
+  if (startingX > endX) {
+    if (startingX - endX === 1 && !isRecursive) {
       console.log('rowImportant Special case where dist is 1');
-      if(this.roomArr[myY][startingX - 1].isImport){
+      if (this.roomArr[myY][startingX - 1].isImport) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
-    for(var i = startingX - 1; i > endX; i--){
-      if(this.roomArr[myY][i].isImport){
+    for (var i = startingX - 1; i > endX; i--) {
+      if (this.roomArr[myY][i].isImport) {
         return true;
       }
     }
-  }else{
-    if(endX - startingX === 1 && !isRecursive){
+  } else {
+    if (endX - startingX === 1 && !isRecursive) {
       console.log('rowImportant Special case where dist is 1');
-      if(this.roomArr[myY][startingX + 1].isImport){
+      if (this.roomArr[myY][startingX + 1].isImport) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
-    for(var i = startingX + 1; i < endX; i++){
-      if(this.roomArr[myY][i].isImport){
+    for (var i = startingX + 1; i < endX; i++) {
+      if (this.roomArr[myY][i].isImport) {
         return true;
       }
     }
   }
   return false;
 }
-Floor.prototype.colImportant = function colImportant(myX, startingY, endY, isRecursive){
-  if(startingY > endY){
-    if(startingY - endY === 1 && !isRecursive){
+Floor.prototype.colImportant = function colImportant(myX, startingY, endY, isRecursive) {
+  if (startingY > endY) {
+    if (startingY - endY === 1 && !isRecursive) {
       console.log('colImportant Special case where dist is 1');
-      if(this.roomArr[startingY - 1][myX].isImport){
+      if (this.roomArr[startingY - 1][myX].isImport) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
-    for(var i = startingY - 1; i > endY; i--){
-      if(this.roomArr[i][myX].isImport){
+    for (var i = startingY - 1; i > endY; i--) {
+      if (this.roomArr[i][myX].isImport) {
         return true;
       }
     }
-  }else{
-    if(endY - startingY === 1 && !isRecursive){
+  } else {
+    if (endY - startingY === 1 && !isRecursive) {
       console.log('colImportant Special case where dist is 1');
-      if(this.roomArr[startingY + 1][myX].isImport){
+      if (this.roomArr[startingY + 1][myX].isImport) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
-    for(var i = startingY + 1; i < endY; i++){
-      if(this.roomArr[i][myX].isImport){
+    for (var i = startingY + 1; i < endY; i++) {
+      if (this.roomArr[i][myX].isImport) {
         return true;
       }
     }
   }
   return false;
 }
-Floor.prototype.constructFloors = function constructFloors(){
+Floor.prototype.constructFloors = function constructFloors() {
   console.log('Populating Floor with Rooms');
-  for(var i = 0; i < this.row; i++){
-    for(var j = 0; j < this.col; j++){
+  for (var i = 0; i < this.row; i++) {
+    for (var j = 0; j < this.col; j++) {
       this.roomArr[i][j] = new Room(i, j);
     }
   }
 }
-Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant){
+Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant) {
   var closestRoom;
   var closePosY;
   var closePosX;
   var distanceFrom = this.row + this.col;
-  if(typeof this.roomArr[posY][posX] != 'object'){
-    console.log('Room at ' +posY+ ',' +posX+' was already empty');
+  if (typeof this.roomArr[posY][posX] != 'object') {
+    console.log('Room at ' + posY + ',' + posX + ' was already empty');
     isImportant ? closestRoom = new Room(posY, posX, true) : closestRoom = new Room(posY, posX, false);
     this.roomArr[posY][posX] = closestRoom;
     return closestRoom;
   }
-  for(var i = 0; i < this.row; i++){
-    for(var j = 0; j < this.col; j++){
-      if(typeof this.roomArr[i][j] != 'object'){
-        if(i >= posY){
+  for (var i = 0; i < this.row; i++) {
+    for (var j = 0; j < this.col; j++) {
+      if (typeof this.roomArr[i][j] != 'object') {
+        if (i >= posY) {
           var tempY = i - posY;
-        }else{
+        } else {
           var tempY = posY - i;
         }
-        if(j >= posX){
+        if (j >= posX) {
           var tempX = j - posX;
-        }else{
+        } else {
           var tempX = posX - j;
         }
         var tempDistance = tempY + tempX;
-        if(tempDistance < distanceFrom){
+        if (tempDistance < distanceFrom) {
           distanceFrom = tempDistance;
           closePosY = i;
           closePosX = j;
@@ -120,24 +120,24 @@ Floor.prototype.closestEmpty = function closestEmpty(posY, posX, isImportant){
       }
     }
   }
-  if(closePosY === null){
+  if (closePosY === null) {
     console.log('Array is already FULL, cannot insert');
     return;
   }
-  console.log('['+posY+','+posX+'] was already taken. Closest empty node found at ['+closePosY+','+closePosX+']');
+  console.log('[' + posY + ',' + posX + '] was already taken. Closest empty node found at [' + closePosY + ',' + closePosX + ']');
   isImportant ? closestRoom = new Room(closePosY, closePosX, true) : closestRoom = new Room(closePosY, closePosX, false);
   this.roomArr[closePosY][closePosX] = closestRoom;
   return closestRoom;
 }
-Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
+Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj) {
   var tempRoom;
   var playerRoom = new Room(playerObj.y, playerObj.x, true);
   this.roomArr[playerObj.y][playerObj.x] = playerRoom;
   //Boss Room
-  var bossY = randNum(Math.floor(this.row/4), 0);
-  var bossX = randNum(this.col - 1, Math.floor(this.col/2));
-  console.log('bossY is '+bossY);
-  console.log('bossX is '+bossX);
+  var bossY = randNum(Math.floor(this.row / 4), 0);
+  var bossX = randNum(this.col - 1, Math.floor(this.col / 2));
+  console.log('bossY is ' + bossY);
+  console.log('bossX is ' + bossX);
   var bossRoom = new Room(bossY, bossX, true);
   this.roomArr[bossY][bossX] = bossRoom;
   this.roomArr[bossY][bossX].containsBoss = true;
@@ -145,7 +145,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   printFloor(dungeonOne);
   //Boss Key Room
   var bossKeyY = randNum(this.row - 1, 0);
-  var bossKeyX = randNum(this.col -1, 0);
+  var bossKeyX = randNum(this.col - 1, 0);
   var bossKeyRoom = this.closestEmpty(bossKeyY, bossKeyX, true);
   this.roomArr[bossKeyRoom.y][bossKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(bossKeyRoom.y, bossKeyRoom.x);
@@ -153,7 +153,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   printFloor(dungeonOne);
   //Super weapon Room
   var weaponRoomY = randNum(this.row - 1, 0);
-  var weaponRoomX = randNum(this.col -1, 0);
+  var weaponRoomX = randNum(this.col - 1, 0);
   var weaponRoom = this.closestEmpty(weaponRoomY, weaponRoomX, true);
   this.roomArr[weaponRoom.y][weaponRoom.x].containsTreasure = true;
   tempRoom = this.closestNode(weaponRoom.y, weaponRoom.x);
@@ -161,79 +161,79 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj){
   printFloor(dungeonOne);
   //Super weapon key
   var weaponKeyY = randNum(this.row - 1, 0);
-  var weaponKeyX = randNum(this.col -1, 0);
+  var weaponKeyX = randNum(this.col - 1, 0);
   var weaponKeyRoom = this.closestEmpty(weaponKeyY, weaponKeyX, true);
   this.roomArr[weaponKeyRoom.y][weaponKeyRoom.x].containsKey = true;
   tempRoom = this.closestNode(weaponKeyRoom.y, weaponKeyRoom.x);
   weaponKeyRoom.buildPath(tempRoom, this);
 }
 
-Floor.prototype.closestNode =  function closestNode(posY, posX){
+Floor.prototype.closestNode = function closestNode(posY, posX) {
   var closestRoom;
   var closePosY;
   var closePosX;
   var distanceFrom = this.row + this.col;
-  for(var i = 0; i < this.row; i++){
-    for(var j = 0; j < this.col; j++){
-      if(i === posY && j === posX){
+  for (var i = 0; i < this.row; i++) {
+    for (var j = 0; j < this.col; j++) {
+      if (i === posY && j === posX) {
         console.log('Skipping entered node');
         continue;
       }
-      if(this.roomArr[i][j].isImport){
+      if (this.roomArr[i][j].isImport) {
         console.log('Key room found, skipping..');
         continue;
       }
-      if(typeof this.roomArr[i][j] === 'object'){
+      if (typeof this.roomArr[i][j] === 'object') {
         var surroundingObj = [];
-        if(i != this.row - 1){
-          if(typeof this.roomArr[i+1][j] === 'object' && !(i + 1 === posY && j === posX)){
-            if(this.roomArr[i+1][j].isImport){
-              surroundingObj.push(this.roomArr[i+1][j]);
+        if (i != this.row - 1) {
+          if (typeof this.roomArr[i + 1][j] === 'object' && !(i + 1 === posY && j === posX)) {
+            if (this.roomArr[i + 1][j].isImport) {
+              surroundingObj.push(this.roomArr[i + 1][j]);
             }
           }
         }
-        if(i != 0){
-          if(typeof this.roomArr[i-1][j] === 'object' && !(i - 1 === posY && j === posX)){
-            if(this.roomArr[i-1][j].isImport){
-              surroundingObj.push(this.roomArr[i-1][j]);
+        if (i != 0) {
+          if (typeof this.roomArr[i - 1][j] === 'object' && !(i - 1 === posY && j === posX)) {
+            if (this.roomArr[i - 1][j].isImport) {
+              surroundingObj.push(this.roomArr[i - 1][j]);
             }
           }
         }
-        if(j != this.col - 1){
-          if(typeof this.roomArr[i][j+1] === 'object' && !(i === posY && j+1 === posX)){
-            if(this.roomArr[i][j+1].isImport){
-              surroundingObj.push(this.roomArr[i][j+1]);
+        if (j != this.col - 1) {
+          if (typeof this.roomArr[i][j + 1] === 'object' && !(i === posY && j + 1 === posX)) {
+            if (this.roomArr[i][j + 1].isImport) {
+              surroundingObj.push(this.roomArr[i][j + 1]);
             }
           }
         }
-        if(j != 0){
-          if(typeof this.roomArr[i][j-1] === 'object' && !(i === posY && j-1 === posX)){
-            if(this.roomArr[i][j-1].isImport){
-              surroundingObj.push(this.roomArr[i][j-1]);
+        if (j != 0) {
+          if (typeof this.roomArr[i][j - 1] === 'object' && !(i === posY && j - 1 === posX)) {
+            if (this.roomArr[i][j - 1].isImport) {
+              surroundingObj.push(this.roomArr[i][j - 1]);
             }
           }
         }
-        if(surroundingObj.length >= 2){
+        if (surroundingObj.length >= 2) {
           console.log('Found a very crowded node, skipping it...');
           continue;
         }
-        if(i >= posY){
+        if (i >= posY) {
           var tempY = i - posY;
-        }else{
+        } else {
           var tempY = posY - i;
         }
-        if(j >= posX){
+        if (j >= posX) {
           var tempX = j - posX;
-        }else{
+        } else {
           var tempX = posX - j;
         }
-        console.log('Y distance: '+tempY+' at '+i);
-        console.log('X distance: '+tempX+' at '+j);
+        console.log('Y distance: ' + tempY + ' at ' + i);
+        console.log('X distance: ' + tempX + ' at ' + j);
 
 
         var tempDistance = tempY + tempX;
-        console.log('tempDistance is '+tempDistance+' compared to distanceFrom: '+distanceFrom);
-        if(tempDistance < distanceFrom){
+        console.log('tempDistance is ' + tempDistance + ' compared to distanceFrom: ' + distanceFrom);
+        if (tempDistance < distanceFrom) {
           distanceFrom = tempDistance;
           closePosY = i;
           closePosX = j;
@@ -241,19 +241,19 @@ Floor.prototype.closestNode =  function closestNode(posY, posX){
       }
     }
   }
-  if(closePosY === null){
+  if (closePosY === null) {
     console.log('Array is empty, cant find closest');
     return;
   }
-  console.log('Closest Node found at '+closePosY+','+closePosX);
+  console.log('Closest Node found at ' + closePosY + ',' + closePosX);
   closestRoom = this.roomArr[closePosY][closePosX];
   return closestRoom;
 }
 
 
 //Room class and its protoypes
-class Room{
-  constructor(posY, posX, isImportant){
+class Room {
+  constructor(posY, posX, isImportant) {
     this.y = posY;
     this.x = posX;
     this.isImport = isImportant;
@@ -264,44 +264,44 @@ class Room{
   containsBoss = false;
   containsTreasure = false;
 }
-Room.prototype.setImportance = function setImportance(){
+Room.prototype.setImportance = function setImportance() {
   this.isImport = true;
 }
-Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath){//First unintentional recursive function I have ever written, holy moly
+Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath) { //First unintentional recursive function I have ever written, holy moly
   var meetingPoint;
   var smallY;
   var largeY;
   var smallX;
   var largeX;
   var isInit = initialPath;
-  if(isInit){//First Path Exception
+  if (isInit) { //First Path Exception
     floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint = new Room(this.y, roomObjNext.x);
     meetingPoint.buildPath(roomObjNext, floorObj);
     meetingPoint.buildPath(this, floorObj);
     return;
   }
-  if(this.x < roomObjNext.x){
+  if (this.x < roomObjNext.x) {
     smallX = this.x;
     largeX = roomObjNext.x;
-  }else{
+  } else {
     smallX = roomObjNext.x;
     largeX = this.x;
   }
-  if(this.y < roomObjNext.y){
+  if (this.y < roomObjNext.y) {
     smallY = this.y;
     largeY = roomObjNext.y;
-  }else{
+  } else {
     smallY = roomObjNext.y;
     largeY = this.y;
   }
-  if(this.x === roomObjNext.x && !floorObj.colImportant(this.x, this.y, roomObjNext.y, true)){// x coord is same, but dif y
-    for(var i = smallY + 1; i < largeY; i++){
+  if (this.x === roomObjNext.x && !floorObj.colImportant(this.x, this.y, roomObjNext.y, true)) { // x coord is same, but dif y
+    for (var i = smallY + 1; i < largeY; i++) {
       floorObj.roomArr[i][this.x] = new Room(i, this.x);
     }
     return;
   }
-  if(this.y === roomObjNext.y && !floorObj.rowImportant(this.y, this.x, roomObjNext.x, true)){// y coord is same, but dif x
-    for(var i = smallX + 1; i < largeX; i++){
+  if (this.y === roomObjNext.y && !floorObj.rowImportant(this.y, this.x, roomObjNext.x, true)) { // y coord is same, but dif x
+    for (var i = smallX + 1; i < largeX; i++) {
       floorObj.roomArr[this.y][i] = new Room(this.y, i);
     }
     return;
@@ -311,56 +311,56 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
   var room_1;
   var room_2;
   var randCheck = 1; //randNum(2,1);
-  console.log('RandCheck is: '+ randCheck);
-  if(randCheck === 1){
-    if(floorObj.rowImportant(this.y, this.x, roomObjNext.x)){
-      if(this.y + 1 < floorObj.row && !floorObj.roomArr[this.y + 1][this.x].isImport){
+  console.log('RandCheck is: ' + randCheck);
+  if (randCheck === 1) {
+    if (floorObj.rowImportant(this.y, this.x, roomObjNext.x)) {
+      if (this.y + 1 < floorObj.row && !floorObj.roomArr[this.y + 1][this.x].isImport) {
         tempY = this.y + 1;
         floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
-      }else if(this.y - 1 >= 0 && !floorObj.roomArr[this.y - 1][this.x].isImport){
+      } else if (this.y - 1 >= 0 && !floorObj.roomArr[this.y - 1][this.x].isImport) {
         tempY = this.y - 1;
         floorObj.roomArr[tempY][this.x] = room_1 = new Room(tempY, this.x);
       }
-    }else{
+    } else {
       tempY = this.y;
     }
-    if(floorObj.colImportant(roomObjNext.x, roomObjNext.y, this.y)){
-      if(roomObjNext.x - 1 >= 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport){
+    if (floorObj.colImportant(roomObjNext.x, roomObjNext.y, this.y)) {
+      if (roomObjNext.x - 1 >= 0 && !floorObj.roomArr[roomObjNext.y][roomObjNext.x - 1].isImport) {
         tempX = roomObjNext.x - 1;
-        if(tempY === this.y && roomObjNext.x - 1 === this.x){
+        if (tempY === this.y && roomObjNext.x - 1 === this.x) {
           console.log('Making sure the meetingPoint does NOT overide our starting node');
           tempY = roomObjNext.y;
         }
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
-      }else if(roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext.y][roomObjNext.x + 1].isImport){
+      } else if (roomObjNext.x + 1 < floorObj.col && !floorObj.roomArr[roomObjNext.y][roomObjNext.x + 1].isImport) {
         tempX = roomObjNext.x + 1;
-        if(tempY === this.y && roomObjNext.x + 1 === this.x){
+        if (tempY === this.y && roomObjNext.x + 1 === this.x) {
           console.log('Making sure the meetingPoint does NOT overide our starting node');
           tempY = roomObjNext.y;
         }
         floorObj.roomArr[roomObjNext.y][tempX] = room_2 = new Room(roomObjNext.y, tempX);
       }
-    }else{
+    } else {
       tempX = roomObjNext.x;
     }
     floorObj.roomArr[tempY][tempX] = meetingPoint = new Room(tempY, tempX);
     console.log(meetingPoint);
-    if(room_2){
+    if (room_2) {
       meetingPoint.buildPath(room_2, floorObj);
-    }else{
+    } else {
       meetingPoint.buildPath(roomObjNext, floorObj);
     }
-    if(room_1){
+    if (room_1) {
       meetingPoint.buildPath(room_1, floorObj);
-    }else{
+    } else {
       meetingPoint.buildPath(this, floorObj);
     }
     return;
-  }else{
-    if(floorObj.rowImportant(roomObjNext.y, roomObjNext.x, this.x) || floorObj.colImportant(this.x, this.y, roomObjNext.y)){
+  } else {
+    if (floorObj.rowImportant(roomObjNext.y, roomObjNext.x, this.x) || floorObj.colImportant(this.x, this.y, roomObjNext.y)) {
       console.log('Special Case! Meeting Point will override a key Room!');
-      floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint =  new Room(this.y, roomObjNext.x);
-    }else{
+      floorObj.roomArr[this.y][roomObjNext.x] = meetingPoint = new Room(this.y, roomObjNext.x);
+    } else {
       floorObj.roomArr[roomObjNext.y][this.x] = meetingPoint = new Room(roomObjNext.y, this.x);
     }
     meetingPoint.buildPath(roomObjNext, floorObj);
@@ -371,9 +371,9 @@ Room.prototype.buildPath = function buildPath(roomObjNext, floorObj, initialPath
 }
 
 //Player class and its prototypes
-class Player{
+class Player {
 
-  constructor(startPosY, startPosX, name, job){
+  constructor(startPosY, startPosX, name, job) {
     //Player Attributes
     this.name = name;
     this.job = job;
@@ -387,10 +387,10 @@ class Player{
   }
 }
 
-Player.prototype.initPlayerPos = function initPlayerPos(floorObj){
+Player.prototype.initPlayerPos = function initPlayerPos(floorObj) {
   floorObj.roomArr[this.y][this.x].playerHere = true;
 }
-Player.prototype.moveGrid = function moveGrid(direction, floorObj){
+Player.prototype.moveGrid = function moveGrid(direction, floorObj) {
   switch (direction) {
     case 'North':
       this.moveNorth(floorObj);
@@ -406,12 +406,12 @@ Player.prototype.moveGrid = function moveGrid(direction, floorObj){
       break;
   }
 }
-Player.prototype.moveNorth = function moveNorth(floorObj){
-  if(this.y - 1 < 0|| typeof floorObj.roomArr[this.y - 1][this.x] != 'object'){
+Player.prototype.moveNorth = function moveNorth(floorObj) {
+  if (this.y - 1 < 0 || typeof floorObj.roomArr[this.y - 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
     return;
   }
-  if(floorObj.roomArr[this.y - 1][this.x].isImport){
+  if (floorObj.roomArr[this.y - 1][this.x].isImport) {
     console.log('You need a key to enter this room');
     return;
   }
@@ -424,12 +424,12 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
   var myNum = combatRoll();
   combatEncounter(myNum);
 }
-Player.prototype.moveWest = function moveWest(floorObj){
-  if(this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object'){
+Player.prototype.moveWest = function moveWest(floorObj) {
+  if (this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object') {
     console.log('The player runs into a wall and does not move');
     return;
   }
-  if(floorObj.roomArr[this.y][this.x - 1].isImport){
+  if (floorObj.roomArr[this.y][this.x - 1].isImport) {
     console.log('You need a key to enter this room');
     return;
   }
@@ -442,12 +442,12 @@ Player.prototype.moveWest = function moveWest(floorObj){
   var myNum = combatRoll();
   combatEncounter(myNum);
 }
-Player.prototype.moveSouth = function moveSouth(floorObj){
-  if(this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object'){
+Player.prototype.moveSouth = function moveSouth(floorObj) {
+  if (this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
     return;
   }
-  if(floorObj.roomArr[this.y + 1][this.x].isImport){
+  if (floorObj.roomArr[this.y + 1][this.x].isImport) {
     console.log('You need a key to enter this room');
     return;
   }
@@ -460,12 +460,12 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   var myNum = combatRoll();
   combatEncounter(myNum);
 }
-Player.prototype.moveEast = function moveEast(floorObj){
-  if(this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object'){
+Player.prototype.moveEast = function moveEast(floorObj) {
+  if (this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object') {
     console.log('The player runs into a wall and does not move');
     return;
   }
-  if(floorObj.roomArr[this.y][this.x + 1].isImport){
+  if (floorObj.roomArr[this.y][this.x + 1].isImport) {
     console.log('You need a key to enter this room');
     return;
   }
@@ -480,7 +480,7 @@ Player.prototype.moveEast = function moveEast(floorObj){
 }
 
 // Characters size in combat mode
-Player.prototype.getStats = function getStats(){
+Player.prototype.getStats = function getStats() {
   if (this.job === "warrior") {
     $("#character-avatar").append('<img src="img/heros/warrior.png" weight="500px" height="500px" />');
     this.maxHP = 20;
@@ -496,7 +496,7 @@ Player.prototype.getStats = function getStats(){
       $("#player-mp").empty().append("<br>" + "MP:" + this.currentMP + "/" + this.maxMP + "<br>");
       return "guard";
     };
-  } else if (this.job === "wizard"){
+  } else if (this.job === "wizard") {
     $("#character-avatar").append('<img src="img/heros/wizard.png" weight="500px" height="500px" />');
     this.maxHP = 10;
     this.currentHP = 10;
@@ -512,7 +512,7 @@ Player.prototype.getStats = function getStats(){
       $("#player-mp").empty().append(this.name + " MP:" + this.currentMP + "/" + this.maxMP + "<br>");
       return "fireball";
     };
-  } else if (this.job === "archer"){
+  } else if (this.job === "archer") {
     $("#character-avatar").append('<img src="img/heros/archer2.png" weight="500px" height="500px" />');
     this.maxHP = 15;
     this.currentHP = 15;
@@ -522,12 +522,11 @@ Player.prototype.getStats = function getStats(){
     this.speed = 5;
     this.weapon = "worn bow";
     this.specialName = "Barrage";
-    this.special = function special() {
-    };
+    this.special = function special() {};
   }
 }
 
-Player.prototype.createLifeBar = function createLifeBar(){
+Player.prototype.createLifeBar = function createLifeBar() {
   let health = document.getElementById("player-health");
   health.value = this.currentHP
   health.max = this.maxHP
@@ -537,21 +536,21 @@ Player.prototype.createLifeBar = function createLifeBar(){
 }
 
 //Player explore functions
-Player.prototype.moveGrid = function moveGrid(){
+Player.prototype.moveGrid = function moveGrid() {
 
 }
 
-Player.prototype.checkGrid = function checkGrid(){
+Player.prototype.checkGrid = function checkGrid() {
 
 }
 
 //Player combat functions
-Player.prototype.fight = function fight(){
+Player.prototype.fight = function fight() {
   return this.strength;
 }
 
-Player.prototype.run = function run(){
-  var escapeRoll = this.speed + Math.floor((Math.random() * 5 ) + 1);
+Player.prototype.run = function run() {
+  var escapeRoll = this.speed + Math.floor((Math.random() * 5) + 1);
   if (escapeRoll >= 8) {
     return true;
   } else {
@@ -559,49 +558,49 @@ Player.prototype.run = function run(){
   }
 }
 
-Player.prototype.takeDamage = function takeDamage(damageTaken){
-this.currentHP = this.currentHP - damageTaken;
-let health = document.getElementById("player-health");
-health.value -= damageTaken;
-if (this.currentHP <= 0) {
-  this.alive = false;
+Player.prototype.takeDamage = function takeDamage(damageTaken) {
+  this.currentHP = this.currentHP - damageTaken;
+  let health = document.getElementById("player-health");
+  health.value -= damageTaken;
+  if (this.currentHP <= 0) {
+    this.alive = false;
   }
 }
 
 //Player item functions
-Player.prototype.addPotion = function addPotion(){
+Player.prototype.addPotion = function addPotion() {
   this.potions = this.potions + 1;
 }
 
-Player.prototype.usePotion = function usePotion(){
+Player.prototype.usePotion = function usePotion() {
   this.potions = this.potions - 1;
-  if ((this.maxHP - this.currentHP) < 8){
+  if ((this.maxHP - this.currentHP) < 8) {
     this.currentHP = this.maxHP
   } else {
-  this.currentHP = this.currentHP + 8;
+    this.currentHP = this.currentHP + 8;
   }
   let health = document.getElementById("player-health");
   health.value += 8;
   alert(health.value);
 }
 
-Player.prototype.equip = function equip(weaponName, weaponAtk){
-this.weapon = weaponName;
-this.strength = this.strength + weaponAtk;
+Player.prototype.equip = function equip(weaponName, weaponAtk) {
+  this.weapon = weaponName;
+  this.strength = this.strength + weaponAtk;
 }
 
 //Enemy functions
-class Enemy{
-  constructor(type, positionX, positionY){
-  this.type = type;
-  this.alive = true;
-  this.x = positionX;
-  this.y = positionY;
+class Enemy {
+  constructor(type, positionX, positionY) {
+    this.type = type;
+    this.alive = true;
+    this.x = positionX;
+    this.y = positionY;
   }
 }
 
 // Enemies size in combat mode
-Enemy.prototype.getStats = function getStats(){
+Enemy.prototype.getStats = function getStats() {
   if (this.type === "Imp") {
     this.maxHP = 6;
     this.currentHP = 6;
@@ -615,14 +614,14 @@ Enemy.prototype.getStats = function getStats(){
     this.strength = 4;
     this.speed = 2;
     this.weapon = "club";
-    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="500px" height="500px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="500px" height="500px" />');
   } else if (this.type === "Undead") {
     this.maxHP = 10;
     this.currentHP = 10;
     this.strength = 4;
     this.speed = 10;
     this.weapon = "dark aura";
-    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="500px" height="500px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="500px" height="500px" />');
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
@@ -633,13 +632,13 @@ Enemy.prototype.getStats = function getStats(){
   }
 }
 
-Enemy.prototype.createLifeBar = function createLifeBar(){
+Enemy.prototype.createLifeBar = function createLifeBar() {
   let health = document.getElementById("enemy-health");
   health.value = this.currentHP;
   health.max = this.maxHP;
 }
 
-Enemy.prototype.enemyTurn = function enemyTurn(){
+Enemy.prototype.enemyTurn = function enemyTurn() {
   var damageTaken = this.strength;
   playerOne.takeDamage(damageTaken);
   $("#combat-log").append("<br>" + this.type + " attacked with their " + this.weapon + "<br>" + playerOne.name + " took " + damageTaken + " damage" + "<br>");
@@ -647,66 +646,67 @@ Enemy.prototype.enemyTurn = function enemyTurn(){
   $("#enemy-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
 }
 
-Enemy.prototype.takeDamage = function takeDamage(damageTaken){
-this.currentHP = this.currentHP - damageTaken;
-let health = document.getElementById("enemy-health");
-health.value -= damageTaken;
-$("#enemy-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
-if (this.currentHP <= 0) {
-  this.alive = false;
+Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
+  this.currentHP = this.currentHP - damageTaken;
+  let health = document.getElementById("enemy-health");
+  health.value -= damageTaken;
+  $("#enemy-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
+  if (this.currentHP <= 0) {
+    this.alive = false;
   }
 }
 
 //Helper Functions
-function combatEncounter(myRoll){
-  if(myRoll <= 55){
+function combatEncounter(myRoll) {
+  if (myRoll <= 55) {
     console.log('The room seems to be utterly devoid of hostile forces...');
     return;
-  }else if(myRoll > 55 && myRoll <= 65){
-    console.log('You have been attacked by an '+enemyTable[2].type+'!');
+  } else if (myRoll > 55 && myRoll <= 65) {
+    console.log('You have been attacked by an ' + enemyTable[2].type + '!');
     combatBegin(playerOne, enemyTable[2]);
-  }else if(myRoll > 65 && myRoll <= 80){
-    console.log('You have been attacked by an '+enemyTable[1].type+'!');
+  } else if (myRoll > 65 && myRoll <= 80) {
+    console.log('You have been attacked by an ' + enemyTable[1].type + '!');
     combatBegin(playerOne, enemyTable[1]);
-  }else if(myRoll > 80 && myRoll <= 100){
-    console.log('You have been attacked by an '+enemyTable[0].type+'!');
+  } else if (myRoll > 80 && myRoll <= 100) {
+    console.log('You have been attacked by an ' + enemyTable[0].type + '!');
     combatBegin(playerOne, enemyTable[0]);
   }
   return;
 }
-function printFloor(floorObj){
+
+function printFloor(floorObj) {
   console.log('Printing out our floor Layout');
-  for(var i = 0; i < floorObj.row; i++){
+  for (var i = 0; i < floorObj.row; i++) {
     var rowStr = '';
-    for(var j = 0; j < floorObj.col; j++){
+    for (var j = 0; j < floorObj.col; j++) {
       var colStr = '';
-      if(floorObj.roomArr[i][j].playerHere === true){
+      if (floorObj.roomArr[i][j].playerHere === true) {
         colStr = '[ P ]';
         rowStr += colStr;
         continue;
       }
-      if(floorObj.roomArr[i][j].containsKey === true){
+      if (floorObj.roomArr[i][j].containsKey === true) {
         colStr = '[ K ]';
         rowStr += colStr;
         continue;
       }
-      if(floorObj.roomArr[i][j].containsBoss === true){
+      if (floorObj.roomArr[i][j].containsBoss === true) {
         colStr = '[ B ]';
         rowStr += colStr;
         continue;
       }
-      if(floorObj.roomArr[i][j].containsTreasure === true){
+      if (floorObj.roomArr[i][j].containsTreasure === true) {
         colStr = '[ T ]';
         rowStr += colStr;
         continue;
       }
-      if(floorObj.roomArr[i][j] === 0){
+      if (floorObj.roomArr[i][j] === 0) {
         colStr = '[   ]';
-      }else{
-        colStr = '['+i+','+j+']';
+      } else {
+        colStr = '[' + i + ',' + j + ']';
       }
 
-      if(j === floorObj.col - 1){
+      if (j === floorObj.col - 1) {
         colStr += '\n';
       }
       rowStr += colStr;
@@ -714,11 +714,13 @@ function printFloor(floorObj){
     console.log(rowStr);
   }
 }
-function keyPressReady(inputObj){
+
+function keyPressReady(inputObj) {
   inputObj.keyPressed = false;
   console.log('Ready to receive input');
 }
-function randNum(max, min){
+
+function randNum(max, min) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -739,6 +741,7 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
     setTimeout(gameOver, 4000)
   } else if (enemyStatus === false) {
     $("#combat-log").append("<br>" + playerObj.name + " defeats the enemy" + "<br>" + "<strong>You won!</strong>");
+
     function exitCombat() {
       $(".combat-UI").hide();
       $(".dungeon-UI").show()
@@ -746,14 +749,15 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
     setTimeout(exitCombat, 4000);
   }
 }
-function combatRoll(){
+
+function combatRoll() {
   var myRoll = randNum(100, 0);
   console.log(myRoll);
   return myRoll;
 }
 
 
-function combatBegin(playerObj, enemyObj){
+function combatBegin(playerObj, enemyObj) {
   $(".dungeon-UI").hide();
   $(".combat-UI").show();
   $("#player-name-display").empty().append(playerObj.name);
@@ -772,8 +776,9 @@ function combatBegin(playerObj, enemyObj){
     checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
   }
 }
-function combatAttack(playerObj, enemyObj, isSpecial){
-  if(!isSpecial){
+
+function combatAttack(playerObj, enemyObj, isSpecial) {
+  if (!isSpecial) {
     var damageDone = playerObj.fight();
     enemyObj.takeDamage(damageDone);
     $("#combat-log").append("<br>" + playerObj.name + " attacked with their " + playerObj.weapon + "<br>" + enemyObj.type + " took " + damageDone + " damage " + "<br>");
@@ -782,7 +787,7 @@ function combatAttack(playerObj, enemyObj, isSpecial){
       enemyObj.enemyTurn();
       checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
     }
-  }else{
+  } else {
     var specialEffect = playerObj.special();
     if (specialEffect === "guard") {
       $("#combat-log").append("<br>" + playerObj.name + "took a defensive stance and boosted their defence" + "<br>");
@@ -803,7 +808,7 @@ function combatAttack(playerObj, enemyObj, isSpecial){
     } else {
       $("#combat-log").append("<br>" + playerObj.name + " unleashed a barrage of arrows" + "<br>");
       for (var i = 0; i < 5; i++) {
-        var shot = Math.floor((Math.random() * 5 ) + 1);
+        var shot = Math.floor((Math.random() * 5) + 1);
         if (enemyObj.alive === true) {
           if (shot > 4) {
             $("#combat-log").append("<br>" + playerObj.name + "'s attack missed" + "<br>");
@@ -811,7 +816,7 @@ function combatAttack(playerObj, enemyObj, isSpecial){
           } else {
             $("#combat-log").append("<br>" + enemyObj.type + " took " + shot + "damage" + "<br>");
             enemyObj.takeDamage(shot);
-              checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
+            checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
           }
         }
       }
@@ -822,7 +827,8 @@ function combatAttack(playerObj, enemyObj, isSpecial){
     }
   }
 }
-function combatHeal(playerObj, enemyObj){
+
+function combatHeal(playerObj, enemyObj) {
   if (playerObj.potions === 0) {
     $("#combat-log").append("<br>" + playerObj.name + " has no potions to use" + "<br>");
     return;
@@ -835,7 +841,8 @@ function combatHeal(playerObj, enemyObj){
   enemyObj.enemyTurn();
   checkForDeath(playerObj.alive, enemyObj.alive, playerObj);
 }
-function escapeCombat(playerObj, enemyObj){
+
+function escapeCombat(playerObj, enemyObj) {
   var success = playerObj.run();
   if (success === true) {
     $("#combat-log").append("<br>" + playerObj.name + " successfully ran away" + "<br>");
@@ -853,7 +860,7 @@ function exitCombat() {
 }
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
-let dungeonOne = new Floor(8, 8);// 64 tile grid
+let dungeonOne = new Floor(8, 8); // 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
@@ -880,19 +887,19 @@ $(document).ready(function() {
   $("#warrior-info").hide();
   $("#select-page").hide();
 
-  $('.clickable').click(function(){
+  $('.clickable').click(function() {
     var value = $(this).html();
     console.log(value);
     playerOne.moveGrid(value, dungeonOne);
   });
 
-  $("#start-button").click(function(){
+  $("#start-button").click(function() {
     $(".landing-UI").hide();
     $("#character-img").show();
     $("#select-page").show();
   });
 
-  $('.character-image').click(function(){
+  $('.character-image').click(function() {
     var myImg = $(this).attr('value');
     // console.log('You clicked on: '+myImg);
     if (myImg == "Archer") {
@@ -901,13 +908,15 @@ $(document).ready(function() {
       $("#warrior-info").hide()
       $("#archer-info").fadeIn()
       $(".start-UI").show();
-    } if (myImg == "Wizard") {
+    }
+    if (myImg == "Wizard") {
       playerOne.job = "wizard";
       $("#archer-info").hide()
       $("#warrior-info").hide()
       $("#wizard-info").fadeIn()
       $(".start-UI").show();
-    } if (myImg == "Warrior") {
+    }
+    if (myImg == "Warrior") {
       playerOne.job = "warrior";
       $("#archer-info").hide()
       $("#wizard-info").hide()
@@ -916,7 +925,7 @@ $(document).ready(function() {
     }
   });
 
-// To have battle with other enemy - change name in enemyImp
+  // To have battle with other enemy - change name in enemyImp
   $("#start-game").click(function(event) {
     event.preventDefault();
     $("#select-page").hide();
@@ -933,7 +942,7 @@ $(document).ready(function() {
     playerOne.name = $("#character-name").val();
     playerOne.getStats();
     $("#special-name").append(playerOne.specialName);
-    combatBegin(playerOne, enemyDragon);
+    combatBegin(playerOne, enemyGolem);
   });
   $("#attack-combat").click(function(event) {
     event.preventDefault();
@@ -957,10 +966,10 @@ $(document).ready(function() {
   });
 });
 //Game Loop
-function draw(){
+function draw() {
   requestAnimationFrame(draw);
-  document.addEventListener('keydown', function(event){
-    if(!myInputs.keyPressed){
+  document.addEventListener('keydown', function(event) {
+    if (!myInputs.keyPressed) {
       switch (event.key) {
         case myInputs.up:
           playerOne.moveNorth(dungeonOne);
