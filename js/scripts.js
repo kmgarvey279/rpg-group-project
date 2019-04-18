@@ -74,20 +74,48 @@ class MovementState extends IState{
     $(".combat-UI").show();
   };
 }
+class CooldownState extends IState{
+  Update(){};
+  HandleInput(){};
+
+  Enter(){
+    $(".combat-UI").find('button').prop('disabled', true);
+  };
+  Exit(){};
+}
+class FightingState extends IState{
+  Update(){};
+  HandleInput(){};
+
+  Enter(){
+    $(".combat-UI").find('button').prop('disabled', false);
+  };
+  Exit(){};
+}
 class BattleState extends IState{
+  fullLoot = true;
+  myBattleState = new StateMachine();
+  BattleState(){
+    this.myBattleState.Add('fighting', new FightingState(this));
+    this.myBattleState.Add('cooldown', new CooldownState(this));
+    this.myBattleState._current = this.myBattleState._stateDict.get('fighting');
+  }
   Update(){
   };
   HandleInput(){
   };
 
   Enter(){
+    this.myBattleState.Change('fighting');
     $(".dungeon-UI").hide();
     $(".combat-UI").show();
   };
   Exit(){
+    lootCheck(this.fullLoot);
     $(".combat-UI").hide();
     $(".dungeon-UI").show()
     $("#combat-log").empty();
+    this.fullLoot = true;
   };
 }
 class MenuState extends IState{
@@ -120,6 +148,7 @@ class MenuState extends IState{
 let _gameState = new StateMachine();
 _gameState.Add('movement', new MovementState(this));
 _gameState.Add('combat', new BattleState(this));
+_gameState._stateDict.get('combat').BattleState();
 _gameState.Add('menu', new MenuState(this));
 _gameState._current = _gameState._stateDict.get('menu');
 //which holds our desired User-Inputs
@@ -557,8 +586,9 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  var lootOdds = combatEncounter(myNum);
-  lootCheck(lootOdds);
+  if(!combatEncounter(myNum)){
+    lootCheck(false);
+  }
 }
 Player.prototype.moveWest = function moveWest(floorObj) {
   if (this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object') {
@@ -586,8 +616,9 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  var lootOdds = combatEncounter(myNum);
-  lootCheck(lootOdds);
+  if(!combatEncounter(myNum)){
+    lootCheck(false);
+  }
 }
 Player.prototype.moveSouth = function moveSouth(floorObj) {
   if (this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object') {
@@ -615,8 +646,9 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  var lootOdds = combatEncounter(myNum);
-  lootCheck(lootOdds);
+  if(!combatEncounter(myNum)){
+    lootCheck(false);
+  }
 }
 Player.prototype.moveEast = function moveEast(floorObj) {
   if (this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object') {
@@ -644,8 +676,9 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  var lootOdds = combatEncounter(myNum);
-  lootCheck(lootOdds);
+  if(!combatEncounter(myNum)){
+    lootCheck(false);
+  }
 }
 
 // Characters size in combat mode
@@ -898,6 +931,7 @@ function determineTurnOrder(playerSpeed, enemySpeed) {
 
 function checkForDeath(playerStatus, enemyStatus, playerObj) {
   if (playerStatus === false) {
+    _gameState._current.myBattleState.Change('cooldown');
     function gameOver() {
       $("#combat-log").append("<br>" + playerObj.name + " was defeated" + "<br>" + "<strong><span id='death'>YOU DIED</span></strong>");
       location.reload()
@@ -905,6 +939,7 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
     setTimeout(gameOver, 4000)
   } else if (enemyStatus === false) {
     $("#combat-log").append("<br>" + playerObj.name + " defeats the enemy" + "<br>" + "<strong>You won!</strong>");
+    _gameState._current.myBattleState.Change('cooldown');
     setTimeout(exitCombat, 4000);
   }
 }
@@ -919,6 +954,7 @@ function lootCheck(myBool){
   console.log('Your loot roll is '+lootRoll+' and your monster kill is: '+myBool);
   if(myBool ? lootRoll <= 75 : lootRoll <= 25){
     console.log(myBool ? "You rummage through the monster's remains and manage to find a potion!" : "You look around the empty room and spot a potion in some rubble...");
+    playerOne.potions++;
   }else{
     console.log(myBool ? "The monster had nothing on it....." : "The room appears to be entirely empty...");
   }
@@ -1012,6 +1048,8 @@ function combatHeal(playerObj, enemyObj) {
 function escapeCombat(playerObj, enemyObj) {
   var success = playerObj.run();
   if (success === true) {
+    _gameState._current.myBattleState.Change('cooldown');
+    _gameState._stateDict.get('combat').fullLoot = false;
     $("#combat-log").append("<br>" + playerObj.name + " successfully ran away" + "<br>");
     setTimeout(exitCombat, 4000);
     $("#combat-log").empty();
