@@ -944,7 +944,7 @@ function combatAttack(playerObj, enemyObj, isSpecial){
       for (var i = 0; i < 5; i++) {
         var shot = Math.floor((Math.random() * 5 ) + 1);
         if (enemyObj.alive === true) {
-          if (shot > 4) {
+          if (shot <= 1) {
             $("#combat-log").append("<br>" + playerObj.name + "'s attack missed" + "<br>");
             break;
           } else {
