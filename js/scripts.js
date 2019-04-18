@@ -294,6 +294,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj) {
   var bossRoom = new Room(bossY, bossX, true);
   this.roomArr[bossY][bossX] = bossRoom;
   this.roomArr[bossY][bossX].containsBoss = true;
+  this.roomArr[bossY][bossX].isLocked = true;
   playerRoom.buildPath(bossRoom, this, true);
   printFloor(dungeonOne);
   //Boss Key Room
@@ -309,6 +310,7 @@ Floor.prototype.generateKeyRooms = function generateKeyRooms(playerObj) {
   var weaponRoomX = randNum(this.col - 1, 0);
   var weaponRoom = this.closestEmpty(weaponRoomY, weaponRoomX, true);
   this.roomArr[weaponRoom.y][weaponRoom.x].containsTreasure = true;
+  this.roomArr[weaponRoom.y][weaponRoom.x].isLocked = true;
   tempRoom = this.closestNode(weaponRoom.y, weaponRoom.x);
   weaponRoom.buildPath(tempRoom, this);
   printFloor(dungeonOne);
@@ -411,11 +413,13 @@ class Room {
     this.x = posX;
     this.isImport = isImportant;
   }
+  hasMonsters = false;
   playerHere = false;
   beenTraveled = false;
   containsKey = false;
   containsBoss = false;
   containsTreasure = false;
+  isLocked = false;
 }
 Room.prototype.setImportance = function setImportance() {
   this.isImport = true;
@@ -539,6 +543,7 @@ class Player {
     this.x = startPosX;
     this.mapLocation = 8;
   }
+  keyAmount = 0;
 }
 
 Player.prototype.initPlayerPos = function initPlayerPos(floorObj) {
@@ -566,7 +571,14 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
-  if (floorObj.roomArr[this.y - 1][this.x].isImport) {
+  if (floorObj.roomArr[this.y - 1][this.x].isLocked) {
+    if(this.keyAmount > 0){
+      console.log('The door is locked but you have a key, would you like to open it?');
+      floorObj.roomArr[this.y - 1][this.x].isLocked = false;
+      this.keyAmount--;
+      this.moveNorth(floorObj);
+      return;
+    }
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation - 1;
@@ -578,6 +590,9 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the north room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled north' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -585,8 +600,13 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
-  var myNum = combatRoll();
-  if(!combatEncounter(myNum)){
+  if(floorObj.roomArr[this.y][this.x].hasMonsters){
+    var myNum = combatRoll();
+    if(!combatEncounter(myNum)){
+      lootCheck(false);
+    }
+  }else{
+    console.log('No monsters seem to reside here...');
     lootCheck(false);
   }
 }
@@ -596,7 +616,14 @@ Player.prototype.moveWest = function moveWest(floorObj) {
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
-  if (floorObj.roomArr[this.y][this.x - 1].isImport) {
+  if (floorObj.roomArr[this.y][this.x - 1].isLocked) {
+    if(this.keyAmount > 0){
+      console.log('The door is locked but you have a key, would you like to open it?');
+      this.keyAmount--;
+      floorObj.roomArr[this.y][this.x - 1].isLocked = false;
+      this.moveWest(floorObj);
+      return;
+    }
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation - 8;
@@ -608,6 +635,9 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the west room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled west' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -615,8 +645,13 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
-  var myNum = combatRoll();
-  if(!combatEncounter(myNum)){
+  if(floorObj.roomArr[this.y][this.x].hasMonsters){
+    var myNum = combatRoll();
+    if(!combatEncounter(myNum)){
+      lootCheck(false);
+    }
+  }else{
+    console.log('No monsters seem to reside here...');
     lootCheck(false);
   }
 }
@@ -626,7 +661,14 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
-  if (floorObj.roomArr[this.y + 1][this.x].isImport) {
+  if (floorObj.roomArr[this.y + 1][this.x].isLocked) {
+    if(this.keyAmount > 0){
+      console.log('The door is locked but you have a key, would you like to open it?');
+      this.keyAmount--;
+      floorObj.roomArr[this.y + 1][this.x].isLocked = false;
+      this.moveSouth(floorObj);
+      return;
+    }
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation + 1;
@@ -638,6 +680,9 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the south room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled south' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -645,8 +690,13 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
-  var myNum = combatRoll();
-  if(!combatEncounter(myNum)){
+  if(floorObj.roomArr[this.y][this.x].hasMonsters){
+    var myNum = combatRoll();
+    if(!combatEncounter(myNum)){
+      lootCheck(false);
+    }
+  }else{
+    console.log('No monsters seem to reside here...');
     lootCheck(false);
   }
 }
@@ -656,7 +706,14 @@ Player.prototype.moveEast = function moveEast(floorObj) {
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
-  if (floorObj.roomArr[this.y][this.x + 1].isImport) {
+  if (floorObj.roomArr[this.y][this.x + 1].isLocked) {
+    if(this.keyAmount > 0){
+      console.log('The door is locked but you have a key, would you like to open it?');
+      this.keyAmount--;
+      floorObj.roomArr[this.y][this.x + 1].isLocked = false;
+      this.moveEast(floorObj);
+      return;
+    }
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation + 8;
@@ -668,6 +725,9 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the east room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -675,8 +735,13 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
-  var myNum = combatRoll();
-  if(!combatEncounter(myNum)){
+  if(floorObj.roomArr[this.y][this.x].hasMonsters){
+    var myNum = combatRoll();
+    if(!combatEncounter(myNum)){
+      lootCheck(false);
+    }
+  }else{
+    console.log('No monsters seem to reside here...');
     lootCheck(false);
   }
 }
@@ -850,7 +915,12 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
 }
 
 //Helper Functions
-function combatEncounter(myRoll) {
+function combatEncounter(myRoll, isBoss) {
+  if(isBoss){
+    console.log('You have walked in to the dragons Lair...');
+    combatBegin(playerOne, enemyDragon);
+    return true;
+  }
   if (myRoll <= 55) {
     console.log('The room seems to be utterly devoid of hostile forces...');
     return false;
@@ -958,6 +1028,10 @@ function lootCheck(myBool){
   }else{
     console.log(myBool ? "The monster had nothing on it....." : "The room appears to be entirely empty...");
   }
+  if(dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey){
+    console.log('You spot a shiny key on the floor and decide to hold onto it...');
+    playerOne.keyAmount++;
+  }
 }
 
 
@@ -970,6 +1044,7 @@ function combatBegin(playerObj, enemyObj){
   enemyObj.getStats()
   $("#combat-log").append("<br>" + enemyObj.type + " attacked!" + "<br>");
   currEnemy = enemyObj;
+  currEnemy.alive = true;
   $("#enemy-name-display").empty().append(enemyObj.type);
   $("#enemy-hp").empty().append("<br>" + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
   enemyObj.createLifeBar();
