@@ -45,7 +45,7 @@
               <p>From the drunken backwaters of Lake Mirgolu, the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
               <ul style="list-style: none;">
                 <li class="section"><span class="title">Class:</span> Archer</li>
-                <li class="section"><span class="title">Hit Points:</span> 15 </li>
+                <li class="section"><span class="title">Hit Points:</span> 20 </li>
                 <li class="section"><span class="title">Strength:</span> 3</li>
                 <li class="section"><span class="title">Speed:</span> 5</li>
                 <li class="section"><span class="title">Special:</span> Barrage - fire multiple arrows</li>
@@ -56,7 +56,7 @@
               <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, </p>
               <ul style="list-style: none;">
                 <li class="section"><span class="title">Class:</span> Wizard</li>
-                <li class="section"><span class="title">Hit Points:</span> 10</li>
+                <li class="section"><span class="title">Hit Points:</span> 15</li>
                 <li class="section"><span class="title">Strength:</span> 2</li>
                 <li class="section"><span class="title">Speed:</span> 4</li>
                 <li class="section"><span class="title">Special:</span> Fireball - high damage to one foe</li>
@@ -67,9 +67,9 @@
               <p>From the proud Isle of Stonegol, the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
               <ul style="list-style: none;">
                 <li class="section"><span class="title">Class:</span> Warrior</li>
-                <li class="section"><span class="title">Hit Points:</span> 20</li>
+                <li class="section"><span class="title">Hit Points:</span> 25</li>
                 <li class="section"><span class="title">Strength:</span> 5</li>
-                <li class="section"><span class="title">Speed:</span> 3</li>
+                <li class="section"><span class="title">Speed:</span> 2</li>
                 <li class="section"><span class="title">Special:</span> Guard - increase defense</li>
               </ul>
             </div>
@@ -154,33 +154,38 @@
               <div class="box" id="box63"></div>
               <div class="box" id="box64"></div>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="northButton">North</button>
-                  </div>
+            <br>
+                <div class="icons">
+                  <img class="icon" src="img/potion_icon.png" alt="potion icon"><span id="potion-total"></span>
+                  <img class="icon" src="img/key_icon.jpg" alt="key icon"><span id="potion-total"><span id="key-total"></span>
                 </div>
+
                 <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="eastButton">East</button>
+                  <div class="col-md-6">
+                    <div class="grid-container">
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="northButton">North</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="southButton">West</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="eastButton">East</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="westButton">South</button></div>
+                      <div class="grid-item"></div>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="southButton">South</button>
+                  <div class="col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-body" id="action-panel">
+                        <span id="map-info"></span>
+                        <br>
+                        <br>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="westButton">West</button>
-                  </div>
-                </div>
-                <div class="panel-body" id="map-panel">
-                  <span id="map-info"></span>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
 
         <div class="combat-UI">
@@ -229,5 +234,4 @@
         </div>
       </div>
   </body>
-
 </html>
