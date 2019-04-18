@@ -114,6 +114,9 @@ class BattleState extends IState{
   };
   Exit(){
     lootCheck(this.fullLoot);
+    if(this.fullLoot){
+      dungeonOne.roomArr[playerOne.y][playerOne.x].hasMonsters = false;
+    }
     $(".combat-UI").hide();
     $(".dungeon-UI").show()
     $("#combat-log").empty();
@@ -415,7 +418,7 @@ class Room {
     this.x = posX;
     this.isImport = isImportant;
   }
-  hasMonsters = false;
+  hasMonsters = true;
   playerHere = false;
   beenTraveled = false;
   containsKey = false;
@@ -972,17 +975,17 @@ function combatEncounter(myRoll, isBoss) {
     return false;
   }else if(myRoll > 55 && myRoll <= 65){
     console.log('You have been attacked by an '+enemyTable[2].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[2].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[2].type+'!');
     combatBegin(playerOne, enemyTable[2]);
     return true;
   }else if(myRoll > 65 && myRoll <= 80){
     console.log('You have been attacked by an '+enemyTable[1].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[1].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[1].type+'!');
     combatBegin(playerOne, enemyTable[1]);
     return true;
   }else if(myRoll > 80 && myRoll <= 100){
     console.log('You have been attacked by an '+enemyTable[0].type+'!');
-    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[0].type+'!');
+    $('#map-info').append("<br>" + playerOne.name + 'was attacked by an '+enemyTable[0].type+'!');
     combatBegin(playerOne, enemyTable[0]);
     return true;
   }
@@ -1092,7 +1095,7 @@ function combatBegin(playerObj, enemyObj){
   $("#player-hp").empty().append("<br>" + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP);
   playerObj.createLifeBar();
   $("#player-mp").empty().append("MP:" + playerObj.currentMP + "/" + playerObj.maxMP + "<br>");
-  enemyObj.getStats()
+  enemyObj.getStats();
   $("#combat-log").append("<br>" + enemyObj.type + " attacked!" + "<br>");
   currEnemy = enemyObj;
   currEnemy.alive = true;
@@ -1265,7 +1268,7 @@ $(document).ready(function() {
     }
   });
 
-  // To have battle with other enemy - change name in enemyImp
+  // To have battle with a particular enemy - change name in enemy[type]
   $("#start-game").click(function(event) {
     event.preventDefault();
     combatBegin(playerOne, enemyImp);
