@@ -508,7 +508,7 @@ class Player {
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
-    this.mapLocation = 5;
+    this.mapLocation = 8;
   }
 }
 
@@ -581,7 +581,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   $('#map-info').append(playerOne.name + ' traveled west' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
-  this.mapLocation -= 5;
+  this.mapLocation -= 8;
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
@@ -639,7 +639,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
-  this.mapLocation += 5;
+  this.mapLocation += 8;
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
@@ -1028,11 +1028,7 @@ function exitCombat() {
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
 let dungeonOne = new Floor(8, 8);// 64 tile grid
-<<<<<<< HEAD
-//dungeonOne.constructFloors();
-=======
 
->>>>>>> master
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
 let enemyImp = new Enemy("Imp");
@@ -1060,6 +1056,7 @@ printFloor(dungeonOne);
 
 //User input logic
 $(document).ready(function() {
+  $("#box8").addClass("current");
   $("#character-img").hide();
   $("#archer-info").hide();
   $("#wizard-info").hide();

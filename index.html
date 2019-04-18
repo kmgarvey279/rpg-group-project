@@ -81,6 +81,7 @@
             <button type="button" id="start-game">Enter Drakania's Dungeon</button>
           </form>
         </div>
+
         <div class="container">
           <div class="dungeon-UI">
             <div class="wrapper">
@@ -151,11 +152,24 @@
             </div>
             <div class="panel panel-default">
               <div class="panel-body">
-                <button type="button" class="clickable btn btn-primary btn-lg btn-block" id="northButton">North</button>
-                <button type="button" class="clickable btn btn-primary btn-lg btn-block" id="westButton">West</button>
-                <button type="button" class="clickable btn btn-primary btn-lg btn-block" id="southButton">South</button>
-                <button type="button" class="clickable btn btn-primary btn-lg btn-block" id="eastButton">East</button>
-                <br>
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="northButton">North</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="eastButton">East</button>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="southButton">South</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="westButton">West</button>
+                  </div>
+                </div>
                 <div class="panel-body" id="map-panel">
                   <span id="map-info"></span>
                 </div>
@@ -163,6 +177,7 @@
             </div>
           </div>
         </div>
+
 
       <div class="combat-UI">
         <div class="jumbotron">
@@ -185,10 +200,10 @@
                 <progress id="enemy-health" value="100" max="100"></progress>
               </div>
               <div class="col-md-4">
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="attack-combat">Attack</button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="special-combat"><span id="special-name"></span></button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="potion-combat">Use Potion</button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="run-combat">Run</button>
+                <button type="button" class="btn" id="attack-combat">Attack</button>
+                <button type="button" class="btn" id="special-combat"><span id="special-name"></span></button>
+                <button type="button" class="btn" id="potion-combat">Use Potion</button>
+                <button type="button" class="btn" id="run-combat">Run</button>
               </div>
               <div class="col-md-4">
                 <div class="panel-body" id="combat-panel">
