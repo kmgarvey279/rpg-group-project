@@ -533,7 +533,7 @@ class Player {
     this.currentHP;
     this.alive = true;
     //Player Inventory
-    this.potions = 1;
+    this.potions = 2;
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
@@ -695,6 +695,8 @@ Player.prototype.getStats = function getStats() {
     this.specialName = "Guard";
     this.special = function special() {
       this.currentMP = this.currentMP - 3;
+      let magic = document.getElementById("player-magic");
+      magic.value -= 3;
       $("#player-mp").empty().append("<br>" + "MP:" + this.currentMP + "/" + this.maxMP + "<br>");
       return "guard";
     };
@@ -711,6 +713,8 @@ Player.prototype.getStats = function getStats() {
     this.special = function special() {
       $("#combat-log").append(this.name + " casts fireball" + "<br>");
       this.currentMP = this.currentMP - 3;
+      let magic = document.getElementById("player-magic");
+      magic.value -= 3;
       $("#player-mp").empty().append(this.name + " MP:" + this.currentMP + "/" + this.maxMP + "<br>");
       return "fireball";
     };
@@ -724,7 +728,10 @@ Player.prototype.getStats = function getStats() {
     this.speed = 5;
     this.weapon = "worn bow";
     this.specialName = "Barrage";
-    this.special = function special() {};
+    this.special = function special() {
+      let magic = document.getElementById("player-magic");
+      magic.value -= 3;
+    };
   }
 }
 
@@ -755,7 +762,11 @@ Player.prototype.takeDamage = function takeDamage(damageTaken) {
   this.currentHP = this.currentHP - damageTaken;
   let health = document.getElementById("player-health");
   health.value -= damageTaken;
-  if (this.currentHP <= 0) {
+  if (this.currentHP < 0) {
+    this.currentHp = 0;
+  }
+  $("#player-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
+  if (this.currentHP === 0) {
     this.alive = false;
   }
 }
@@ -774,7 +785,6 @@ Player.prototype.usePotion = function usePotion() {
   }
   let health = document.getElementById("player-health");
   health.value += 8;
-  alert(health.value);
 }
 
 Player.prototype.equip = function equip(weaponName, weaponAtk) {
@@ -843,8 +853,11 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
   this.currentHP = this.currentHP - damageTaken;
   let health = document.getElementById("enemy-health");
   health.value -= damageTaken;
+  if (this.currentHP < 0) {
+    this.currentHp = 0;
+  }
   $("#enemy-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
-  if (this.currentHP <= 0) {
+  if (this.currentHP === 0) {
     this.alive = false;
   }
 }
