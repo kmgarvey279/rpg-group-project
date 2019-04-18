@@ -575,6 +575,7 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
       floorObj.roomArr[this.y - 1][this.x].isLocked = false;
+      this.keyAmount--;
       this.moveNorth(floorObj);
       return;
     }
@@ -589,6 +590,9 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the north room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled north' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -603,6 +607,7 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
     }
   }else{
     console.log('No monsters seem to reside here...');
+    lootCheck(false);
   }
 }
 Player.prototype.moveWest = function moveWest(floorObj) {
@@ -614,6 +619,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   if (floorObj.roomArr[this.y][this.x - 1].isLocked) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
+      this.keyAmount--;
       floorObj.roomArr[this.y][this.x - 1].isLocked = false;
       this.moveWest(floorObj);
       return;
@@ -629,6 +635,9 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the west room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled west' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -643,6 +652,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
     }
   }else{
     console.log('No monsters seem to reside here...');
+    lootCheck(false);
   }
 }
 Player.prototype.moveSouth = function moveSouth(floorObj) {
@@ -654,8 +664,8 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   if (floorObj.roomArr[this.y + 1][this.x].isLocked) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
-      floorObj.roomArr[this.y + 1][this.x].isLocked = false;
       this.keyAmount--;
+      floorObj.roomArr[this.y + 1][this.x].isLocked = false;
       this.moveSouth(floorObj);
       return;
     }
@@ -670,6 +680,9 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the south room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled south' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -684,6 +697,7 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
     }
   }else{
     console.log('No monsters seem to reside here...');
+    lootCheck(false);
   }
 }
 Player.prototype.moveEast = function moveEast(floorObj) {
@@ -695,6 +709,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   if (floorObj.roomArr[this.y][this.x + 1].isLocked) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
+      this.keyAmount--;
       floorObj.roomArr[this.y][this.x + 1].isLocked = false;
       this.moveEast(floorObj);
       return;
@@ -710,6 +725,9 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the east room');
+  if(floorObj.roomArr[this.y][this.x].containsBoss){
+    combatEncounter(false, true);
+  }
   $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
@@ -724,7 +742,8 @@ Player.prototype.moveEast = function moveEast(floorObj) {
     }
   }else{
     console.log('No monsters seem to reside here...');
-  } 
+    lootCheck(false);
+  }
 }
 
 // Characters size in combat mode
@@ -896,7 +915,12 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
 }
 
 //Helper Functions
-function combatEncounter(myRoll) {
+function combatEncounter(myRoll, isBoss) {
+  if(isBoss){
+    console.log('You have walked in to the dragons Lair...');
+    combatBegin(playerOne, enemyDragon);
+    return true;
+  }
   if (myRoll <= 55) {
     console.log('The room seems to be utterly devoid of hostile forces...');
     return false;
