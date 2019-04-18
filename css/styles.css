@@ -109,8 +109,16 @@ h1{
   float:right;
 }
 
+.box.current {
+  background-color: gold;
+}
+
 .box.explored {
   background-color: white;
+}
+
+.box.locked {
+  background-color: silver;
 }
 
 .box {

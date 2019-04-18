@@ -384,6 +384,7 @@ class Player{
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
+    this.mapLocation = 5;
   }
 }
 
@@ -409,12 +410,14 @@ Player.prototype.moveGrid = function moveGrid(direction, floorObj){
 Player.prototype.moveNorth = function moveNorth(floorObj){
   if(this.y - 1 < 0|| typeof floorObj.roomArr[this.y - 1][this.x] != 'object'){
     console.log('The player runs into a wall and does not move');
-    $('#map-info').append('The player runs into a wall and does not move');
+    $('#map-info').append('The player runs into a wall and does not move' + "<br>");
     return;
   }
   if(floorObj.roomArr[this.y - 1][this.x].isImport){
     console.log('You need a key to enter this room');
-    $('#map-info').append('You need a key to enter this room');
+    $('#map-info').append('You need a key to enter this room' + "<br>");
+    var boxToMark = this.mapLocation - 1;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -422,7 +425,12 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the north room');
-  $('#map-info').append('The player walked into the north room');
+  $('#map-info').append('The player walked into the north room' + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation -= 1;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
   combatEncounter(myNum);
@@ -436,6 +444,8 @@ Player.prototype.moveWest = function moveWest(floorObj){
   if(floorObj.roomArr[this.y][this.x - 1].isImport){
     console.log('You need a key to enter this room');
     $('#map-info').append('You need a key to enter this room');
+    var boxToMark = this.mapLocation - 5;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -444,6 +454,11 @@ Player.prototype.moveWest = function moveWest(floorObj){
   console.clear();
   console.log('The player walked into the west room');
   $('#map-info').append('The player walked into the west room');
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation -= 5;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
   combatEncounter(myNum);
@@ -457,6 +472,8 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   if(floorObj.roomArr[this.y + 1][this.x].isImport){
     console.log('You need a key to enter this room');
     $('#map-info').append('You need a key to enter this room');
+    var boxToMark = this.mapLocation + 1;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -465,6 +482,11 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   console.clear();
   console.log('The player walked into the south room');
   $('#map-info').append('The player walked into the south room');
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation += 1;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
   combatEncounter(myNum);
@@ -478,6 +500,8 @@ Player.prototype.moveEast = function moveEast(floorObj){
   if(floorObj.roomArr[this.y][this.x + 1].isImport){
     console.log('You need a key to enter this room');
     $('#map-info').append('You need a key to enter this room');
+    var boxToMark = this.mapLocation + 5;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -486,6 +510,11 @@ Player.prototype.moveEast = function moveEast(floorObj){
   console.clear();
   console.log('The player walked into the east room');
   $('#map-info').append("The player walked into the east room" + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation += 5;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
   combatEncounter(myNum);
@@ -866,7 +895,7 @@ function exitCombat() {
 }
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
-let dungeonOne = new Floor(8, 8);// 64 tile grid
+let dungeonOne = new Floor(5, 5);// 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
