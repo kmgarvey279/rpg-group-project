@@ -538,6 +538,7 @@ class Player {
     this.alive = true;
     //Player Inventory
     this.potions = 2;
+    this.keyAmount = 0;
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
@@ -847,10 +848,12 @@ Player.prototype.takeDamage = function takeDamage(damageTaken) {
 //Player item functions
 Player.prototype.addPotion = function addPotion() {
   this.potions = this.potions + 1;
+  $("#potion-total").append(this.potions);
 }
 
 Player.prototype.usePotion = function usePotion() {
   this.potions = this.potions - 1;
+  $("#potion-total").append(this.potions);
   if ((this.maxHP - this.currentHP) < 10) {
     this.currentHP = this.maxHP
   } else {
@@ -1062,7 +1065,9 @@ function lootCheck(myBool){
   }
   if(dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey){
     console.log('You spot a shiny key on the floor and decide to hold onto it...');
+    $("#combat-log").append("<br>" + playerOne.name + "spoted a shiny key on the floor and decided to hold onto it...");
     playerOne.keyAmount++;
+    $("#key-total").append(playerOne.keyAmount);
   }
 }
 
