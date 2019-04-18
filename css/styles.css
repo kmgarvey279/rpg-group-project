@@ -1,7 +1,7 @@
 body {
   color: #eeffc9;
   background-color: #181816;
-  font-family: fantasy;
+  /* font-family: fantasy; */
 
 }
 
@@ -83,9 +83,6 @@ h1#select-page {
   margin: 50px;
 }
 
-#first-text {
-  margin: 50px;
-}
 
 .start-UI {
   display: none;
@@ -127,14 +124,17 @@ h1#select-page {
 #combat-panel {
   color: white;
   background-color: transparent;
-  width: 1000px;
+  width: inherit;
   height: 230px;
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
   font-family: Garamond, serif;
   font-size: 22px;
+  margin: 0;
+  padding: 0;
 }
+
 
 #combat-panel::-webkit-scrollbar {
    width: 12px;
@@ -206,15 +206,28 @@ h1#select-page {
   margin: 5px;
 }
 
-/* .jumbotron {
-  background-image: url("../img/DRDungeon.png");
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  border: transparent;
-  padding: 4rem 2rem;
-} */
+#northButton, #southButton, #eastButton, #westButton {
+  border-top: 1px solid #f4f797;
+  background: #aba387;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f2a4), to(#aba387));
+  background: -webkit-linear-gradient(top, #f5f2a4, #aba387);
+  background: -moz-linear-gradient(top, #f5f2a4, #aba387);
+  background: -ms-linear-gradient(top, #f5f2a4, #aba387);
+  background: -o-linear-gradient(top, #f5f2a4, #aba387);
+  padding: 13.5px 27px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
+  color: #292129;
+  font-size: 20px;
+  font-family: Garamond, serif;
+  text-decoration: none;
+  vertical-align: middle;
+  width: 220px;
+  height: 50px;
+  margin: 5px;
+}
+
 #player-name-display {
   font-weight: bold;
 }
