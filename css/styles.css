@@ -401,3 +401,10 @@ p#first-text {
 .grid-item {
   text-align: center;
 }
+
+.icon {
+  height: 100px;
+  weight: 100px;
+  margin-bottom: 40px;
+  margin-left: 20px;
+}

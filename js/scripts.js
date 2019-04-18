@@ -67,7 +67,9 @@ class MovementState extends IState{
 
   Enter(){
     $(".combat-UI").hide();
-    $(".dungeon-UI").show()
+    $(".dungeon-UI").show();
+    $("#potion-total").empty().append(playerOne.potions);
+    $("#key-total").empty().append(playerOne.keyAmount);
   };
   Exit(){
     $(".dungeon-UI").hide();
@@ -579,6 +581,7 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
       console.log('The door is locked but you have a key, would you like to open it?');
       floorObj.roomArr[this.y - 1][this.x].isLocked = false;
       this.keyAmount--;
+      $("#key-total").empty().append(this.keyAmount);
       this.moveNorth(floorObj);
       return;
     }
@@ -625,6 +628,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
       this.keyAmount--;
+      $("#key-total").empty().append(this.keyAmount);
       floorObj.roomArr[this.y][this.x - 1].isLocked = false;
       this.moveWest(floorObj);
       return;
@@ -672,6 +676,7 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
       this.keyAmount--;
+      $("#key-total").empty().append(this.keyAmount);
       floorObj.roomArr[this.y + 1][this.x].isLocked = false;
       this.moveSouth(floorObj);
       return;
@@ -719,6 +724,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
     if(this.keyAmount > 0){
       console.log('The door is locked but you have a key, would you like to open it?');
       this.keyAmount--;
+      $("#key-total").empty().append(this.keyAmount);
       floorObj.roomArr[this.y][this.x + 1].isLocked = false;
       this.moveEast(floorObj);
       return;
@@ -848,12 +854,12 @@ Player.prototype.takeDamage = function takeDamage(damageTaken) {
 //Player item functions
 Player.prototype.addPotion = function addPotion() {
   this.potions = this.potions + 1;
-  $("#potion-total").append(this.potions);
+  $("#potion-total").empty().append(this.potions);
 }
 
 Player.prototype.usePotion = function usePotion() {
   this.potions = this.potions - 1;
-  $("#potion-total").append(this.potions);
+  $("#potion-total").empty().append(this.potions);
   if ((this.maxHP - this.currentHP) < 10) {
     this.currentHP = this.maxHP
   } else {
@@ -911,7 +917,7 @@ Enemy.prototype.getStats = function getStats() {
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
-    this.strength = 10;
+    this.strength = 6;
     this.speed = 4;
     this.weapon = "firebreath";
     $("#enemy-image").empty().append('<img src="img/enemies/dragon3png.png" weight="600px" height="600px" />');
@@ -1065,9 +1071,9 @@ function lootCheck(myBool){
   }
   if(dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey){
     console.log('You spot a shiny key on the floor and decide to hold onto it...');
-    $("#combat-log").append("<br>" + playerOne.name + "spoted a shiny key on the floor and decided to hold onto it...");
+    $("#map-info").append("<br>" + playerOne.name + "spoted a shiny key on the floor and decided to hold onto it...");
     playerOne.keyAmount++;
-    $("#key-total").append(playerOne.keyAmount);
+    $("#key-total").empty().append(playerOne.keyAmount);
   }
 }
 
