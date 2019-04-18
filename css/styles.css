@@ -184,7 +184,7 @@ h1#select-page {
 
 
 
-#attack-combat, #special-combat, #potion-combat, #run-combat {
+#attack-combat, #special-combat, #potion-combat, #run-combat, #northButton, #southButton, #eastButton, #westButton  {
   border-top: 1px solid #f4f797;
   background: #aba387;
   background: -webkit-gradient(linear, left top, left bottom, from(#f5f2a4), to(#aba387));
@@ -369,5 +369,15 @@ p#first-text {
 }
 
 .container {
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 130px);
+  grid-template-rows: repeat(3, 90px);
+
+}
+.grid-item {
   text-align: center;
 }

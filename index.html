@@ -153,25 +153,24 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="northButton">North</button>
+                  <div class="col-md-6">
+                    <div class="grid-container">
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="northButton">North</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="southButton">South</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="eastButton">East</button></div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item"><button type="button" class="clickable btn" id="westButton">West</button></div>
+                      <div class="grid-item"></div>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="eastButton">East</button>
+                  <div class="col-md-6">
+                    <div class="panel-body" id="map-panel">
+                      <span id="map-info"></span>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="southButton">South</button>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-2">
-                    <button type="button" class="clickable btn" id="westButton">West</button>
-                  </div>
-                </div>
-                <div class="panel-body" id="map-panel">
-                  <span id="map-info"></span>
                 </div>
               </div>
             </div>
@@ -218,5 +217,4 @@
         </div>
       </div>
   </body>
-
 </html>
