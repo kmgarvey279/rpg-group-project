@@ -410,12 +410,12 @@ Player.prototype.moveGrid = function moveGrid(direction, floorObj){
 Player.prototype.moveNorth = function moveNorth(floorObj){
   if(this.y - 1 < 0|| typeof floorObj.roomArr[this.y - 1][this.x] != 'object'){
     console.log('The player runs into a wall and does not move');
-    $('#map-info').append('The player runs into a wall and does not move' + "<br>");
+    $('#map-info').append(playerOne + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if(floorObj.roomArr[this.y - 1][this.x].isImport){
     console.log('You need a key to enter this room');
-    $('#map-info').append('You need a key to enter this room' + "<br>");
+    $('#map-info').append(playerOne + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation - 1;
     $("#box" + boxToMark).addClass("locked");
     return;
@@ -425,7 +425,7 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the north room');
-  $('#map-info').append('The player walked into the north room' + "<br>");
+  $('#map-info').append(playerOne + ' traveled north' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
   this.mapLocation -= 1;
@@ -438,12 +438,12 @@ Player.prototype.moveNorth = function moveNorth(floorObj){
 Player.prototype.moveWest = function moveWest(floorObj){
   if(this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object'){
     console.log('The player runs into a wall and does not move');
-    $('#map-info').append('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if(floorObj.roomArr[this.y][this.x - 1].isImport){
     console.log('You need a key to enter this room');
-    $('#map-info').append('You need a key to enter this room');
+    $('#map-info').append(playerOne + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation - 5;
     $("#box" + boxToMark).addClass("locked");
     return;
@@ -453,7 +453,7 @@ Player.prototype.moveWest = function moveWest(floorObj){
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the west room');
-  $('#map-info').append('The player walked into the west room');
+  $('#map-info').append(playerOne + ' traveled west' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
   this.mapLocation -= 5;
@@ -466,12 +466,12 @@ Player.prototype.moveWest = function moveWest(floorObj){
 Player.prototype.moveSouth = function moveSouth(floorObj){
   if(this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object'){
     console.log('The player runs into a wall and does not move');
-    $('#map-info').append('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if(floorObj.roomArr[this.y + 1][this.x].isImport){
     console.log('You need a key to enter this room');
-    $('#map-info').append('You need a key to enter this room');
+    $('#map-info').append(playerOne + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation + 1;
     $("#box" + boxToMark).addClass("locked");
     return;
@@ -481,7 +481,7 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the south room');
-  $('#map-info').append('The player walked into the south room');
+  $('#map-info').append(playerOne + ' traveled south' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
   this.mapLocation += 1;
@@ -494,12 +494,12 @@ Player.prototype.moveSouth = function moveSouth(floorObj){
 Player.prototype.moveEast = function moveEast(floorObj){
   if(this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object'){
     console.log('The player runs into a wall and does not move');
-    $('#map-info').append('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if(floorObj.roomArr[this.y][this.x + 1].isImport){
     console.log('You need a key to enter this room');
-    $('#map-info').append('You need a key to enter this room');
+    $('#map-info').append(playerOne + ' needs a key to enter this room' + "<br>");
     var boxToMark = this.mapLocation + 5;
     $("#box" + boxToMark).addClass("locked");
     return;
@@ -509,7 +509,7 @@ Player.prototype.moveEast = function moveEast(floorObj){
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the east room');
-  $('#map-info').append("The player walked into the east room" + "<br>");
+  $('#map-info').append(playerOne + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
   this.mapLocation += 5;

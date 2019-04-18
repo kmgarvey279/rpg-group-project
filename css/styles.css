@@ -119,6 +119,20 @@ h1{
 
 .box.locked {
   background-color: silver;
+  background-image: url("../img/Keyhole-PNG-Picture.png");
+  background-size: contain;
+}
+
+.box.weapon {
+  background-color: lightblue;
+  background-image: url("../img/sword_icon.png");
+  background-size: contain;
+}
+
+.box.potion {
+  background-color: lightgreen;
+  background-image: url("../img/potion_icon.png");
+  background-size: contain;
 }
 
 .box {
