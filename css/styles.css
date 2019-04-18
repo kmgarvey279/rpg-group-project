@@ -366,6 +366,7 @@ p#first-text {
   grid-template-rows: repeat(8, 70px);
   grid-auto-flow: column;
   align-content: center;
+  margin-top: 30px;
 }
 
 .container {
