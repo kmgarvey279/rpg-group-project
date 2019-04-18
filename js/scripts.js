@@ -537,7 +537,7 @@ class Player {
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
-    this.mapLocation = 5;
+    this.mapLocation = 8;
   }
 }
 
@@ -599,7 +599,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   if (floorObj.roomArr[this.y][this.x - 1].isImport) {
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
-    var boxToMark = this.mapLocation - 5;
+    var boxToMark = this.mapLocation - 8;
     $("#box" + boxToMark).addClass("locked");
     return;
   }
@@ -611,7 +611,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   $('#map-info').append(playerOne.name + ' traveled west' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
-  this.mapLocation -= 5;
+  this.mapLocation -= 8;
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
@@ -659,7 +659,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   if (floorObj.roomArr[this.y][this.x + 1].isImport) {
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
-    var boxToMark = this.mapLocation + 5;
+    var boxToMark = this.mapLocation + 8;
     $("#box" + boxToMark).addClass("locked");
     return;
   }
@@ -671,7 +671,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
   $("#box" + this.mapLocation).addClass("explored");
-  this.mapLocation += 5;
+  this.mapLocation += 8;
   $("#box" + this.mapLocation).removeClass("explored");
   $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
@@ -1094,6 +1094,7 @@ printFloor(dungeonOne);
 
 //User input logic
 $(document).ready(function() {
+  $("#box8").addClass("current");
   $("#character-img").hide();
   $("#archer-info").hide();
   $("#wizard-info").hide();

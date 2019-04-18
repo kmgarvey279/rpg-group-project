@@ -82,43 +82,102 @@
           </form>
         </div>
 
-      <div class="dungeon-UI">
-        <div class="wrapper">
-          <div class="box" id="box1"></div>
-          <div class="box" id="box2"></div>
-          <div class="box" id="box3"></div>
-          <div class="box" id="box4"></div>
-          <div class="box" id="box5"></div>
-          <div class="box" id="box6"></div>
-          <div class="box" id="box7"></div>
-          <div class="box" id="box8"></div>
-          <div class="box" id="box9"></div>
-          <div class="box" id="box10"></div>
-          <div class="box" id="box11"></div>
-          <div class="box" id="box12"></div>
-          <div class="box" id="box13"></div>
-          <div class="box" id="box14"></div>
-          <div class="box" id="box15"></div>
-          <div class="box" id="box16"></div>
-          <div class="box" id="box17"></div>
-          <div class="box" id="box18"></div>
-          <div class="box" id="box19"></div>
-          <div class="box" id="box20"></div>
-          <div class="box" id="box21"></div>
-          <div class="box" id="box22"></div>
-          <div class="box" id="box23"></div>
-          <div class="box" id="box24"></div>
-          <div class="box" id="box25"></div>
+        <div class="container">
+          <div class="dungeon-UI">
+            <div class="wrapper">
+              <div class="box" id="box1"></div>
+              <div class="box" id="box2"></div>
+              <div class="box" id="box3"></div>
+              <div class="box" id="box4"></div>
+              <div class="box" id="box5"></div>
+              <div class="box" id="box6"></div>
+              <div class="box" id="box7"></div>
+              <div class="box" id="box8"></div>
+              <div class="box" id="box9"></div>
+              <div class="box" id="box10"></div>
+              <div class="box" id="box11"></div>
+              <div class="box" id="box12"></div>
+              <div class="box" id="box13"></div>
+              <div class="box" id="box14"></div>
+              <div class="box" id="box15"></div>
+              <div class="box" id="box16"></div>
+              <div class="box" id="box17"></div>
+              <div class="box" id="box18"></div>
+              <div class="box" id="box19"></div>
+              <div class="box" id="box20"></div>
+              <div class="box" id="box21"></div>
+              <div class="box" id="box22"></div>
+              <div class="box" id="box23"></div>
+              <div class="box" id="box24"></div>
+              <div class="box" id="box25"></div>
+              <div class="box" id="box26"></div>
+              <div class="box" id="box27"></div>
+              <div class="box" id="box28"></div>
+              <div class="box" id="box29"></div>
+              <div class="box" id="box30"></div>
+              <div class="box" id="box31"></div>
+              <div class="box" id="box32"></div>
+              <div class="box" id="box33"></div>
+              <div class="box" id="box34"></div>
+              <div class="box" id="box35"></div>
+              <div class="box" id="box36"></div>
+              <div class="box" id="box37"></div>
+              <div class="box" id="box38"></div>
+              <div class="box" id="box39"></div>
+              <div class="box" id="box40"></div>
+              <div class="box" id="box41"></div>
+              <div class="box" id="box42"></div>
+              <div class="box" id="box43"></div>
+              <div class="box" id="box44"></div>
+              <div class="box" id="box45"></div>
+              <div class="box" id="box46"></div>
+              <div class="box" id="box47"></div>
+              <div class="box" id="box48"></div>
+              <div class="box" id="box49"></div>
+              <div class="box" id="box50"></div>
+              <div class="box" id="box51"></div>
+              <div class="box" id="box52"></div>
+              <div class="box" id="box53"></div>
+              <div class="box" id="box54"></div>
+              <div class="box" id="box55"></div>
+              <div class="box" id="box56"></div>
+              <div class="box" id="box57"></div>
+              <div class="box" id="box58"></div>
+              <div class="box" id="box59"></div>
+              <div class="box" id="box60"></div>
+              <div class="box" id="box61"></div>
+              <div class="box" id="box62"></div>
+              <div class="box" id="box63"></div>
+              <div class="box" id="box64"></div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="northButton">North</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="eastButton">East</button>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="southButton">South</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="clickable btn" id="westButton">West</button>
+                  </div>
+                </div>
+                <div class="panel-body" id="map-panel">
+                  <span id="map-info"></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button type="button" class="clickable" id="northButton">North</button>
-        <button type="button" class="clickable" id="westButton">West</button>
-        <button type="button" class="clickable" id="southButton">South</button>
-        <button type="button" class="clickable" id="eastButton">East</button>
-        <br>
-        <div class="panel-body" id="map-panel">
-          <span id="map-info"></span>
-        </div>
-      </div>
+
 
       <div class="combat-UI">
         <div class="jumbotron">
@@ -141,10 +200,10 @@
                 <progress id="enemy-health" value="100" max="100"></progress>
               </div>
               <div class="col-md-4">
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="attack-combat">Attack</button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="special-combat"><span id="special-name"></span></button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="potion-combat">Use Potion</button>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="run-combat">Run</button>
+                <button type="button" class="btn" id="attack-combat">Attack</button>
+                <button type="button" class="btn" id="special-combat"><span id="special-name"></span></button>
+                <button type="button" class="btn" id="potion-combat">Use Potion</button>
+                <button type="button" class="btn" id="run-combat">Run</button>
               </div>
               <div class="col-md-4">
                 <div class="panel-body" id="combat-panel">

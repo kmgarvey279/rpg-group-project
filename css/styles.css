@@ -362,7 +362,12 @@ p#first-text {
   width: 600px;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(5, 70px);
-  grid-template-rows: repeat(5, 70px);
+  grid-template-columns: repeat(8, 70px);
+  grid-template-rows: repeat(8, 70px);
   grid-auto-flow: column;
+  align-content: center;
+}
+
+.container {
+  text-align: center;
 }
