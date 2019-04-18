@@ -4,55 +4,98 @@ body {
   font-family: fantasy;
 
 }
-.landing-UI{
+
+.landing-UI {
   color: #eeffc9;
   font-family: fantasy;
   position: absolute;
   text-align: center;
   font-size: 20px;
-
 }
-#landing-dungeon-entrance{
+
+#landing-dungeon-entrance {
   max-width: 100%;
-  height:auto;
+  height: auto;
 }
 
-#landing-title{
+#landing-title {
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   position: absolute;
 }
 
-h1{
+h1 {
   font-size: 200px;
+  font-family: fantasy;
   color: inherit;
 }
 
-
-#start-button{
-  margin-top: 40px;
-  background-color: #eeffc9;
-  color: #181816;
-  font-weight: bold;
+h6.name {
+  font-size: 40px;
+  font-family: fantasy;
 }
 
-#first{
-  margin-top: 50px;
+h1#select-page {
+  font-size: 50px;
+  color: inherit;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  border-radius: 8px;
+  box-shadow: 1px 1px 28px 2px #eeffc9;
+  -webkit-box-shadow: 1px 1px 28px 2px #eeffc9;
+}
 
+#start-button, #start-game {
+  border-top: 1px solid #f4f797;
+  background: #aba387;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f2a4), to(#aba387));
+  background: -webkit-linear-gradient(top, #f5f2a4, #aba387);
+  background: -moz-linear-gradient(top, #f5f2a4, #aba387);
+  background: -ms-linear-gradient(top, #f5f2a4, #aba387);
+  background: -o-linear-gradient(top, #f5f2a4, #aba387);
+  padding: 13.5px 27px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
+  color: #292129;
+  font-size: 20px;
+  font-family: Garamond, serif;
+  text-decoration: none;
+  vertical-align: middle;
+  margin-bottom: 50px;
+}
+
+#start-game {
+  margin-top: 70px;
+}
+
+.panel {
+  margin: 50px;
+}
+
+#first-text {
+  margin: 50px;
+}
 
 .start-UI {
   display: none;
 }
 
-
-/* resize images */
+/* resize characters images */
 .character-select img {
   display: block;
-  max-width:1000px;
-  max-height:800px;
+  max-width: 800px;
+  max-height: 650px;
   width: auto;
   height: auto;
 }
@@ -69,9 +112,10 @@ h1{
   color: darkred;
 }
 
-.panel-body {
-  background-color: grey;
-  border: 4px solid darkgray;
+#action-panel {
+  background-color: transparent;
+  box-shadow: 1px 1px 28px 2px #5e97aa;
+  -webkit-box-shadow: 1px 1px 28px 2px #5e97aa;
   padding: 10px;
 }
 
@@ -81,23 +125,66 @@ h1{
 }
 
 #combat-panel {
-  color: black;
-  background-color: lightgray;
-  width: 400px;
-  height: 217px;
+  color: white;
+  background-color: transparent;
+  width: 1000px;
+  height: 230px;
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
+  font-family: Garamond, serif;
+  font-size: 22px;
 }
 
-.jumbotron {
+#combat-panel::-webkit-scrollbar {
+   width: 12px;
+}
+
+#combat-panel::-webkit-scrollbar-track  {
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+   -webkit-border-radius: 10px;
+   border-radius: 10px;
+}
+
+#combat-panel::-webkit-scrollbar-thumb  {
+   -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #e8ebef;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+ }
+
+
+#attack-combat, #special-combat, #potion-combat, #run-combat {
+  border-top: 1px solid #f4f797;
+  background: #aba387;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f2a4), to(#aba387));
+  background: -webkit-linear-gradient(top, #f5f2a4, #aba387);
+  background: -moz-linear-gradient(top, #f5f2a4, #aba387);
+  background: -ms-linear-gradient(top, #f5f2a4, #aba387);
+  background: -o-linear-gradient(top, #f5f2a4, #aba387);
+  padding: 13.5px 27px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
+  color: #292129;
+  font-size: 20px;
+  font-family: Garamond, serif;
+  text-decoration: none;
+  vertical-align: middle;
+  width: 220px;
+  height: 50px;
+  margin: 5px;
+}
+
+/* .jumbotron {
   background-image: url("../img/DRDungeon.png");
+  background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  border: 4px solid darkgray;
-}
-
+  border: transparent;
+  padding: 4rem 2rem;
+} */
 #player-name-display {
   font-weight: bold;
 }
@@ -107,7 +194,105 @@ h1{
 }
 
 #enemy-image {
-  float:right;
+  float: right;
+}
+
+#player-stats {
+  padding-left: 55px;
+}
+
+#enemy-stats {
+  padding-left: 440px;
+}
+
+#character-avatar {
+  padding-left: 80px;
+  margin-bottom: 50px;
+}
+
+#combat-images {
+  margin-top: 70px;
+}
+
+#enemy-image {
+  padding-right: 80px;
+  margin-bottom: 50px;
+}
+
+progress {
+  height: 9px;
+  border: 0px none;
+  background-color: #e8ebef;
+  color: #fc2323;
+}
+
+progress::-webkit-progress-value {
+  background-color: #fc2323;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #e8ebef;
+}
+
+progress#player-magic::-webkit-progress-bar {
+  background-color: #e8ebef;
+}
+
+progress#player-magic::-webkit-progress-value {
+  background-color: #5dc1e2;
+}
+
+progress#player-magic {
+  height: 9px;
+  border: 0px none;
+  background-color: #e8ebef;
+  color: #5dc1e2;
+}
+
+input[type=text] {
+  border: none;
+  border-bottom: 2px solid #eeffc9;
+  background-color: transparent;
+  color: white;
+}
+
+input[type=text]:active, input[type=text]:focus {
+  background-color: transparent;
+  box-shadow: 1px 1px 28px 2px #eeffc9;
+  -webkit-box-shadow: 1px 1px 28px 2px #eeffc9;
+}
+
+ul {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+li.section span.title {
+  /* margin: 0; */
+  color: #5e97aa;
+  font-family: Garamond, serif;
+  font-size: 20px;
+}
+
+p {
+  font-family: Garamond, serif;
+  font-size: 20px;
+}
+
+p#first-text {
+  font-family: fantasy;
+}
+
+.form-control {
+  width: 526px;
+}
+
+#character-img {
+  margin-top: 15px;
+}
+
+#create-character {
+  margin-left: 50px;
 }
 
 .box.current {
