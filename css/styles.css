@@ -153,6 +153,36 @@ h1#select-page {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
  }
 
+ #map-panel {
+   color: white;
+   background-color: transparent;
+   width: 1000px;
+   height: 230px;
+   overflow: auto;
+   display: flex;
+   flex-direction: column-reverse;
+   font-family: Garamond, serif;
+   font-size: 22px;
+ }
+
+ #map-panel::-webkit-scrollbar {
+    width: 12px;
+ }
+
+ #map-panel::-webkit-scrollbar-track  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+ }
+
+ #map-panel::-webkit-scrollbar-thumb  {
+    -webkit-border-radius: 10px;
+     border-radius: 10px;
+     background: #e8ebef;
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  }
+
+
 
 #attack-combat, #special-combat, #potion-combat, #run-combat {
   border-top: 1px solid #f4f797;

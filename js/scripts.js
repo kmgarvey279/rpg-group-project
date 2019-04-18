@@ -1087,7 +1087,6 @@ $(document).ready(function() {
     playerOne.name = $("#character-name").val();
     playerOne.getStats();
     $("#special-name").append(playerOne.specialName);
-    combatBegin(playerOne, enemyGolem);
   });
   $("#attack-combat").click(function(event) {
     event.preventDefault();
