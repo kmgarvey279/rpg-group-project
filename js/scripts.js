@@ -726,7 +726,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   console.clear();
   console.log('The player walked into the east room');
   if(floorObj.roomArr[this.y][this.x].containsBoss){
-    combatEncounter(, true);
+    combatEncounter(false, true);
   }
   $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
   $("#box" + this.mapLocation).removeClass("current");
