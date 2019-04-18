@@ -156,13 +156,15 @@ h1#select-page {
  #map-panel {
    color: white;
    background-color: transparent;
-   width: 1000px;
+   width: inherit;
    height: 230px;
    overflow: auto;
    display: flex;
    flex-direction: column-reverse;
    font-family: Garamond, serif;
    font-size: 22px;
+   margin: 0;
+   padding: 0;
  }
 
  #map-panel::-webkit-scrollbar {

@@ -572,9 +572,13 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   if (this.y - 1 < 0 || typeof floorObj.roomArr[this.y - 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
-    var boxToMark = this.mapLocation - 1;
-    $("#box" + boxToMark).addClass("wall");
-    return;
+    if (this.mapLocation === 1 || 9 || 17 || 25 || 33 || 41 || 49 || 57) {
+      return;
+    } else {
+      var boxToMark = this.mapLocation - 1;
+      $("#box" + boxToMark).addClass("wall");
+      return;
+    }
   }
   if (floorObj.roomArr[this.y - 1][this.x].isLocked) {
     if(this.keyAmount > 0){
@@ -668,9 +672,13 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   if (this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
     $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
-    var boxToMark = this.mapLocation + 1;
-    $("#box" + boxToMark).addClass("wall");
-    return;
+    if (this.mapLocation === 8 || 16 || 24 || 32 || 40 || 48 || 56 || 64) {
+      return;
+    } else {
+      var boxToMark = this.mapLocation + 1;
+      $("#box" + boxToMark).addClass("wall");
+      return;
+    }
   }
   if (floorObj.roomArr[this.y + 1][this.x].isLocked) {
     if(this.keyAmount > 0){
