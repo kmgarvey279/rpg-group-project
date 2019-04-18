@@ -25,22 +25,61 @@ body {
 
 h1{
   font-size: 200px;
+  font-family: fantasy;
   color: inherit;
 }
 
-
-#start-button{
-  margin-top: 40px;
-  background-color: #eeffc9;
-  color: #181816;
-  font-weight: bold;
+h6.name {
+  font-size: 40px;
+  font-family: fantasy;
 }
 
-#first{
+h1#select-page {
+ font-size: 50px;
+ color: inherit;
+ text-align: center;
+ margin-top: 30px;
+ margin-bottom: 30px;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+ /* changed */
+ /* outline: 3px solid #eeffc9;
+ outline-offset: -2px; */
+ border-radius: 8px;
+ box-shadow: 1px 1px 28px 2px #eeffc9;
+ -webkit-box-shadow: 1px 1px 28px 2px #eeffc9;
+}
+
+#start-button, #start-game {
+
+     border-top: 1px solid #f4f797;
+     background: #aba387;
+     background: -webkit-gradient(linear, left top, left bottom, from(#f5f2a4), to(#aba387));
+     background: -webkit-linear-gradient(top, #f5f2a4, #aba387);
+     background: -moz-linear-gradient(top, #f5f2a4, #aba387);
+     background: -ms-linear-gradient(top, #f5f2a4, #aba387);
+     background: -o-linear-gradient(top, #f5f2a4, #aba387);
+     padding: 13.5px 27px;
+     -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+     text-shadow: rgba(0,0,0,.4) 0 1px 0;
+     color: #292129;
+     font-size: 19px;
+     font-family: Georgia, serif;
+     text-decoration: none;
+     vertical-align: middle;
+     }
+
+#first-text{
   margin-top: 50px;
+  margin-bottom: 50px;
 }
-
-
 
 .start-UI {
   display: none;
@@ -50,8 +89,8 @@ h1{
 /* resize images */
 .character-select img {
   display: block;
-  max-width:1000px;
-  max-height:800px;
+  max-width:800px;
+  max-height:650px;
   width: auto;
   height: auto;
 }
@@ -90,11 +129,13 @@ h1{
 }
 
 .jumbotron {
-  background-image: url("../img/DRDungeon.png");
+  /* background-image: url("../img/DRDungeon.png"); */
+  background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  border: 4px solid darkgray;
+  border: transparent;
+  padding: 4rem 2rem;
 }
 
 #player-name-display {
@@ -107,4 +148,60 @@ h1{
 
 #enemy-image {
   float:right;
+}
+
+#player-stats {
+  margin-top: 30px;
+  padding-left: 55px;
+}
+
+#enemy-stats {
+  margin-top: 30px;
+  padding-left: 440px;
+}
+
+#character-avatar {
+  padding-left: 80px;
+  margin-bottom: 50px;
+}
+
+#enemy-image {
+  padding-right: 80px;
+  margin-bottom: 50px;
+}
+
+progress {
+	height: 9px;
+	border: 0px none;
+	background-color: grey;
+	color: #fc2323;
+}
+
+progress::-webkit-progress-bar {
+	background-color: grey;
+}
+progress::-webkit-progress-value {
+	background-color: #fc2323;
+}
+
+progress::-moz-progress-bar {
+	background-color: #fc2323;
+}
+
+progress#player-magic {
+	height: 9px;
+	border: 0px none;
+	background-color: grey;
+	color: #3b96f7;
+}
+
+progress#player-magic::-webkit-progress-bar {
+	background-color: grey;
+}
+progress#player-magic::-webkit-progress-value {
+	background-color: #3b96f7;
+}
+
+progress#player-magic::-moz-progress-bar {
+	background-color: #3b96f7;
 }

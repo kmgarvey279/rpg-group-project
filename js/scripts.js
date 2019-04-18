@@ -479,9 +479,10 @@ Player.prototype.moveEast = function moveEast(floorObj){
   combatEncounter(myNum);
 }
 
+// Characters size in combat mode
 Player.prototype.getStats = function getStats(){
   if (this.job === "warrior") {
-    $("#character-avatar").append('<img src="img/heros/warrior.png" weight="400px" height="400px" />');
+    $("#character-avatar").append('<img src="img/heros/warrior.png" weight="500px" height="500px" />');
     this.maxHP = 20;
     this.currentHP = 20;
     this.maxMP = 10;
@@ -496,7 +497,7 @@ Player.prototype.getStats = function getStats(){
       return "guard";
     };
   } else if (this.job === "wizard"){
-    $("#character-avatar").append('<img src="img/heros/wizard.png" weight="400px" height="400px" />');
+    $("#character-avatar").append('<img src="img/heros/wizard.png" weight="500px" height="500px" />');
     this.maxHP = 10;
     this.currentHP = 10;
     this.maxMP = 10;
@@ -512,7 +513,7 @@ Player.prototype.getStats = function getStats(){
       return "fireball";
     };
   } else if (this.job === "archer"){
-    $("#character-avatar").append('<img src="img/heros/archer2.png" weight="400px" height="400px" />');
+    $("#character-avatar").append('<img src="img/heros/archer2.png" weight="500px" height="500px" />');
     this.maxHP = 15;
     this.currentHP = 15;
     this.maxMP = 10;
@@ -599,6 +600,7 @@ class Enemy{
   }
 }
 
+// Enemies size in combat mode
 Enemy.prototype.getStats = function getStats(){
   if (this.type === "Imp") {
     this.maxHP = 6;
@@ -606,28 +608,28 @@ Enemy.prototype.getStats = function getStats(){
     this.strength = 1;
     this.speed = 1;
     this.weapon = "fangs";
-    $("#enemy-image").empty().append('<img src="img/enemies/imp2.png" weight="400px" height="400px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/imp2.png" weight="300px" height="300px" />');
   } else if (this.type === "Golem") {
     this.maxHP = 15;
     this.currentHP = 15;
     this.strength = 4;
     this.speed = 2;
     this.weapon = "club";
-    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="400px" height="400px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="600px" height="600px" />');
   } else if (this.type === "Undead") {
     this.maxHP = 10;
     this.currentHP = 10;
     this.strength = 4;
     this.speed = 10;
     this.weapon = "dark aura";
-    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="400px" height="400px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="600px" height="600px" />');
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
     this.strength = 10;
     this.speed = 4;
     this.weapon = "firebreath";
-    $("#enemy-image").empty().append('<img src="img/enemies/dragon3png.png" weight="400px" height="400px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/dragon3png.png" weight="800px" height="800px" />');
   }
 }
 
@@ -875,6 +877,7 @@ $(document).ready(function() {
   $("#archer-info").hide();
   $("#wizard-info").hide();
   $("#warrior-info").hide();
+  $("#select-page").hide();
 
   $('.clickable').click(function(){
     var value = $(this).html();
@@ -885,6 +888,7 @@ $(document).ready(function() {
   $("#start-button").click(function(){
     $(".landing-UI").hide();
     $("#character-img").show();
+    $("#select-page").show();
   });
 
   $('.character-image').click(function(){
@@ -911,8 +915,10 @@ $(document).ready(function() {
     }
   });
 
+// To have battle with other enemy - change name in enemyImp
   $("#start-game").click(function(event) {
     event.preventDefault();
+    $("#select-page").hide();
     $(".start-UI").hide();
     $(".dungeon-UI").show()
     $("#archer-info").hide();
@@ -926,7 +932,7 @@ $(document).ready(function() {
     playerOne.name = $("#character-name").val();
     playerOne.getStats();
     $("#special-name").append(playerOne.specialName);
-    combatBegin(playerOne, enemyImp);
+    combatBegin(playerOne, enemyGolem);
   });
   $("#attack-combat").click(function(event) {
     event.preventDefault();
