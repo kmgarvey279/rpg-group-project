@@ -1214,7 +1214,7 @@ $(document).ready(function() {
     }
   });
 
-  // To have battle with other enemy - change name in enemyImp
+  // To have battle with a particular enemy - change name in enemy[type]
   $("#start-game").click(function(event) {
     event.preventDefault();
     combatBegin(playerOne, enemyImp);
