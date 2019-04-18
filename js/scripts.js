@@ -739,15 +739,15 @@ Enemy.prototype.getStats = function getStats(){
     this.currentHP = 15;
     this.strength = 4;
     this.speed = 2;
-    this.weapon = "club";
-    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="400px" height="400px" />');
+    this.weapon = "fist";
+    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="400px" height="400px" />');
   } else if (this.type === "Undead") {
     this.maxHP = 10;
     this.currentHP = 10;
     this.strength = 4;
     this.speed = 10;
     this.weapon = "dark aura";
-    $("#enemy-image").empty().append('<img src="img/enemies/golem.png" weight="400px" height="400px" />');
+    $("#enemy-image").empty().append('<img src="img/enemies/undead.png" weight="400px" height="400px" />');
   } else if (this.type === "Dragon") {
     this.maxHP = 20;
     this.currentHP = 20;
