@@ -685,12 +685,12 @@ Player.prototype.moveEast = function moveEast(floorObj) {
 Player.prototype.getStats = function getStats() {
   if (this.job === "warrior") {
     $("#character-avatar").append('<img src="img/heros/warrior.png" weight="500px" height="500px" />');
-    this.maxHP = 20;
-    this.currentHP = 20;
+    this.maxHP = 25;
+    this.currentHP = 25;
     this.maxMP = 10;
     this.currentMP = 10;
     this.strength = 5;
-    this.speed = 3;
+    this.speed = 2;
     this.weapon = "rusted sword";
     this.specialName = "Guard";
     this.special = function special() {
@@ -702,10 +702,10 @@ Player.prototype.getStats = function getStats() {
     };
   } else if (this.job === "wizard") {
     $("#character-avatar").append('<img src="img/heros/wizard.png" weight="500px" height="500px" />');
-    this.maxHP = 10;
-    this.currentHP = 10;
-    this.maxMP = 10;
-    this.currentMP = 10;
+    this.maxHP = 15;
+    this.currentHP = 15;
+    this.maxMP = 15;
+    this.currentMP = 15;
     this.strength = 2;
     this.speed = 4;
     this.weapon = "wooden staff";
@@ -720,8 +720,8 @@ Player.prototype.getStats = function getStats() {
     };
   } else if (this.job === "archer") {
     $("#character-avatar").append('<img src="img/heros/archer2.png" weight="500px" height="500px" />');
-    this.maxHP = 15;
-    this.currentHP = 15;
+    this.maxHP = 20;
+    this.currentHP = 20;
     this.maxMP = 10;
     this.currentMP = 10;
     this.strength = 3;
@@ -763,7 +763,7 @@ Player.prototype.takeDamage = function takeDamage(damageTaken) {
   let health = document.getElementById("player-health");
   health.value -= damageTaken;
   if (this.currentHP < 0) {
-    this.currentHp = 0;
+    this.currentHP = 0;
   }
   $("#player-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
   if (this.currentHP === 0) {
@@ -778,13 +778,20 @@ Player.prototype.addPotion = function addPotion() {
 
 Player.prototype.usePotion = function usePotion() {
   this.potions = this.potions - 1;
-  if ((this.maxHP - this.currentHP) < 8) {
+  if ((this.maxHP - this.currentHP) < 10) {
     this.currentHP = this.maxHP
   } else {
-    this.currentHP = this.currentHP + 8;
+    this.currentHP = this.currentHP + 10;
   }
   let health = document.getElementById("player-health");
-  health.value += 8;
+  health.value += 10;
+  if ((this.maxMP - this.currentMP) < 5) {
+    this.currentMP = this.maxMP;
+  } else {
+    this.currentMP = this.currentMP + 5;
+  }
+  let magic = document.getElementById("player-magic");
+  magic.value += 5;
 }
 
 Player.prototype.equip = function equip(weaponName, weaponAtk) {
@@ -854,7 +861,7 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
   let health = document.getElementById("enemy-health");
   health.value -= damageTaken;
   if (this.currentHP < 0) {
-    this.currentHp = 0;
+    this.currentHP = 0;
   }
   $("#enemy-hp").empty().append("<br>" + " HP:" + this.currentHP + "/" + this.maxHP + "<br>");
   if (this.currentHP === 0) {
@@ -866,17 +873,21 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
 function combatEncounter(myRoll) {
   if (myRoll <= 55) {
     console.log('The room seems to be utterly devoid of hostile forces...');
+    $('#map-info').append("<br>" + 'The room seems to be utterly devoid of hostile forces...');
     return false;
   }else if(myRoll > 55 && myRoll <= 65){
     console.log('You have been attacked by an '+enemyTable[2].type+'!');
+    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[2].type+'!');
     combatBegin(playerOne, enemyTable[2]);
     return true;
   }else if(myRoll > 65 && myRoll <= 80){
     console.log('You have been attacked by an '+enemyTable[1].type+'!');
+    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[1].type+'!');
     combatBegin(playerOne, enemyTable[1]);
     return true;
   }else if(myRoll > 80 && myRoll <= 100){
     console.log('You have been attacked by an '+enemyTable[0].type+'!');
+    $('#map-info').append("<br>" + playerObj.name + 'was attacked by an '+enemyTable[0].type+'!');
     combatBegin(playerOne, enemyTable[0]);
     return true;
   }
@@ -1050,7 +1061,7 @@ function combatHeal(playerObj, enemyObj) {
     return;
   } else {
     playerObj.usePotion();
-    $("#combat-log").append("<br>" + playerObj.name + " used a potion and recovered 8 HP" + "<br>");
+    $("#combat-log").append("<br>" + playerObj.name + " used a potion and recovered 10 HP and 5 MP" + "<br>");
   }
   $("#player-hp").empty().append("<br>" + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP + "<br>");
   $("#enemy-hp").empty().append("<br>" + " HP:" + enemyObj.currentHP + "/" + enemyObj.maxHP + "<br>");
