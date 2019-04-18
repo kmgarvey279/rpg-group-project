@@ -365,4 +365,5 @@ p#first-text {
   grid-template-columns: repeat(5, 70px);
   grid-template-rows: repeat(5, 70px);
   grid-auto-flow: column;
+  align-content: center;
 }

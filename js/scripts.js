@@ -536,7 +536,7 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   if (floorObj.roomArr[this.y][this.x - 1].isImport) {
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
-    var boxToMark = this.mapLocation - 5;
+    var boxToMark = this.mapLocation - 8;
     $("#box" + boxToMark).addClass("locked");
     return;
   }
@@ -594,7 +594,7 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   if (floorObj.roomArr[this.y][this.x + 1].isImport) {
     console.log('You need a key to enter this room');
     $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
-    var boxToMark = this.mapLocation + 5;
+    var boxToMark = this.mapLocation + 8;
     $("#box" + boxToMark).addClass("locked");
     return;
   }
@@ -1002,7 +1002,7 @@ function exitCombat() {
 }
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
-let dungeonOne = new Floor(5, 5);// 64 tile grid
+let dungeonOne = new Floor(8, 8);// 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
