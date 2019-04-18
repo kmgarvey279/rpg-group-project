@@ -10,6 +10,7 @@ class IState{
 class StateMachine{
   _stateDict = new Map();
   _current = new IState();
+  _next = new IState();
   Add(myStr, stateObj){
     this._stateDict.set(myStr, stateObj);
   }
@@ -21,9 +22,10 @@ class StateMachine{
   }
   Change(myStr){
     this._current.Exit();
-    _next = new IState();
-    this._stateDict.set(myStr, _next);
-    this._current = _next;
+    this._next = this._stateDict.get(myStr);
+    console.log('Game State changing from ' + this._current + ' to ' + this._next);
+    this._current = this._next;
+    this._current.Enter();
   }
   Update(){
     this._current.Update();
@@ -37,7 +39,6 @@ class MovementState extends IState{
 
   };
   HandleInput(){
-    document.addEventListener('keydown', function(event){
       if(!myInputs.keyPressed){
         switch (event.key) {
           case myInputs.up:
@@ -62,18 +63,36 @@ class MovementState extends IState{
             break;
         }
       }
-    });
   };
 
   Enter(){
-
+    $(".combat-UI").hide();
+    $(".dungeon-UI").show()
   };
   Exit(){
-
+    $(".dungeon-UI").hide();
+    $(".combat-UI").show();
   };
 }
 class BattleState extends IState{
   Update(){
+  };
+  HandleInput(){
+  };
+
+  Enter(){
+    $(".dungeon-UI").hide();
+    $(".combat-UI").show();
+  };
+  Exit(){
+    $(".combat-UI").hide();
+    $(".dungeon-UI").show()
+    $("#combat-log").empty();
+  };
+}
+class MenuState extends IState{
+  Update(){
+
   };
   HandleInput(){
 
@@ -83,12 +102,26 @@ class BattleState extends IState{
 
   };
   Exit(){
-
+    $(".start-UI").hide();
+    $(".dungeon-UI").show()
+    $("#archer-info").hide();
+    $("#wizard-info").hide();
+    $("#warrior-info").hide();
+    $("#character-name").hide();
+    $("#start-game").hide();
+    $("#select-character").hide();
+    $("#back").hide();
+    $("#character-img").hide();
+    playerOne.name = $("#character-name").val();
+    playerOne.getStats();
+    $("#special-name").append(playerOne.specialName);
   };
 }
 let _gameState = new StateMachine();
 _gameState.Add('movement', new MovementState(this));
 _gameState.Add('combat', new BattleState(this));
+_gameState.Add('menu', new MenuState(this));
+_gameState._current = _gameState._stateDict.get('menu');
 //which holds our desired User-Inputs
 class Keys {
   up = 'ArrowUp';
@@ -872,12 +905,6 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
     setTimeout(gameOver, 4000)
   } else if (enemyStatus === false) {
     $("#combat-log").append("<br>" + playerObj.name + " defeats the enemy" + "<br>" + "<strong>You won!</strong>");
-
-    function exitCombat() {
-      $(".combat-UI").hide();
-      $("#combat-log").empty();
-      $(".dungeon-UI").show()
-    }
     setTimeout(exitCombat, 4000);
   }
 }
@@ -898,9 +925,8 @@ function lootCheck(myBool){
 }
 
 
-function combatBegin(playerObj, enemyObj) {
-  $(".dungeon-UI").hide();
-  $(".combat-UI").show();
+function combatBegin(playerObj, enemyObj){
+  _gameState.Change('combat');
   $("#player-name-display").empty().append(playerObj.name);
   $("#player-hp").empty().append("<br>" + " HP:" + playerObj.currentHP + "/" + playerObj.maxHP);
   playerObj.createLifeBar();
@@ -997,13 +1023,16 @@ function escapeCombat(playerObj, enemyObj) {
 }
 
 function exitCombat() {
-  $(".combat-UI").hide();
-  $(".dungeon-UI").show()
+  _gameState.Change('movement');
 }
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
 let dungeonOne = new Floor(8, 8);// 64 tile grid
+<<<<<<< HEAD
 //dungeonOne.constructFloors();
+=======
+
+>>>>>>> master
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
 let enemyImp = new Enemy("Imp");
@@ -1015,8 +1044,14 @@ enemyTable.push(enemyUndead);
 let enemyDragon = new Enemy("Dragon");
 let currEnemy;
 console.log(enemyTable);
-$('#display-map').append(enemyTable);
-dungeonOne.generateKeyRooms(playerOne);
+try{
+  dungeonOne.generateKeyRooms(playerOne);
+  $('#display-map').append(enemyTable);
+}catch(error){
+  console.log('Room could not randomly generate, manually constructing...');
+  dungeonOne.constructFloors();
+}
+
 console.log(dungeonOne.roomArr);
 $('#display-map').append(dungeonOne.roomArr);
 playerOne.initPlayerPos(dungeonOne);
@@ -1072,21 +1107,7 @@ $(document).ready(function() {
   // To have battle with other enemy - change name in enemyImp
   $("#start-game").click(function(event) {
     event.preventDefault();
-    $("#select-page").hide();
-    $(".start-UI").hide();
-    $(".dungeon-UI").show()
-    $("#box5").addClass("explored");
-    $("#archer-info").hide();
-    $("#wizard-info").hide();
-    $("#warrior-info").hide();
-    $("#character-name").hide();
-    $("#start-game").hide();
-    $("#select-character").hide();
-    $("#back").hide();
-    $("#character-img").hide();
-    playerOne.name = $("#character-name").val();
-    playerOne.getStats();
-    $("#special-name").append(playerOne.specialName);
+    combatBegin(playerOne, enemyImp);
   });
   $("#attack-combat").click(function(event) {
     event.preventDefault();
@@ -1112,31 +1133,8 @@ $(document).ready(function() {
 //Game Loop
 function draw() {
   requestAnimationFrame(draw);
-  // document.addEventListener('keydown', function(event) {
-  //   if (!myInputs.keyPressed) {
-  //     switch (event.key) {
-  //       case myInputs.up:
-  //         playerOne.moveNorth(dungeonOne);
-  //         myInputs.keyPressed = true;
-  //         setTimeout(keyPressReady, 750, myInputs);
-  //         break;
-  //       case myInputs.down:
-  //         playerOne.moveSouth(dungeonOne);
-  //         myInputs.keyPressed = true;
-  //         setTimeout(keyPressReady, 750, myInputs);
-  //         break;
-  //       case myInputs.right:
-  //         playerOne.moveEast(dungeonOne);
-  //         myInputs.keyPressed = true;
-  //         setTimeout(keyPressReady, 750, myInputs);
-  //         break;
-  //       case myInputs.left:
-  //         playerOne.moveWest(dungeonOne);
-  //         myInputs.keyPressed = true;
-  //         setTimeout(keyPressReady, 750, myInputs);
-  //         break;
-  //     }
-  //   }
-  // });
+  document.addEventListener('keydown', function a(event){
+    _gameState._current.HandleInput();
+  });
 }
 draw();
