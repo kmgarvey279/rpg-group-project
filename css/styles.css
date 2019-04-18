@@ -364,6 +364,12 @@ p#first-text {
   background-size: contain;
 }
 
+.box.wall {
+  background-color: gray;
+  background-image: url("../img/bricks.png");
+  background-size: contain;
+}
+
 .box {
   background-color: #444;
   border-radius: 5px;
