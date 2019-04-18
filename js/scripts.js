@@ -1,3 +1,94 @@
+
+class IState{
+  Update(){};
+  HandleInput(){};
+
+  Enter(){};
+  Exit(){};
+}
+
+class StateMachine{
+  _stateDict = new Map();
+  _current = new IState();
+  Add(myStr, stateObj){
+    this._stateDict.set(myStr, stateObj);
+  }
+  Remove(myStr){
+    this._stateDict.delete(myStr);
+  }
+  Clear(){
+    this._stateDict.clear();
+  }
+  Change(myStr){
+    this._current.Exit();
+    _next = new IState();
+    this._stateDict.set(myStr, _next);
+    this._current = _next;
+  }
+  Update(){
+    this._current.Update();
+  }
+  HandleInput(){
+    this._current.HandleInput();
+  }
+}
+class MovementState extends IState{
+  Update(){
+
+  };
+  HandleInput(){
+    document.addEventListener('keydown', function(event){
+      if(!myInputs.keyPressed){
+        switch (event.key) {
+          case myInputs.up:
+            playerOne.moveNorth(dungeonOne);
+            myInputs.keyPressed = true;
+            setTimeout(keyPressReady, 750, myInputs);
+            break;
+          case myInputs.down:
+            playerOne.moveSouth(dungeonOne);
+            myInputs.keyPressed = true;
+            setTimeout(keyPressReady, 750, myInputs);
+            break;
+          case myInputs.right:
+            playerOne.moveEast(dungeonOne);
+            myInputs.keyPressed = true;
+            setTimeout(keyPressReady, 750, myInputs);
+            break;
+          case myInputs.left:
+            playerOne.moveWest(dungeonOne);
+            myInputs.keyPressed = true;
+            setTimeout(keyPressReady, 750, myInputs);
+            break;
+        }
+      }
+    });
+  };
+
+  Enter(){
+
+  };
+  Exit(){
+
+  };
+}
+class BattleState extends IState{
+  Update(){
+  };
+  HandleInput(){
+
+  };
+
+  Enter(){
+
+  };
+  Exit(){
+
+  };
+}
+let _gameState = new StateMachine();
+_gameState.Add('movement', new MovementState(this));
+_gameState.Add('combat', new BattleState(this));
 //which holds our desired User-Inputs
 class Keys {
   up = 'ArrowUp';
@@ -384,6 +475,7 @@ class Player {
     //Player Position
     this.y = startPosY;
     this.x = startPosX;
+    this.mapLocation = 5;
   }
 }
 
@@ -409,10 +501,14 @@ Player.prototype.moveGrid = function moveGrid(direction, floorObj) {
 Player.prototype.moveNorth = function moveNorth(floorObj) {
   if (this.y - 1 < 0 || typeof floorObj.roomArr[this.y - 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if (floorObj.roomArr[this.y - 1][this.x].isImport) {
     console.log('You need a key to enter this room');
+    $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
+    var boxToMark = this.mapLocation - 1;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -420,17 +516,28 @@ Player.prototype.moveNorth = function moveNorth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the north room');
+  $('#map-info').append(playerOne.name + ' traveled north' + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation -= 1;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  combatEncounter(myNum);
+  var lootOdds = combatEncounter(myNum);
+  lootCheck(lootOdds);
 }
 Player.prototype.moveWest = function moveWest(floorObj) {
   if (this.x - 1 < 0 || typeof floorObj.roomArr[this.y][this.x - 1] != 'object') {
     console.log('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if (floorObj.roomArr[this.y][this.x - 1].isImport) {
     console.log('You need a key to enter this room');
+    $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
+    var boxToMark = this.mapLocation - 5;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -438,17 +545,28 @@ Player.prototype.moveWest = function moveWest(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know Player is now there
   console.clear();
   console.log('The player walked into the west room');
+  $('#map-info').append(playerOne.name + ' traveled west' + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation -= 5;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  combatEncounter(myNum);
+  var lootOdds = combatEncounter(myNum);
+  lootCheck(lootOdds);
 }
 Player.prototype.moveSouth = function moveSouth(floorObj) {
   if (this.y + 1 > floorObj.row - 1 || typeof floorObj.roomArr[this.y + 1][this.x] != 'object') {
     console.log('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if (floorObj.roomArr[this.y + 1][this.x].isImport) {
     console.log('You need a key to enter this room');
+    $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
+    var boxToMark = this.mapLocation + 1;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -456,17 +574,28 @@ Player.prototype.moveSouth = function moveSouth(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the south room');
+  $('#map-info').append(playerOne.name + ' traveled south' + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation += 1;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  combatEncounter(myNum);
+  var lootOdds = combatEncounter(myNum);
+  lootCheck(lootOdds);
 }
 Player.prototype.moveEast = function moveEast(floorObj) {
   if (this.x + 1 > floorObj.col - 1 || typeof floorObj.roomArr[this.y][this.x + 1] != 'object') {
     console.log('The player runs into a wall and does not move');
+    $('#map-info').append(playerOne.name + ' finds a wall blocking their path' + "<br>");
     return;
   }
   if (floorObj.roomArr[this.y][this.x + 1].isImport) {
     console.log('You need a key to enter this room');
+    $('#map-info').append(playerOne.name + ' needs a key to enter this room' + "<br>");
+    var boxToMark = this.mapLocation + 5;
+    $("#box" + boxToMark).addClass("locked");
     return;
   }
   floorObj.roomArr[this.y][this.x].playerHere = false;
@@ -474,9 +603,16 @@ Player.prototype.moveEast = function moveEast(floorObj) {
   this.initPlayerPos(floorObj); //Updating moved to room to know PLayer is now there
   console.clear();
   console.log('The player walked into the east room');
+  $('#map-info').append(playerOne.name + ' traveled east' + "<br>");
+  $("#box" + this.mapLocation).removeClass("current");
+  $("#box" + this.mapLocation).addClass("explored");
+  this.mapLocation += 5;
+  $("#box" + this.mapLocation).removeClass("explored");
+  $("#box" + this.mapLocation).addClass("current");
   printFloor(dungeonOne);
   var myNum = combatRoll();
-  combatEncounter(myNum);
+  var lootOdds = combatEncounter(myNum);
+  lootCheck(lootOdds);
 }
 
 // Characters size in combat mode
@@ -533,15 +669,6 @@ Player.prototype.createLifeBar = function createLifeBar() {
   let magic = document.getElementById("player-magic");
   magic.value = this.currentMP
   magic.max = this.maxMP
-}
-
-//Player explore functions
-Player.prototype.moveGrid = function moveGrid() {
-
-}
-
-Player.prototype.checkGrid = function checkGrid() {
-
 }
 
 //Player combat functions
@@ -660,18 +787,21 @@ Enemy.prototype.takeDamage = function takeDamage(damageTaken) {
 function combatEncounter(myRoll) {
   if (myRoll <= 55) {
     console.log('The room seems to be utterly devoid of hostile forces...');
-    return;
-  } else if (myRoll > 55 && myRoll <= 65) {
-    console.log('You have been attacked by an ' + enemyTable[2].type + '!');
+    return false;
+  }else if(myRoll > 55 && myRoll <= 65){
+    console.log('You have been attacked by an '+enemyTable[2].type+'!');
     combatBegin(playerOne, enemyTable[2]);
-  } else if (myRoll > 65 && myRoll <= 80) {
-    console.log('You have been attacked by an ' + enemyTable[1].type + '!');
+    return true;
+  }else if(myRoll > 65 && myRoll <= 80){
+    console.log('You have been attacked by an '+enemyTable[1].type+'!');
     combatBegin(playerOne, enemyTable[1]);
-  } else if (myRoll > 80 && myRoll <= 100) {
-    console.log('You have been attacked by an ' + enemyTable[0].type + '!');
+    return true;
+  }else if(myRoll > 80 && myRoll <= 100){
+    console.log('You have been attacked by an '+enemyTable[0].type+'!');
     combatBegin(playerOne, enemyTable[0]);
+    return true;
   }
-  return;
+  return false;
 }
 
 function printFloor(floorObj) {
@@ -712,6 +842,7 @@ function printFloor(floorObj) {
       rowStr += colStr;
     }
     console.log(rowStr);
+    $('#display-map').text(rowStr);
   }
 }
 
@@ -744,6 +875,7 @@ function checkForDeath(playerStatus, enemyStatus, playerObj) {
 
     function exitCombat() {
       $(".combat-UI").hide();
+      $("#combat-log").empty();
       $(".dungeon-UI").show()
     }
     setTimeout(exitCombat, 4000);
@@ -754,6 +886,15 @@ function combatRoll() {
   var myRoll = randNum(100, 0);
   console.log(myRoll);
   return myRoll;
+}
+function lootCheck(myBool){
+  var lootRoll = randNum(100, 0);
+  console.log('Your loot roll is '+lootRoll+' and your monster kill is: '+myBool);
+  if(myBool ? lootRoll <= 75 : lootRoll <= 25){
+    console.log(myBool ? "You rummage through the monster's remains and manage to find a potion!" : "You look around the empty room and spot a potion in some rubble...");
+  }else{
+    console.log(myBool ? "The monster had nothing on it....." : "The room appears to be entirely empty...");
+  }
 }
 
 
@@ -847,6 +988,7 @@ function escapeCombat(playerObj, enemyObj) {
   if (success === true) {
     $("#combat-log").append("<br>" + playerObj.name + " successfully ran away" + "<br>");
     setTimeout(exitCombat, 4000);
+    $("#combat-log").empty();
   } else {
     $("#combat-log").append("<br>" + playerObj.name + " failed to run away" + "<br>");
     enemyObj.enemyTurn();
@@ -860,7 +1002,7 @@ function exitCombat() {
 }
 //globals
 let myInputs = new Keys(); //Init which Keys are detected
-let dungeonOne = new Floor(8, 8); // 64 tile grid
+let dungeonOne = new Floor(5, 5);// 64 tile grid
 //dungeonOne.constructFloors();
 let playerOne = new Player(dungeonOne.row - 1, 0);
 let enemyTable = [];
@@ -873,8 +1015,10 @@ enemyTable.push(enemyUndead);
 let enemyDragon = new Enemy("Dragon");
 let currEnemy;
 console.log(enemyTable);
+$('#display-map').append(enemyTable);
 dungeonOne.generateKeyRooms(playerOne);
 console.log(dungeonOne.roomArr);
+$('#display-map').append(dungeonOne.roomArr);
 playerOne.initPlayerPos(dungeonOne);
 printFloor(dungeonOne);
 
@@ -931,6 +1075,7 @@ $(document).ready(function() {
     $("#select-page").hide();
     $(".start-UI").hide();
     $(".dungeon-UI").show()
+    $("#box5").addClass("explored");
     $("#archer-info").hide();
     $("#wizard-info").hide();
     $("#warrior-info").hide();
@@ -968,31 +1113,31 @@ $(document).ready(function() {
 //Game Loop
 function draw() {
   requestAnimationFrame(draw);
-  document.addEventListener('keydown', function(event) {
-    if (!myInputs.keyPressed) {
-      switch (event.key) {
-        case myInputs.up:
-          playerOne.moveNorth(dungeonOne);
-          myInputs.keyPressed = true;
-          setTimeout(keyPressReady, 750, myInputs);
-          break;
-        case myInputs.down:
-          playerOne.moveSouth(dungeonOne);
-          myInputs.keyPressed = true;
-          setTimeout(keyPressReady, 750, myInputs);
-          break;
-        case myInputs.right:
-          playerOne.moveEast(dungeonOne);
-          myInputs.keyPressed = true;
-          setTimeout(keyPressReady, 750, myInputs);
-          break;
-        case myInputs.left:
-          playerOne.moveWest(dungeonOne);
-          myInputs.keyPressed = true;
-          setTimeout(keyPressReady, 750, myInputs);
-          break;
-      }
-    }
-  });
+  // document.addEventListener('keydown', function(event) {
+  //   if (!myInputs.keyPressed) {
+  //     switch (event.key) {
+  //       case myInputs.up:
+  //         playerOne.moveNorth(dungeonOne);
+  //         myInputs.keyPressed = true;
+  //         setTimeout(keyPressReady, 750, myInputs);
+  //         break;
+  //       case myInputs.down:
+  //         playerOne.moveSouth(dungeonOne);
+  //         myInputs.keyPressed = true;
+  //         setTimeout(keyPressReady, 750, myInputs);
+  //         break;
+  //       case myInputs.right:
+  //         playerOne.moveEast(dungeonOne);
+  //         myInputs.keyPressed = true;
+  //         setTimeout(keyPressReady, 750, myInputs);
+  //         break;
+  //       case myInputs.left:
+  //         playerOne.moveWest(dungeonOne);
+  //         myInputs.keyPressed = true;
+  //         setTimeout(keyPressReady, 750, myInputs);
+  //         break;
+  //     }
+  //   }
+  // });
 }
 draw();
