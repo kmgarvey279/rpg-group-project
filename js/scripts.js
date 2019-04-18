@@ -1031,6 +1031,7 @@ function lootCheck(myBool){
   if(dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey){
     console.log('You spot a shiny key on the floor and decide to hold onto it...');
     playerOne.keyAmount++;
+    dungeonOne.roomArr[playerOne.y][playerOne.x].containsKey = false;
   }
 }
 
