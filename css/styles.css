@@ -2,6 +2,7 @@ body {
   color: #eeffc9;
   background-color: #181816;
   /* font-family: fantasy; */
+  max-height: 100%;
 
 }
 
@@ -97,6 +98,24 @@ h1#select-page {
   height: auto;
 }
 
+#combat-images img {
+  display: block;
+  max-width: 250px;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+}
+
+#enemy-image img{
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+#character-avatar img{
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
 .dungeon-UI {
   display: none;
 }
@@ -185,7 +204,6 @@ h1#select-page {
   }
 
 
-
 #attack-combat, #special-combat, #potion-combat, #run-combat, #northButton, #southButton, #eastButton, #westButton  {
   border-top: 1px solid #f4f797;
   background: #aba387;
@@ -203,7 +221,7 @@ h1#select-page {
   font-family: Garamond, serif;
   text-decoration: none;
   vertical-align: middle;
-  width: 220px;
+  width: 160px;
   height: 50px;
   margin: 5px;
 }
@@ -238,30 +256,17 @@ h1#select-page {
   font-weight: bold;
 }
 
-#enemy-image {
+#combat-info {
+  padding: 10px;
+}
+
+#mp-info {
+  position: relative;
+  bottom: -19px;
+}
+
+#enemy-info {
   float: right;
-}
-
-#player-stats {
-  padding-left: 55px;
-}
-
-#enemy-stats {
-  padding-left: 440px;
-}
-
-#character-avatar {
-  padding-left: 80px;
-  margin-bottom: 50px;
-}
-
-#combat-images {
-  margin-top: 70px;
-}
-
-#enemy-image {
-  padding-right: 80px;
-  margin-bottom: 50px;
 }
 
 progress {

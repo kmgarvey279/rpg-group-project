@@ -79,8 +79,9 @@
         <div class="start-UI">
           <form id="create-character">
             <div class="form-group">
-              <label for="character-name">Name:</label>
-              <input type="text" class="form-control" id="character-name">
+              <label for="character-name">
+                Name:<input value="Adventurer" type="text" class="form-control" id="character-name">
+              </label>
             </div>
             <button type="button" class="btn" id="start-game">Enter Dungeon</button>
           </form>
@@ -189,50 +190,63 @@
 
 
 
-        <div class="combat-UI">
-      <div id="combat-images" class="row">
-        <div id="player-stats" class="col-md-6">
-          <h6 class="name"><span id="player-name-display"></span></h6>
-          <h6><span id="player-hp"></span></h6>
-          <progress id="player-health" value="100" max="100"></progress>
-          <h6><span id="player-mp"></span></h6>
-          <progress id="player-magic" value="100" max="100"></progress>
-        </div>
+      <div class="combat-UI">
 
-        <div id="enemy-stats" class="col-md-6">
-          <h6 class="name"><span id="enemy-name-display"></span></h6>
-          <h6><span id="enemy-hp"></span></h6>
-          <progress id="enemy-health" value="100" max="100"></progress>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <span id="character-avatar"></span>
-        </div>
-        <div class="col-md-6">
-          <span id="enemy-image"></span>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div id="action-panel" class="panel-body">
-          <div class="row">
-            <div class="col-md-2">
-              <button class="btn" type="button" id="attack-combat">Attack</button>
-              <button class="btn" type="button" id="special-combat"><span id="special-name"></span></button>
-              <button class="btn" type="button" id="potion-combat">Use Potion</button>
-              <button class="btn" type="button" id="run-combat">Run</button>
+        <div class="row" id="combat-images">
+          <div class="col-md-4">
+            <span id="character-avatar"></span>
+          </div>
+          <div class="col-md-4">
+            <div class="panel-body" id="combat-panel">
+              <span id="combat-log"></span>
             </div>
-            <div class="col-md-10">
-              <div class="panel-body" id="combat-panel">
+          </div>
+          <div class="col-md-4">
+            <span id="enemy-image"></span>
+          </div> 
+        </div>
 
-                <span id="combat-log"></span>
+        <div class="panel panel-default">
+          <div id="action-panel" class="panel-body">
+            <div class="row" id="combat-info">
+
+              <div id="player-info" class="col-lg-6">
+                <h3><span id="player-name-display"></span></h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6><span id="player-hp"></span></h6>
+                    <progress id="player-health" value="100" max="100"></progress>
+                  </div>  
+                  <div class="col-md-6" id="mp-info">
+                    <h6><span id="player-mp"></span></h6>
+                    <progress id="player-magic" value="100" max="100"></progress>
+                  </div>
+                </div>
               </div>
+              <div id="enemy-info" class="col-lg-6">
+                <h3><span id="enemy-name-display"></span></h3>
+                <h6><span id="enemy-hp"></span></h6>
+                <progress id="enemy-health" value="100" max="100"></progress> 
+              </div>
+    
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <button class="btn" type="button" id="attack-combat">Attack</button>
+              </div>
+              <div class="col-md-3"> 
+                <button class="btn" type="button" id="special-combat"><span id="special-name"></span></button>
+              </div>
+              <div class="col-md-3">
+                <button class="btn" type="button" id="potion-combat">Use Potion</button>
+              </div>
+              <div class="col-md-3">
+                <button class="btn" type="button" id="run-combat">Run</button>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </body>
 </html>
