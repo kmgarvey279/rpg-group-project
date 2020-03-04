@@ -7,88 +7,131 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin = "anonymous"></script>
     <script src="js/scripts.js"></script>
   </head>
+
   <body>
 
     <div class="landing-UI">
       <img id="landing-dungeon-entrance" src="img/dungeon.jpg" alt="image of dungeon mouth">
-        <div id="landing-title">
-          <h1>Drakania</h1>
-        </div>
-        <br>
-        <br>
-        <p>Eons ago, the vicious Dragon Drakania fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the fight she slithered back to her underground lair where her numberless brood awaited her return. </p>
-        <br>
-        <p>In the thousands years since that battle, no one who has entered her dungeon has ever returned...</p>
-          <br>
-            <br>
-        <button id = "start-button" type="button" class="btn" name="button">Start Game</button>
+      <div id="landing-title">
+        <h1>Drakania</h1>
+      </div>
+      <br>
+      <br>
+      <p>Eons ago, the vicious Dragon Drakania fought a terrible battle with the seven gods of Norath. Climbing the frozen ramparts of Valhardor she slay the messenger god Herma and stole a nameless treasure from its crypts. Wounded in the fight she slithered back to her underground lair where her numberless brood awaited her return. </p>
+      <br>
+      <p>In the thousands years since that battle, no one who has entered her dungeon has ever returned...</p>
+      <br>
+      <br>
+      <button id = "start-button" type="button" class="btn" name="button">Start Game</button>
     </div>
 
-        <div class = "character-select">
-          <div id = "character-img" class="row">
-            <div class="col col-md-4">
-              <img class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value= "Archer" >
-            </div>
+    <div class = "character-select">
+      <div id = "character-img">
+        <h4 id="select-prompt">Select your class</h4>
+        <div class="row">
 
-            <div class="col col-md-4">
-              <img class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value = "Wizard" >
-            </div>
+          <div class="col col-md-4">
+            <img class="character-image" src="img/heros/archer.png" alt="Image of archer avatar" value= "Archer" >
+          </div>
 
-            <div class="col col-md-4">
-              <img class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value = "Warrior" >
+          <div class="col col-md-4">
+            <img class="character-image" src="img/heros/wizard.png" alt="Image of wizard avatar" value = "Wizard" >
+          </div>
+
+          <div class="col col-md-4">
+            <img class="character-image" src="img/heros/warrior.png" alt="Image of warrior avatar" value = "Warrior" >
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id = "character-info">
+
+      <div id = "archer-info" class="panel">
+        <p>From the drunken backwaters of Lake Mirgolu, the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
+        <ul style="list-style: none;">
+          <li class="section"><span class="title">Class:</span> Archer</li>
+          <li class="section"><span class="title">Hit Points:</span> 20 </li>
+          <li class="section"><span class="title">Strength:</span> 3</li>
+          <li class="section"><span class="title">Speed:</span> 5</li>
+          <li class="section"><span class="title">Special:</span> Barrage - fire multiple arrows</li>
+        </ul>
+      </div>
+
+      <div id = "wizard-info" class="panel">
+        <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, </p>
+        <ul style="list-style: none;">
+          <li class="section"><span class="title">Class:</span> Wizard</li>
+          <li class="section"><span class="title">Hit Points:</span> 15</li>
+          <li class="section"><span class="title">Strength:</span> 2</li>
+          <li class="section"><span class="title">Speed:</span> 4</li>
+          <li class="section"><span class="title">Special:</span> Fireball - high damage to one foe</li>
+        </ul>
+      </div>
+
+      <div id = "warrior-info" class="panel">
+        <p>From the proud Isle of Stonegol, the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
+        <ul style="list-style: none;">
+          <li class="section"><span class="title">Class:</span> Warrior</li>
+          <li class="section"><span class="title">Hit Points:</span> 25</li>
+          <li class="section"><span class="title">Strength:</span> 5</li>
+          <li class="section"><span class="title">Speed:</span> 2</li>
+          <li class="section"><span class="title">Special:</span> Guard - increase defense</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="start-UI">
+      <form id="create-character">
+        <div class="form-group">
+          <label for="character-name">
+            Name:<input value="Adventurer" type="text" class="form-control" id="character-name">
+          </label>
+        </div>
+        <button type="button" class="btn" id="start-game">Enter Dungeon</button>
+      </form>
+    </div>
+
+    <div class="container">
+      <div class="dungeon-UI">
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <div class="dungeon-actions">
+              <div class="row">
+                <div class="icons">
+                  <img class="icon" src="img/items/HP.png" alt="potion icon"><span id="potion-total"></span>
+                  <img class="icon" src="img/items/key1.png" alt="key icon"><span id="potion-total"><span id="key-total"></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="grid-container" id="directions">
+                  <div class="grid-item"></div>
+                  <div class="grid-item"><button type="button" class="clickable btn" id="northButton">North</button></div>
+                  <div class="grid-item"></div>
+                  <div class="grid-item"><button type="button" class="clickable btn" id="southButton">West</button></div>
+                  <div class="grid-item"></div>
+                  <div class="grid-item"><button type="button" class="clickable btn" id="eastButton">East</button></div>
+                  <div class="grid-item"></div>
+                  <div class="grid-item"><button type="button" class="clickable btn" id="westButton">South</button></div>
+                  <div class="grid-item"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="panel panel-default">
+                  <div class="panel-body" id="map-panel">
+                    <span id="map-info"></span>
+                    <br>
+                    <br>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-          <div id = "character-info">
-            <div id = "archer-info" class="panel">
-              <p>From the drunken backwaters of Lake Mirgolu, the Acher is a wandering ne'er-do-well with nothing to lose. Rumors of a treasure are a strong enticement to explore an old ruined cellar type thing.</p>
-              <ul style="list-style: none;">
-                <li class="section"><span class="title">Class:</span> Archer</li>
-                <li class="section"><span class="title">Hit Points:</span> 20 </li>
-                <li class="section"><span class="title">Strength:</span> 3</li>
-                <li class="section"><span class="title">Speed:</span> 5</li>
-                <li class="section"><span class="title">Special:</span> Barrage - fire multiple arrows</li>
-              </ul>
-            </div>
-
-            <div id = "wizard-info" class="panel">
-              <p>From the mist-shrowded highlands of Gont, a land long known for its magical ways, </p>
-              <ul style="list-style: none;">
-                <li class="section"><span class="title">Class:</span> Wizard</li>
-                <li class="section"><span class="title">Hit Points:</span> 15</li>
-                <li class="section"><span class="title">Strength:</span> 2</li>
-                <li class="section"><span class="title">Speed:</span> 4</li>
-                <li class="section"><span class="title">Special:</span> Fireball - high damage to one foe</li>
-              </ul>
-            </div>
-
-            <div id = "warrior-info" class="panel">
-              <p>From the proud Isle of Stonegol, the Warrior is a broad fighter out to increase the honor of his people. Word of a treasure waiting to be won has brought him to the mouth of a crumbling dungeon.</p>
-              <ul style="list-style: none;">
-                <li class="section"><span class="title">Class:</span> Warrior</li>
-                <li class="section"><span class="title">Hit Points:</span> 25</li>
-                <li class="section"><span class="title">Strength:</span> 5</li>
-                <li class="section"><span class="title">Speed:</span> 2</li>
-                <li class="section"><span class="title">Special:</span> Guard - increase defense</li>
-              </ul>
-            </div>
-        </div>
-
-
-        <div class="start-UI">
-          <form id="create-character">
-            <div class="form-group">
-              <label for="character-name">
-                Name:<input value="Adventurer" type="text" class="form-control" id="character-name">
-              </label>
-            </div>
-            <button type="button" class="btn" id="start-game">Enter Dungeon</button>
-          </form>
-        </div>
-
-        <div class="container">
-          <div class="dungeon-UI">
+          <div class="col-md-6">
             <div class="wrapper">
               <div class="box" id="box1"></div>
               <div class="box" id="box2"></div>
@@ -155,98 +198,73 @@
               <div class="box" id="box63"></div>
               <div class="box" id="box64"></div>
             </div>
-            <br>
-                <div class="icons">
-                  <img class="icon" src="img/items/HP.png" alt="potion icon"><span id="potion-total"></span>
-                  <img class="icon" src="img/items/key1.png" alt="key icon"><span id="potion-total"><span id="key-total"></span>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="grid-container">
-                      <div class="grid-item"></div>
-                      <div class="grid-item"><button type="button" class="clickable btn" id="northButton">North</button></div>
-                      <div class="grid-item"></div>
-                      <div class="grid-item"><button type="button" class="clickable btn" id="southButton">West</button></div>
-                      <div class="grid-item"></div>
-                      <div class="grid-item"><button type="button" class="clickable btn" id="eastButton">East</button></div>
-                      <div class="grid-item"></div>
-                      <div class="grid-item"><button type="button" class="clickable btn" id="westButton">South</button></div>
-                      <div class="grid-item"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body" id="map-panel">
-                          <span id="map-info"></span>
-                          <br>
-                          <br>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-      <div class="combat-UI">
-
-        <div class="row" id="combat-images">
-          <div class="col-md-4">
-            <span id="character-avatar"></span>
           </div>
-          <div class="col-md-4">
-            <div class="panel-body" id="combat-panel">
-              <span id="combat-log"></span>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <span id="enemy-image"></span>
-          </div> 
+
         </div>
 
-        <div class="panel panel-default">
-          <div id="action-panel" class="panel-body">
-            <div class="row" id="combat-info">
-
-              <div id="player-info" class="col-lg-6">
-                <h3><span id="player-name-display"></span></h3>
-                <div class="row">
-                  <div class="col-md-6">
-                    <h6><span id="player-hp"></span></h6>
-                    <progress id="player-health" value="100" max="100"></progress>
-                  </div>  
-                  <div class="col-md-6" id="mp-info">
-                    <h6><span id="player-mp"></span></h6>
-                    <progress id="player-magic" value="100" max="100"></progress>
-                  </div>
-                </div>
-              </div>
-              <div id="enemy-info" class="col-lg-6">
-                <h3><span id="enemy-name-display"></span></h3>
-                <h6><span id="enemy-hp"></span></h6>
-                <progress id="enemy-health" value="100" max="100"></progress> 
-              </div>
-    
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-                <button class="btn" type="button" id="attack-combat">Attack</button>
-              </div>
-              <div class="col-md-3"> 
-                <button class="btn" type="button" id="special-combat"><span id="special-name"></span></button>
-              </div>
-              <div class="col-md-3">
-                <button class="btn" type="button" id="potion-combat">Use Potion</button>
-              </div>
-              <div class="col-md-3">
-                <button class="btn" type="button" id="run-combat">Run</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
+
+    <div class="combat-UI">
+
+      <div class="row" id="combat-images">
+        <div class="col-md-4">
+          <span id="character-avatar"></span>
+        </div>
+        <div class="col-md-4">
+          <div class="panel-body" id="combat-panel">
+            <span id="combat-log"></span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <span id="enemy-image"></span>
+        </div> 
+      </div>
+
+      <div class="panel panel-default">
+        <div id="action-panel" class="panel-body">
+          
+          <div class="row" id="combat-info">
+            <div id="player-info" class="col-lg-6">
+              <h3><span id="player-name-display"></span></h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <h6><span id="player-hp"></span></h6>
+                  <progress id="player-health" value="100" max="100"></progress>
+                </div>  
+                <div class="col-md-6" id="mp-info">
+                  <h6><span id="player-mp"></span></h6>
+                  <progress id="player-magic" value="100" max="100"></progress>
+                </div>
+              </div>
+            </div>
+            <div id="enemy-info" class="col-lg-6">
+              <h3><span id="enemy-name-display"></span></h3>
+              <h6><span id="enemy-hp"></span></h6>
+              <progress id="enemy-health" value="100" max="100"></progress> 
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3">
+              <button class="btn" type="button" id="attack-combat">Attack</button>
+            </div>
+            <div class="col-md-3"> 
+              <button class="btn" type="button" id="special-combat"><span id="special-name"></span></button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn" type="button" id="potion-combat">Use Potion</button>
+            </div>
+            <div class="col-md-3">
+              <button class="btn" type="button" id="run-combat">Run</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
   </body>
 </html>
