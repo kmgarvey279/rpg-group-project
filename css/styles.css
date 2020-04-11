@@ -181,7 +181,7 @@ h1#select-page {
  #map-panel {
    color: white;
    background-color: transparent;
-   width: inherit;
+   width: 100%;
    height: 230px;
    overflow: auto;
    display: flex;
@@ -249,7 +249,7 @@ h1#select-page {
   font-family: Garamond, serif;
   text-decoration: none;
   vertical-align: middle;
-  width: 220px;
+  width: 100px;
   height: 50px;
   margin: 5px;
 }
@@ -407,8 +407,8 @@ p#first-text {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 130px);
-  grid-template-rows: repeat(3, 90px);
+  grid-template-columns: repeat(3, 75px);
+  grid-template-rows: repeat(3, 75px);
 
 }
 .grid-item {
@@ -417,7 +417,7 @@ p#first-text {
 
 .icon {
   height: 100px;
-  weight: 100px;
   margin-bottom: 40px;
-  margin-left: 20px;
+  margin-top: 5px;
+  margin-left: -10px;
 }
